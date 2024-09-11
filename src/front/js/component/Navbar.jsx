@@ -3,6 +3,16 @@ import { Link } from "react-router-dom";
 import './styles/navbar.css'
 
 export const Navbar = () => {
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		console.log(e.target.search.value)
+	}
+
+	const handleChange = (e) => {
+		console.log(e.target.value)
+	}
+	
 	return (
 		<nav className='bg-black text-white d-flex justify-content-between align-items-center p-2'>
 			<div>
@@ -11,8 +21,14 @@ export const Navbar = () => {
 				</Link>
 			</div>
 
-			<form>
-				<input className='p-2 rounded' type="text" placeholder='Que estas buscando...?' />
+			<form onSubmit={handleSubmit} className="d-flex gap-1">
+				<select className="rounded" name="" id="" onChange={handleChange}>
+					<option value="">Categorias</option>
+					<option value="fontanero">Fontanero</option>
+					<option value="electricista">Electricista</option>
+					<option value="plomero">Plomero</option>
+				</select>
+				<input id="search" className='p-2 rounded' type="text" placeholder='Que estas buscando...?' />
 			</form>
 
 			<ul className='d-flex gap-3 my-auto fs-4 fw-semibold'>
