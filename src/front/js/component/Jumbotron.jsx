@@ -4,7 +4,7 @@ import "./styles/jumbotron.css"
 export const Jumbotron = () => {
     return (
         <div className="jumbotron jumbotron-fluid p-5">
-            <div className="container rounded-4 text-white p-2">
+            <div className="container rounded-4 text-white p-2 mt-3">
                 <h1 className="display-3 fw-semibold">¡Bienvenidos a ResuelveYa!</h1>
                 <h2>¡Nosotros si resolvemos!</h2>
                 <br></br>
