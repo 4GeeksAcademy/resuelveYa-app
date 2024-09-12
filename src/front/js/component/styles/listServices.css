@@ -1,0 +1,9 @@
+.grid-container {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajusta el número de columnas */
+    justify-content: center; 
+    justify-items: center; 
+    padding: 20px; 
+    max-width: 1200px;
+}
