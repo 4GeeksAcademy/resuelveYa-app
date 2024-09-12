@@ -9,11 +9,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250), nullable=False)
     lastname = db.Column(db.String(250), nullable=False)
-    dni = db.Column(db.Integer, unique=True, nullable=False)
+    dni = db.Column(db.String(50), unique=True, nullable=False)
     role = db.Column(db.String(50), nullable=False)  # 'proveedor o cliente'
-    service_type = db.Column(db.String(100), nullable=True) 
+    service_type = db.Column(db.String(100), nullable=True)
+    phone = db.Column(db.String(150), nullable= True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
+    password = db.Column(db.String(255), unique=False, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  
 
     def __repr__(self):
@@ -25,6 +26,7 @@ class User(db.Model):
             "username": self.username,
             "lastname": self.lastname,
             "dni": self.dni,
+            "phone": self.phone,
             "role": self.role,
             "service_type": self.service_type,
             "email": self.email,
@@ -55,7 +57,7 @@ class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
+    password = db.Column(db.String(255), unique=False, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  
 
     def serialize(self):
@@ -101,7 +103,7 @@ class ServiceHistory(db.Model):
 
     payment_status = db.Column(db.String(50), nullable=False, default='En proceso')  # 'Concretado', 'No culminado', 'En proceso'
     service_status = db.Column(db.String(50), nullable=False, default='En proceso')  # 'Completado', 'No culminado', 'En proceso'
-    payment_method = db.Column(db.String(50), nullable=True)  # 'Tarjeta de crédito', 'Tarjeta de débito'
+    payment_method = db.Column(db.String(255), nullable=True)  # 'Tarjeta de crédito', 'Tarjeta de débito'
     payment_id = db.Column(db.String(100), nullable=True)  # ID de la transacción desde la pasarela de pagos
     amount_paid = db.Column(db.Float, nullable=True)  # Monto pagado si el servicio se concretó
     commission_amount = db.Column(db.Float, nullable=True)  # Comisión del 10% sobre el pago
