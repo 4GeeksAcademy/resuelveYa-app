@@ -102,7 +102,7 @@ class ServiceHistory(db.Model):
     service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
 
     payment_status = db.Column(db.String(50), nullable=False, default='En proceso')  # 'Concretado', 'No culminado', 'En proceso'
-    service_status = db.Column(db.String(5), nullable=False, default='En proceso')  # 'Completado', 'No culminado', 'En proceso'
+    service_status = db.Column(db.String(50), nullable=False, default='En proceso')  # 'Completado', 'No culminado', 'En proceso'
     payment_method = db.Column(db.String(255), nullable=True)  # 'Tarjeta de crédito', 'Tarjeta de débito'
     payment_id = db.Column(db.String(100), nullable=True)  # ID de la transacción desde la pasarela de pagos
     amount_paid = db.Column(db.Float, nullable=True)  # Monto pagado si el servicio se concretó
