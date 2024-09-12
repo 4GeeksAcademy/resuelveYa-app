@@ -20,6 +20,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}catch(e){
 					console.error("Error in registration:", e)
 				}
+			},
+			
+			login: async (dataLogin) => {
+				try {
+					let response = await fetch(process.env.BACKEND_URL + "/api/login", {
+						method:"POST",
+						body: JSON.stringify(dataLogin),
+						headers:{"content-type":"application/json"}
+					})
+					let data = await response.json()
+					console.log(data)
+					
+				} catch (error) {
+					console.error(error)
+				}
 			}
 		}
 	}
