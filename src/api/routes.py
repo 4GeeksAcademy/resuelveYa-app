@@ -4,13 +4,15 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import request, jsonify, Blueprint
 from api.models import db, User
 from api.utils import APIException
+from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import create_access_token,JWTManager, get_jwt_identity, jwt_required
 import re
 import datetime 
 
 api = Blueprint('api', __name__)
-
+# Allow CORS requests to this API
+CORS(api)
 users_created = False
 
 @api.before_app_request
@@ -132,7 +134,7 @@ def register():
         if not first_name or not last_name or not dni or not role or not email or not password or not phone:
             return jsonify({"message": "Todos los campos son requeridos"}), 400
 
-        if role not in ["proveedor", "cliente"]:
+        if role not in ["client", "provider"]:
             return jsonify({"message": "El rol debe ser 'proveedor' o 'cliente'"}), 400
         
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):

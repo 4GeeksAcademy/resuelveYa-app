@@ -22,6 +22,88 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
 			login: async (dataLogin) => {
 				try {
 					let response = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -31,11 +113,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					let data = await response.json()
 					console.log(data)
-					
-				} catch (error) {
-					console.error(error)
+					if (data.token) {
+						console.log(`Welcome ${data.username}`)
+						localStorage.setItem('token', data.token)
+						localStorage.setItem('name', data.username)
+						localStorage.setItem('user_id', data.user_id)
+					} else {
+						console.log("Something went wrong")
+					}
+				} catch (e) {
+					console.error(e)
 				}
-			}
+			},
+			logout: () => {
+				localStorage.removeItem('token')
+				console.log("Logged out successfully!");
+			},
 		}
 	}
 }
