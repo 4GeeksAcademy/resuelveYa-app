@@ -47,19 +47,18 @@ function RegisterForm() {
                 .oneOf(['client', 'provider'], 'El rol debe ser "Cliente" o "Proveedor"')
                 .required("El rol es requerido"),
             category: Yup.string().when('role', {
-                is: 'provider',
+                is: 'proveedor',
                 then: schema => schema.required('Debes seleccionar una categoría'),
                 otherwise: schema => schema.notRequired()
             }),
         }),
-        onSubmit: async (values, { resetForm }) => {
+        onSubmit: async (values) => {
             console.log('Formulario enviado con valores:', values);
             try {
                 const data = await actions.register(values)
                 console.log('Respuesta del registro:', data);
 
                 if (data.token) {
-                    resetForm();
                     setShowAlert(true);
                     setTimeout(() => {
                         navigate("/login")
@@ -75,7 +74,7 @@ function RegisterForm() {
 
     return (
 
-        <div className='rounded-3 border text-black p-5' style={{ maxWidth: "900px" }}>
+        <div className='rounded-3 border text-black p-5' style={{ width: "600px" }}>
             {showAlert && (
                 <div className="alert alert-success" role="alert">
                     Usuario creado exitosamente
@@ -85,9 +84,9 @@ function RegisterForm() {
             <h3 className='mb-4 text-center fw-bold'>Regístrate</h3>
 
             {/* <form onSubmit={sendFormData}> */}
-            <form onSubmit={formik.handleSubmit} className='row g-4'>
+            <form onSubmit={formik.handleSubmit}>
                 {/* Select a rol*/}
-                <div className="col-5 mb-3">
+                <div className="mb-3">
                     <label htmlFor="role" className="form-label">Regístrate como</label>
                     <select
                         name="role"
@@ -104,7 +103,7 @@ function RegisterForm() {
                         <div className="text-danger">{formik.errors.role}</div>
                     ) : null}
                 </div>
-                <div className="col-7 mb-3">
+                <div className="mb-3">
                     <label htmlFor="first_name" className="form-label">Nombres</label>
                     <input
                         id="first_name"
@@ -120,7 +119,7 @@ function RegisterForm() {
                         <div className="text-danger">{formik.errors.first_name}</div>
                     ) : null}
                 </div>
-                <div className="col-4 mb-3">
+                <div className="mb-3">
                     <label htmlFor="last_name" className="form-label">Apellidos</label>
                     <input
                         id="last_name"
@@ -136,8 +135,8 @@ function RegisterForm() {
                         <div className="text-danger">{formik.errors.last_name}</div>
                     ) : null}
                 </div>
-                <div className="col-4 mb-3">
-                    <label htmlFor="identity_document" className="form-label">DNI</label>
+                <div className="mb-3">
+                    <label htmlFor="identity_document" className="form-label">Documento de Identidad</label>
                     <input
                         id="identity_document"
                         name="identity_document"
@@ -146,13 +145,13 @@ function RegisterForm() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.identity_document}
-                        placeholder="Ingresa tu DNI"
+                        placeholder="Ingresa tu número de DNI"
                     />
                     {formik.touched.identity_document && formik.errors.identity_document ? (
                         <div className="text-danger">{formik.errors.identity_document}</div>
                     ) : null}
                 </div>
-                <div className="col-4 mb-3">
+                <div className="mb-3">
                     <label htmlFor="phone" className="form-label">Teléfono</label>
                     <input
                         id="phone"
@@ -168,7 +167,7 @@ function RegisterForm() {
                         <div className="text-danger">{formik.errors.phone}</div>
                     ) : null}
                 </div>
-                <div className="col-6 mb-3">
+                <div className="mb-3">
                     <label htmlFor="email" className="form-label">Correo electrónico</label>
                     <input
                         id="email"
@@ -184,7 +183,7 @@ function RegisterForm() {
                         <div className="text-danger">{formik.errors.email}</div>
                     ) : null}
                 </div>
-                <div className="col-6 mb-3">
+                <div className="mb-3">
                     <label htmlFor="password" className="form-label">Contraseña</label>
                     <input
                         id="password"
@@ -202,7 +201,7 @@ function RegisterForm() {
                 </div>
                 {/* Category selector, only enabled if you are a supplier */}
                 {formik.values.role === "provider" && (
-                    <div className="col-6 mb-3">
+                    <div className="mb-3">
                         <label htmlFor="category" className="form-label">Categoría de Servicio</label>
                         <select
                             id="category"
