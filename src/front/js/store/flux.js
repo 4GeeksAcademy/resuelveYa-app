@@ -2,22 +2,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			// message: null,
-			
+
 		},
 		actions: {
-			register: async (formData) => {
-				try{
-					const response = await fetch("https://humble-fortnight-9xp6qp79977fxxpw-3001.app.github.dev/api/register", {
+			register: async (values) => {
+				try {
+					const response = await fetch("https://potential-cod-4rxqgx7xx6whjg9g-3001.app.github.dev/api/register", {
 						method: "POST",
-						body: JSON.stringify(formData),
-						headers:{
-							"Content-type": "application/json"
+						body: JSON.stringify(values),
+						headers: {
+							"content-type": "application/json"
 						}
 					})
 					let data = await response.json()
+					console.log(data);
+
 					return data
-					
-				}catch(e){
+
+				} catch (e) {
 					console.error("Error in registration:", e)
 				}
 			},
@@ -103,13 +105,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 
-			
+
 			login: async (dataLogin) => {
 				try {
 					let response = await fetch(process.env.BACKEND_URL + "/api/login", {
-						method:"POST",
+						method: "POST",
 						body: JSON.stringify(dataLogin),
-						headers:{"content-type":"application/json"}
+						headers: { "content-type": "application/json" }
 					})
 					let data = await response.json()
 					console.log(data)
