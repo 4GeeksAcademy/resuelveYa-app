@@ -7,7 +7,6 @@ export const NewPasswordForm = () => {
     const{store, actions} = useContext(Context)
     const navigate = useNavigate()
     const [data, setData] = useState({
-        email:"",
         code: "",
         password:""
     })
@@ -22,7 +21,6 @@ export const NewPasswordForm = () => {
             console.log(data)
             //crear un actions para ejecutarse
             setData({
-                email:"",
                 code: "",
                 password:""
             })
@@ -35,12 +33,9 @@ export const NewPasswordForm = () => {
 	return (
         <div className="password text-center bg-white rounded-3 p-4 border border-dark-subtle">
             <h3 className="mb-3"><i className="fa-solid fa-unlock-keyhole"></i> Restablecer contraseña</h3>
-            <p className="text-start my-3"><small>Ingresa una nueva contraseña para tu cuenta.</small></p>
+            <p className="m-0"><small>El código verificador fue enviado a:</small></p>
+            <p className="mb-3"><small>**correo electrónico**</small></p>
             <form className="row g-3 text-start" onSubmit={handleSubmit}>
-                <div className="col-md-12">
-                    <label htmlFor="email" className="form-label fw-semibold">Correo electrónico</label>
-                    <input value={data.email} name="email" type="email" className="form-control" id="email" placeholder="Ingresa un correo electrónico" onChange={handleData} required />
-                </div>
                 <div className="col-md-12">
                     <label htmlFor="code" className="form-label fw-semibold">Código verificador</label>
                     <input value={data.code} name="code" type="code" className="form-control" id="code" placeholder="Ingresa un código verificador" onChange={handleData} required />
