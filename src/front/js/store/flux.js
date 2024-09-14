@@ -24,88 +24,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			login: async (dataLogin) => {
 				try {
 					let response = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -123,6 +41,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					} else {
 						console.log("Something went wrong")
 					}
+					return data
 				} catch (e) {
 					console.error(e)
 				}
