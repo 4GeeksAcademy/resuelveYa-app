@@ -4,6 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import request, jsonify, Blueprint
 from api.models import db, User, ServicePost
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_cors import CORS
 from flask_jwt_extended import create_access_token, decode_token, JWTManager, get_jwt_identity, jwt_required
 import re
 from datetime import datetime, timedelta
@@ -12,8 +13,9 @@ from flask_mail import Message
 from flask import url_for ##en caso usemos link para enviar un token al correo
 #from src.app import mail
 
-api = Blueprint('api', __name__)
 
+api = Blueprint('api', __name__)
+CORS(api)
 users_created = False
 
 @api.before_app_request
@@ -265,7 +267,7 @@ def get_service_posts():
         # Consultar todas las publicaciones de servicios
         posts = ServicePost.query.all()
         
-        # Serializar las publicaciones
+        # Convertir los post a formato Json
         serialized_posts = [post.serialize() for post in posts]
 
         return jsonify({"posts": serialized_posts}), 200
