@@ -10,6 +10,8 @@ import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
 import { Login } from "./pages/login.js";
 import { Register } from "./pages/register.js";
+import { SendVerificationCode } from "./pages/sendVerificationCode.js";
+import { NewPassword } from "./pages/newPassword.js";
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -21,13 +23,15 @@ const Layout = () => {
     return (
         <div>
             <BrowserRouter basename={basename}>
-                <Navbar />
-                <Routes>
-                    <Route element={<Home />} path="/" />
-                    <Route element={<Login />} path="/login" />
-                    <Route element={<Register />} path="/register" />
-                </Routes>
-                <Footer />
+                    <Navbar />
+                    <Routes>
+                        <Route element={<Home />} path="/" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<Register />} path="/register" />
+                        <Route element={<SendVerificationCode />} path="/sendverificationcode" />
+                        <Route element={<NewPassword />} path="/newpassword" />
+                    </Routes>
+                    <Footer />
             </BrowserRouter>
         </div>
     );
