@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			// message: null,
-			listServices: []
+      listServices: [],
 		},
 		actions: {
 			register: async (values) => {
