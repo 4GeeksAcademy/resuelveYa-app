@@ -2,6 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			// message: null,
+      listServices: [],
 		},
 		actions: {
 			register: async (values) => {
@@ -49,6 +50,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem('token')
 				console.log("Logged out successfully!");
 			},
+			getUsers: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/users')
+
+					const data = await response.json()
+					setStore({listServices: data})
+					return data
+					
+				} catch(err){
+					console.error(err)
+				}
+			},
+			setListServices: (newList) => {
+				setStore({listServices: newList})
+			}
 		}
 	}
 }
