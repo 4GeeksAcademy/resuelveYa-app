@@ -15,7 +15,7 @@ class User(db.Model):
     phone = db.Column(db.String(150), nullable= True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)  
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f'<User {self.email}>'

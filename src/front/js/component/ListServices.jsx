@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CardService } from './CardService.jsx'
 import './styles/listServices.css'
-
+import { Context } from "../store/appContext";
 export const ListServices = () => {
-
+    const {actions, store} = useContext(Context)
+    const [users, setUsers] = useState([])
     const demoList = [
         {
             name: 'Pedrito',
@@ -55,11 +56,21 @@ export const ListServices = () => {
         },
     ]
 
+    const getUsers = async () => {
+        const data = await actions.getUsers()
+        setUsers(data)
+        console.log(data)
+    }
+
+    // useEffect(() => {
+    //     getUsers()
+    // }, [])
+
     return(
         <div className='grid-container mx-auto'>
             {
-                demoList.map((data, index) => (
-                    <CardService data={data} key={index}/>
+                store.listServices.map((user, index) => (
+                    <CardService user={user} key={index}/>
                 ))
             }
         </div>
