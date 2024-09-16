@@ -71,7 +71,7 @@ function RegisterForm() {
         },
     });
 
-    console.log("Errores del formulario:", formik.errors);
+    // console.log("Errores del formulario:", formik.errors);
 
     return (
 
