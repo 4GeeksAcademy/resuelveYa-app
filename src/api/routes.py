@@ -104,7 +104,7 @@ def login():
             return jsonify({"message": "Contraseña incorrecta"}), 401
 
         # Generar un token JWT si la contraseña es válida
-        expires = datetime.timedelta(hours=1)
+        expires = timedelta(hours=1)
         access_token = create_access_token(identity=user.id, expires_delta=expires)
 
         # Devolver el token JWT al cliente
