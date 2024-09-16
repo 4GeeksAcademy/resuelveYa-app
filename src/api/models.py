@@ -16,6 +16,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    reset_code = db.Column(db.String(6), nullable=True)  # Código de restablecimiento agregado
+    reset_code_expiration = db.Column(db.DateTime, nullable=True)  # Fecha de expiración agregado
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -91,7 +93,9 @@ class ServicePost(db.Model):
             "user_id": self.user_id,
             "service_time": self.service_time,
             "created_at": self.created_at,
-            "username": self.user.username
+            "username": self.user.username,
+            "lastname": self.user.lastname,
+            "phone": self.user.phone
         }
     
 class ServiceHistory(db.Model):
