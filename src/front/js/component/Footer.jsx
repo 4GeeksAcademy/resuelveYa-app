@@ -1,14 +1,14 @@
 import React, { Component } from "react";
+import { GrInstagram } from "react-icons/gr";
+import { FaFacebookF } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+
+
+
 
 export const Footer = () => (
-  <footer classNameName="footer mt-auto py-3 text-center">
-    {/* <p>
-			Made with <i classNameName="fa fa-heart text-danger" /> by{" "}
-			<a href="http://www.4geeksacademy.com">
-			MAX TE TOCA HACER ESTE COMPONENTE
-			</a>
-		</p> */}
-
+  <footer className="footer mt-auto py-3 text-center">
     <div className="col-sm-10 m-auto">
       <div className="container-fluid bg-custom m-auto">
         <div className="row d-flex justify-content-around pt-3">
@@ -61,18 +61,10 @@ export const Footer = () => (
                 <span className="visually-hidden">Next</span>
               </button>
               <div className="btns">
-                <button aria-label="Instagram">
-                  <i className="fa-brands fa-instagram fs-3 m-2 text-success"></i>
-                </button>
-                <button aria-label="Facebook">
-                  <i className="fa-brands fa-facebook-f fs-3 m-2"></i>
-                </button>
-                <button aria-label="GitHub">
-                  <i className="fa-brands fa-github fs-3 m-2"></i>
-                </button>
-                <button aria-label="LinkedIn">
-                  <i className="fa-brands fa-linkedin fs-3 m-2"></i>
-                </button>
+                <button className="btnx fs-3 m-2"><GrInstagram /></button>
+                <button className="btnx fs-3 m-2"><FaFacebookF /></button>
+                <button className="btnx fs-3 m-2"><FaGithub /></button>
+                <button className="btnx fs-3 m-2"><FaLinkedin /></button>
               </div>
             </div>
           </div>
