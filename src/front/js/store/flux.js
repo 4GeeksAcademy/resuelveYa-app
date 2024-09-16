@@ -3,6 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			// message: null,
 			listServices: [],
+			username: localStorage.getItem('name')
 		},
 		actions: {
 			register: async (values) => {
@@ -38,6 +39,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						localStorage.setItem('token', data.token)
 						localStorage.setItem('name', data.username)
 						localStorage.setItem('user_id', data.user_id)
+						setStore({username: data.username})
 					} else {
 						console.log("Something went wrong")
 					}
@@ -55,15 +57,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const response = await fetch(process.env.BACKEND_URL + '/api/users')
 
 					const data = await response.json()
-					setStore({ listServices: data })
+					setStore({listServices: data})
 					return data
 
 				} catch (err) {
 					console.error(err)
 				}
 			},
+			getPostsProviders: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/posts')
+
+					const data = await response.json()
+					setStore({listServices: data})
+					return data
+				} catch(err){
+					console.error(err)
+				}
+			},
 			setListServices: (newList) => {
 				setStore({ listServices: newList })
+			},
+			changeValueUsername: () => {
+				setStore({username: null})
 			}
 		}
 	}
