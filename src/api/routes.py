@@ -30,8 +30,8 @@ def create_test_users():
                 lastname='lastname1',
                 dni='12345678',
                 phone='12341234',
-                role='cliente',
-                service_type=None,
+                role='provider',
+                service_type='gasfitero',
                 email='user1@example.com',
                 password=generate_password_hash('password1')
             )
@@ -39,7 +39,7 @@ def create_test_users():
                 username='user2',
                 lastname='lastname2',
                 dni='23456789',
-                role='proveedor',
+                role='provider',
                 phone='12341234',
                 service_type='electricista',
                 email='user2@example.com',
@@ -50,7 +50,7 @@ def create_test_users():
                 lastname='lastname3',
                 dni='34567890',
                 phone='12341234',
-                role='cliente',
+                role='client',
                 service_type=None,
                 email='user3@example.com',
                 password=generate_password_hash('password3')
@@ -59,9 +59,9 @@ def create_test_users():
                 username='user4',
                 lastname='lastname4',
                 dni='45678901',
-                role='proveedor',
+                role='provider',
                 phone='12341234',
-                service_type='gasfiter',
+                service_type='gasfitero',
                 email='user4@example.com',
                 password=generate_password_hash('password4')
             )
@@ -70,8 +70,8 @@ def create_test_users():
                 lastname='lastname5',
                 dni='56789012',
                 phone='12341234',
-                role='cliente',
-                service_type=None,
+                role='provider',
+                service_type='plomero',
                 email='user5@example.com',
                 password=generate_password_hash('password5')
             )
@@ -81,6 +81,66 @@ def create_test_users():
             db.session.commit()
 
         users_created = True
+
+@api.before_app_request
+def create_default_posts():
+
+    if ServicePost.query.count() == 0:
+
+        providers = User.query.filter_by(role='provider').all()
+
+        # Definir los posts por defecto (uno por cada proveedor, máximo 5)
+        default_posts = [
+            {
+                'title': 'Reparación de instalaciones eléctricas',
+                'description': 'Servicio completo de revisión y reparación de instalaciones eléctricas.',
+                'service_type': 'electricista',
+                'price': 150,
+                'service_time': 'Lunes a viernes'
+            },
+            {
+                'title': 'Instalación de tuberías de agua',
+                'description': 'Colocación e instalación de tuberías de agua en edificaciones.',
+                'service_type': 'gasfiter',
+                'price': 200,
+                'service_time': 'viernes'
+            },
+            {
+                'title': 'Mantenimiento de sistemas eléctricos',
+                'description': 'Diagnóstico y mantenimiento preventivo de sistemas eléctricos.',
+                'service_type': 'electricista',
+                'price': 120,
+                'service_time': 'fines de semana'
+            },
+            {
+                'title': 'Reparación de filtraciones',
+                'description': 'Detección y reparación de filtraciones en baños y cocinas.',
+                'service_type': 'gasfiter',
+                'price': 180,
+                'service_time': 'feriados y domingos'
+            },
+            {
+                'title': 'Instalación de enchufes y lámparas',
+                'description': 'Instalación de enchufes, interruptores y lámparas en toda la casa.',
+                'service_type': 'electricista',
+                'price': 100,
+                'service_time': 'lunes y martes'
+            }
+        ]
+
+        # Crear una publicacion por cada proveedor existente hasta que sea igual o menor a 5
+        for i, provider in enumerate(providers[:5]):
+            new_post = ServicePost(
+                title=default_posts[i]['title'],
+                description=default_posts[i]['description'],
+                service_type=default_posts[i]['service_type'],
+                price=default_posts[i]['price'],
+                service_time=default_posts[i]['service_time'],
+                user_id=provider.id
+            )
+            db.session.add(new_post)
+        db.session.commit()
+
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -267,11 +327,84 @@ def reset_password():
 def get_service_posts():
     try:
         # Consultar todas las publicaciones de servicios
-        posts = ServicePost.query.all()
+        posts = ServicePost.query.join(User).filter(User.role == 'provider').all()
         
         # Convertir los post a formato Json
         serialized_posts = [post.serialize() for post in posts]
 
-        return jsonify({"posts": serialized_posts}), 200
+        return jsonify(serialized_posts), 200
     except Exception as e:
         return jsonify({"message": "Ocurrió un error al obtener las publicaciones", "error": str(e)}), 500
+    
+    
+@api.route('/create_posts', methods=['POST'])
+@jwt_required()  
+def create_post():
+    try:
+        user_id = get_jwt_identity()  
+        user = User.query.get(user_id)
+
+        if not user:
+            return jsonify({"message": "Usuario no encontrado"}), 404
+
+        if user.role != 'provider':
+            return jsonify({"message": "Solo los proveedores pueden crear posts"}), 403
+
+        # Obtener los datos del post enviados por el cliente
+        body = request.get_json()
+        title = body.get('title')
+        description = body.get('description')
+        service_type = body.get('service_type')
+        price = body.get('price')
+        service_time = body.get('service_time')
+
+        if not title or not description or not service_type or not service_time:
+            return jsonify({"message": "Todos los campos son requeridos"}), 400
+
+        # Crear el nuevo post
+        new_post = ServicePost(
+            title=title,
+            description=description,
+            service_type=service_type,
+            price=price,
+            service_time=service_time,
+            user_id=user_id
+        )
+
+        db.session.add(new_post)
+        db.session.commit()
+
+        # Devolver tanto el post como la información del proveedor
+        return jsonify({
+            "message": "Post creado exitosamente",
+            "post": new_post.serialize(),
+            "provider": {
+                "id": user.id,
+                "first_name": user.username,
+                "last_name": user.lastname,
+                "phone": user.phone,
+                "service_type": user.service_type,
+            }
+        }), 201
+
+    except Exception as e:
+        return jsonify({"message": "Ocurrió un error al crear el post", "error": str(e)}), 500
+
+
+@api.route('/posts', methods=['GET'])
+def get_posts():
+    try:
+        # Consultar todas las publicaciones en la base de datos
+        posts = ServicePost.query.all()
+
+        if not posts:
+            return jsonify({"message": "No hay posts disponibles"}), 404
+
+        serialized_posts = [post.serialize() for post in posts]
+
+        return jsonify(serialized_posts), 200
+
+    except Exception as e:
+        return jsonify({"message": "Ocurrió un error al obtener los posts", "error": str(e)}), 500
+       
+    
