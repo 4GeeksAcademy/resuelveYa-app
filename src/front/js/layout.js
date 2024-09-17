@@ -12,6 +12,10 @@ import { Login } from "./pages/login.js";
 import { Register } from "./pages/register.js";
 import { SendVerificationCode } from "./pages/sendVerificationCode.js";
 import { NewPassword } from "./pages/newPassword.js";
+import { ProviderProfile } from "./pages/providerProfile.js";
+import { ProviderNewPost } from "./pages/newPassword.js";
+
+
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -30,6 +34,8 @@ const Layout = () => {
                         <Route element={<Register />} path="/register" />
                         <Route element={<SendVerificationCode />} path="/sendverificationcode" />
                         <Route element={<NewPassword />} path="/newpassword" />
+                        <Route element={<ProviderProfile/>} path="/providerprofile"/>
+                        <Route element={<ProviderNewPost/>} path="/providernewpost"/>
                     </Routes>
                     <Footer />
             </BrowserRouter>
