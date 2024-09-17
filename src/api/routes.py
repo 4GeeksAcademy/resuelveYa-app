@@ -1,23 +1,27 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
+"""This module takes care of starting the API Server, Loading the DB and Adding the endpoints"""
+import resend
+import os
 from flask import request, jsonify, Blueprint
 from api.models import db, User, ServicePost
 from api.utils import APIException
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_cors import CORS
+# from flask_cors import CORS
 from flask_jwt_extended import create_access_token, decode_token, JWTManager, get_jwt_identity, jwt_required
 import re
 from datetime import datetime, timedelta
 import random
-from flask_mail import Message
-from flask import url_for ##en caso usemos link para enviar un token al correo
+# from flask_mail import Message
+# from flask import url_for ##en caso usemos link para enviar un token al correo
 #from src.app import mail
 
 api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
+
+# Configura la API Key de Resend desde el entorno
+resend.api_key = os.getenv("RESEND_API_KEY")
+
 users_created = False
 
 @api.before_app_request
@@ -275,12 +279,24 @@ def request_reset_password():
         db.session.commit()
 
         # Crear el mensaje de correo
-        msg = Message("Código de Restablecimiento de Contraseña",
-                      recipients=[user.email])
-        msg.body = f"Hola {user.username},\n\nTu código de restablecimiento de contraseña es: {reset_code}\n\nEste código expirará en 2 minutos."
-        
+        html_content = f"""
+        <p>Hola {user.username},</p>
+        <p>Tu código de restablecimiento de contraseña es: <strong>{reset_code}</strong></p>
+        <p>Este código expirará en 2 minutos.</p>
+        """
+
+         # Crear el mensaje usando Resend
+        params = {
+            "from": "TuServicio <onboarding@resend.dev>",
+            "to": [user.email],
+            "subject": "Código de Restablecimiento de Contraseña",
+            "html": html_content,
+        }
+
         # Enviar el correo electrónico
-        ##mail.send(msg)
+        response = resend.Emails.send(params)
+        if response.get('error'):
+            return jsonify({"message": "Error al enviar el correo", "error": response['error']}), 500
 
         return jsonify({
             "message": "Correo de confirmación de restablecimiento enviado. Por favor, revisa tu bandeja de entrada.",
@@ -307,12 +323,16 @@ def reset_password():
             return jsonify({"message": "Usuario no encontrado"}), 404
 
         # Verificar si el código es válido y no ha expirado
-        if user.reset_code != reset_code or datetime.utcnow() > user.reset_code_expiration:
-            return jsonify({"message": "Código inválido o expirado"}), 400
+        if user.reset_code != reset_code:
+            return jsonify({"message": "Código de verificación incorrecto"}), 400
+        if datetime.utcnow() > user.reset_code_expiration:
+            return jsonify({"message": "El código de verificación ha expirado"}), 400
 
-        # Actualizar la contraseña con un nuevo hash seguro
+       # Actualizar la contraseña del usuario con un nuevo hash seguro
         hashed_password = generate_password_hash(new_password)
         user.password = hashed_password
+
+        # Limpiar los campos del código de restablecimiento
         user.reset_code = None
         user.reset_code_expiration = None
         db.session.commit()
