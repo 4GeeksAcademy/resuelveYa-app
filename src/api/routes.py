@@ -2,18 +2,14 @@
 import resend
 import os
 from flask import request, jsonify, Blueprint
-from api.models import db, User, ServicePost
+from api.models import db, User, ServicePost, ServiceHistory
 from api.utils import APIException
-from flask_cors import CORS
+from flask_cors import CORS 
 from werkzeug.security import check_password_hash, generate_password_hash
-# from flask_cors import CORS
 from flask_jwt_extended import create_access_token, decode_token, JWTManager, get_jwt_identity, jwt_required
 import re
 from datetime import datetime, timedelta
 import random
-# from flask_mail import Message
-# from flask import url_for ##en caso usemos link para enviar un token al correo
-#from src.app import mail
 
 api = Blueprint('api', __name__)
 # Allow CORS requests to this API
@@ -426,5 +422,60 @@ def get_posts():
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error al obtener los posts", "error": str(e)}), 500
+
+
+@api.route('/client_information', methods=['GET'])
+@jwt_required()
+def client_information():
+    try:
+        current_user_id = get_jwt_identity()
+        # Buscar al usuario en la base de datos
+        client = User.query.filter_by(id=current_user_id, role='client').first()
+
+        if not client:
+            return jsonify({"msg": "Client not found"}), 404
+
+        # Obtener el historial de servicios solicitados por el cliente
+        service_history = ServiceHistory.query.filter_by(client_id=client.id).all()
+        service_data = [history.serialize() for history in service_history]
+
+        return jsonify({
+            "client_info": client.serialize(),
+            "service_history": service_data
+        }), 200
+    
+    except Exception as e:
+        return jsonify({"msg": "An error occurred", "error": str(e)}), 500
+    
+    
+@api.route('/provider_information', methods=['GET'])
+@jwt_required() 
+def provider_information():
+    try:
+        current_user_id = get_jwt_identity()
+
+        provider = User.query.filter_by(id=current_user_id, role='provider').first()
+
+        if not provider:
+            return jsonify({"msg": "Provider not found"}), 404
+
+        # Obtener el historial de servicios prestados por el proveedor
+        service_history = ServiceHistory.query.filter_by(provider_id=provider.id).all()
+
+        # Obtener las publicaciones de servicios del proveedor
+        service_posts = ServicePost.query.filter_by(user_id=provider.id).all()
+
+        service_data = [history.serialize() for history in service_history]
+        post_data = [post.serialize() for post in service_posts]
+
+        # Retornar la información personal del proveedor, los servicios prestados y las publicaciones
+        return jsonify({
+            "provider_info": provider.serialize(),
+            "service_history": service_data,
+            "service_posts": post_data
+        }), 200
+    
+    except Exception as e:
+        return jsonify({"msg": "An error occurred", "error": str(e)}), 500
        
     
