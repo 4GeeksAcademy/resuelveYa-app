@@ -6,8 +6,9 @@ import * as Yup from 'yup';
 import "./styles/newPasswordForm.css"
 
 export const NewPasswordForm = () => {
-    // const { actions } = useContext(Context)
+    const { store, actions } = useContext(Context)
     const navigate = useNavigate()
+    const [errorMessage, setErrorMessage] = useState("");
 
     const formik = useFormik({
         initialValues: {
@@ -27,15 +28,26 @@ export const NewPasswordForm = () => {
                 .required("La contraseña es requerida"),
         }),
         onSubmit: async (values, { resetForm }) => {
-            console.log('Formulario enviado con valores:', values);
             try {
-                console.log(data)
-                //crear un actions para ejecutarse
-                resetForm()
-                navigate("/login")
+                const email = store.resetEmail;
 
-            } catch (e) {
-                console.error(e)
+                if (!email) {
+                    console.error("No se encontró el email en el store");
+                    setErrorMessage("El correo electrónico no se ha encontrado. Solicita un nuevo código.");
+                    return;
+                }
+
+                const response = await actions.newPassword(email, values.code, values.password);
+
+                if (response.success) {
+                    resetForm();
+                    navigate("/login");
+                } else {
+                    setErrorMessage(response.message);
+                }
+            } catch (error) {
+                console.error("Error en el proceso de cambio de contraseña:", error);
+                setErrorMessage("Ocurrió un error inesperado.");
             }
         },
     });
@@ -44,11 +56,16 @@ export const NewPasswordForm = () => {
         <div className="password text-center bg-white rounded-3 p-4 border border-dark-subtle">
             <h3 className="mb-3"><i className="fa-solid fa-unlock-keyhole"></i> Restablecer contraseña</h3>
             <p className="m-0"><small>El código verificador fue enviado a:</small></p>
-            <p className="mb-3"><small>**correo electrónico**</small></p>
+            <p className="mb-3"><strong>{store.resetEmail}</strong></p>
+
+            {/* Display an error message if an error occurs */}
+            
+            {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
+
             <form className="row g-3 text-start" onSubmit={formik.handleSubmit}>
                 <div className="col-md-12">
                     <label htmlFor="code" className="form-label fw-semibold">Código verificador</label>
-                    <input name="code" type="code" className="form-control" id="code" placeholder="Ingresa un código verificador" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.code} />
+                    <input name="code" type="password" className="form-control" id="code" placeholder="Ingresa un código verificador" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.code} />
                     {formik.touched.code && formik.errors.code ? (
                         <div className="text-danger">{formik.errors.code}</div>
                     ) : null}
