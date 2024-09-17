@@ -287,7 +287,7 @@ def request_reset_password():
 
          # Crear el mensaje usando Resend
         params = {
-            "from": "TuServicio <onboarding@resend.dev>",  # Cambia esto por el remitente deseado
+            "from": "TuServicio <onboarding@resend.dev>",
             "to": [user.email],
             "subject": "Código de Restablecimiento de Contraseña",
             "html": html_content,
@@ -335,8 +335,6 @@ def reset_password():
         # Limpiar los campos del código de restablecimiento
         user.reset_code = None
         user.reset_code_expiration = None
-
-        # Guardar los cambios en la base de datos
         db.session.commit()
 
         return jsonify({"message": "Contraseña actualizada con éxito"}), 200

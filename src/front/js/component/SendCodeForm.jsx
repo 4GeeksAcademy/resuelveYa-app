@@ -6,8 +6,9 @@ import * as Yup from 'yup';
 import "./styles/sendCodeForm.css";
 
 export const SendCodeForm = () => {
-    // const { actions } = useContext(Context)
+    const { actions } = useContext(Context)
     const navigate = useNavigate()
+    const [errorMessage, setErrorMessage] = useState("");
 
     const formik = useFormik({
         initialValues: {
@@ -20,11 +21,17 @@ export const SendCodeForm = () => {
             console.log('Formulario enviado con valores:', values);
 
             try {
-                // await actions.sendCode(values)
-                resetForm()
-                navigate("/newPassword")
+                const result = await actions.sendCode(values.email);
+
+                if (result.success) {
+                    resetForm();
+                    navigate("/newPassword");
+                } else {
+                    setErrorMessage(result.message);
+                }
             } catch (e) {
-                console.error(e)
+                console.error(e);
+                setErrorMessage("Error al enviar el código.");
             }
         },
     });
@@ -33,6 +40,10 @@ export const SendCodeForm = () => {
         <div className="code text-center bg-white rounded-3 p-4 border border-dark-subtle">
             <h3 className="mb-3"><i className="fa-solid fa-unlock-keyhole"></i> Restablecer contraseña</h3>
             <p className="text-start my-3"><small>Ingresa tu correo electrónico y te enviaremos las instrucciones para una nueva contraseña.</small></p>
+
+            {/* Display an error message if an error occurs */}
+            {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
+
             <form className="row g-3 text-start" onSubmit={formik.handleSubmit}>
                 <div className="col-md-12">
                     <label htmlFor="email" className="form-label fw-semibold">Correo electrónico</label>
