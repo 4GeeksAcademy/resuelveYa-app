@@ -9,7 +9,7 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager  
-# from flask_mail import Mail
+
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
@@ -34,19 +34,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-# Configuración de Flask-Mail
-
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USE_SSL'] = False
-# app.config['MAIL_USERNAME'] = 'lalito@gmail.com'  
-# app.config['MAIL_PASSWORD'] = '1234'  
-# app.config['MAIL_DEFAULT_SENDER'] = 'pepito@gmail.com'  
-
-# mail = Mail(app)
-
 
 setup_admin(app)
 
@@ -55,7 +42,6 @@ setup_commands(app)
 
 app.register_blueprint(api, url_prefix='/api')
 
-# Manejo de errores
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
