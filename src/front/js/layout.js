@@ -13,7 +13,7 @@ import { Register } from "./pages/register.js";
 import { SendVerificationCode } from "./pages/sendVerificationCode.js";
 import { NewPassword } from "./pages/newPassword.js";
 import { ProviderProfile } from "./pages/providerProfile.js";
-import { ProviderNewPost } from "./pages/newPassword.js";
+import { ProviderNewPost } from "./pages/providerNewPost.js";
 
 
 //create your first component

@@ -1,7 +1,7 @@
 import React from "react";
-import { UserDetails } from "../component/UserDetails";
-import { ProviderServiceHistory } from "../component/ProviderServiceHistory";
-import { ProviderPostHistory } from "../component/ProviderPostHistory";
+import { UserDetails } from "../component/UserDetails.jsx";
+import { ProviderServiceHistory } from "../component/ProviderServiceHistory.jsx";
+import { ProviderPostHistory } from "../component/ProviderPostHistory.jsx";
 
 export const ProviderProfile = () => {
 	return (
