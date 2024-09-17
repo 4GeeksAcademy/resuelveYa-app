@@ -26,9 +26,9 @@ export const Navbar = () => {
 		setValueInput(textInput)
 	}
 	
-	const filterByName = users.filter((user => user.username.toLowerCase().includes(valueInput.toLowerCase())))
+	const filterByName = posts.filter((user => user.username.toLowerCase().includes(valueInput.toLowerCase())))
 	
-	// const filterByCategory = filterByName.filter((user) => user.service_type && user.service_type.includes(category.toLowerCase()))
+	const filterByCategory = filterByName.filter((user) => user.service_type.includes(category.toLowerCase()))
 	
 	const dataUsers = async () => {
 		const dataFetch = await actions.getUsers()
@@ -38,6 +38,7 @@ export const Navbar = () => {
 	const dataPosts = async () => {
 		const dataPosts = await actions.getPostsProviders()
 		setPosts(dataPosts)
+		console.log(dataPosts)
 	}
 	
 	useEffect(() => {
@@ -50,12 +51,13 @@ export const Navbar = () => {
 	}, [store.username])
 	
 	useEffect(() => {
-		actions.setListServices(filterByName)
+		actions.setListServices(filterByCategory)
 		
 	}, [valueInput, category])
 	
 	useEffect(() => {
-		dataUsers()
+		// dataUsers()
+		dataPosts()
 		// actions.setListServices(filterByName)
 		// dataPosts()
 	}, [])
