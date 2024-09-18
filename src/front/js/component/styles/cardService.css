@@ -8,3 +8,7 @@
     height: 250px;
     background-color: rgb(151, 151, 151);
 }
+
+.img-container {
+    overflow: hidden;
+}
