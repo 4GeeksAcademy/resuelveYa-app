@@ -1,7 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from flask import current_app
+#import locale
 
+#locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8') # establecer idioma español a las fechas
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -15,6 +17,7 @@ class User(db.Model):
     phone = db.Column(db.String(150), nullable= True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
+    profile_image = db.Column(db.String(255), nullable=True) # almacenar las imagenes
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     reset_code = db.Column(db.String(6), nullable=True)  # Código de restablecimiento agregado
     reset_code_expiration = db.Column(db.DateTime, nullable=True)  # Fecha de expiración agregado
@@ -32,8 +35,12 @@ class User(db.Model):
             "role": self.role,
             "service_type": self.service_type,
             "email": self.email,
-            "created_at": self.created_at
+            "profile_image": self.profile_image,
+            #"created_at": self.created_at()
         }
+    # def format_created_at(self):
+    #     "Día, dd/mm/aaaa"
+    #     return self.created_at.strftime('%A, %d/%m/%Y')   
 ## metodos JWT en caso sean mejor entendidos
     # def set_password(self, password):
     #     self.password = generate_password_hash(password)
@@ -67,8 +74,11 @@ class Admin(db.Model):
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            "created_at": self.created_at
+           # "created_at": self.created_at()
         }
+    # def format_created_at(self):
+    #     # "Día, dd/mm/aaaa"
+    #     return self.created_at.strftime('%A, %d/%m/%Y')  
 
 class ServicePost(db.Model):
     __tablename__ = 'service_posts'
@@ -79,6 +89,7 @@ class ServicePost(db.Model):
     price = db.Column(db.Float, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     service_time = db.Column(db.String(250), nullable=False)
+    service_timetable = db.Column(db.String(250),nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship('User', backref='service_posts', lazy=True)
@@ -92,12 +103,16 @@ class ServicePost(db.Model):
             "price": self.price,
             "user_id": self.user_id,
             "service_time": self.service_time,
-            "created_at": self.created_at,
+            "service_timetable": self.service_timetable,
+           # "created_at": self.created_at(),
             "username": self.user.username,
             "lastname": self.user.lastname,
             "phone": self.user.phone
         }
-    
+    # def format_created_at(self):
+    #     # "Día, dd/mm/aaaa"
+    #     return self.created_at.strftime('%A, %d/%m/%Y')  
+
 class ServiceHistory(db.Model):
     __tablename__ = 'service_history'
     id = db.Column(db.Integer, primary_key=True)
@@ -135,5 +150,8 @@ class ServiceHistory(db.Model):
             "commission_amount": self.commission_amount,
             "client_accepted": self.client_accepted,
             "provider_accepted": self.provider_accepted,
-            "created_at": self.created_at
+            #"created_at": self.created_at()
         }
+    # def format_created_at(self):
+    #     # "Día, dd/mm/aaaa"
+    #     return self.created_at.strftime('%A, %d/%m/%Y')       
