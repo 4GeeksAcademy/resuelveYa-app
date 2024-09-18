@@ -14,9 +14,8 @@ export const ProviderProfile = () => {
         navigate("/")
     }
 	return (
-        <div className="d-flex flex-column align-items-center p-5">
+        <div className="d-flex flex-column align-items-center p-3">
             <UserDetails />
-            <ProviderServiceHistory />
             <ProviderPostHistory />
             <button className="btn btn-light mt-2 fw-semibold border border-black fw-bold" type="submit" onClick={handleOut}>Cerrar sesión</button>
         </div>
