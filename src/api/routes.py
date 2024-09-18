@@ -1,10 +1,12 @@
-"""This module takes care of starting the API Server, Loading the DB and Adding the endpoints"""
+"""
+This module takes care of starting the API Server, Loading the DB and Adding the endpoints
+"""
 import resend
 import os
 from flask import request, jsonify, Blueprint
 from api.models import db, User, ServicePost, ServiceHistory
 from api.utils import APIException
-from flask_cors import CORS 
+from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import create_access_token, decode_token, JWTManager, get_jwt_identity, jwt_required
 import re
@@ -25,55 +27,41 @@ def create_test_users():
     global users_created
     if not users_created:
         if User.query.count() == 0:
+
+            # Lista de imágenes de perfil de Google
+            profile_images = [
+                'https://i.imgur.com/1.jpg',
+                'https://i.imgur.com/2.jpg',
+                'https://i.imgur.com/3.jpg',
+                'https://i.imgur.com/4.jpg',
+                'https://i.imgur.com/5.jpg'
+            ]
+
+            # Crear usuarios con imágenes de perfil
             user1 = User(
-                username='user1',
-                lastname='lastname1',
-                dni='12345678',
-                phone='12341234',
-                role='provider',
-                service_type='gasfitero',
-                email='user1@example.com',
-                password=generate_password_hash('password1')
+                username='Ericka', lastname='lastname1', dni='12345678', phone='12341234', role='provider', service_type='maestro de obra', 
+                email='user1@example.com', password=generate_password_hash('password1'),
+                profile_image=profile_images[0]
             )
             user2 = User(
-                username='user2',
-                lastname='lastname2',
-                dni='23456789',
-                role='provider',
-                phone='12341234',
-                service_type='electricista',
-                email='user2@example.com',
-                password=generate_password_hash('password2')
+                username='Max', lastname='lastname2', dni='23456789',  role='provider', phone='12341234', service_type='electricista',
+                email='user2@example.com', password=generate_password_hash('password2'),
+                profile_image=profile_images[1]
             )
             user3 = User(
-                username='user3',
-                lastname='lastname3',
-                dni='34567890',
-                phone='12341234',
-                role='client',
-                service_type=None,
-                email='user3@example.com',
-                password=generate_password_hash('password3')
+                username='Maguila', lastname='lastname3', dni='34567890', phone='12341234', role='provider', service_type='gasfitero',
+                email='user3@example.com', password=generate_password_hash('password3'),
+                profile_image=profile_images[2]
             )
             user4 = User(
-                username='user4',
-                lastname='lastname4',
-                dni='45678901',
-                role='provider',
-                phone='12341234',
-                service_type='gasfitero',
-                email='user4@example.com',
-                password=generate_password_hash('password4')
+                username='Milton', lastname='lastname4', dni='45678901', role='provider',  phone='12341234', service_type='gasfitero',
+                email='user4@example.com', password=generate_password_hash('password4'),
+                profile_image=profile_images[3]
             )
             user5 = User(
-                username='user5',
-                lastname='lastname5',
-                dni='56789012',
-                phone='12341234',
-                role='provider',
-                service_type='plomero',
-                email='user5@example.com',
-                password=generate_password_hash('password5')
+                username='Kevin', lastname='lastname5', dni='56789012', phone='12341234', role='provider', service_type='plomero',
+                email='user5@example.com', password=generate_password_hash('password5'),
+                profile_image=profile_images[4]
             )
 
             # Agregar los usuarios a la base de datos
@@ -89,58 +77,81 @@ def create_default_posts():
 
         providers = User.query.filter_by(role='provider').all()
 
-        # Definir los posts por defecto (uno por cada proveedor, máximo 5)
+        # Definir los posts por defecto (uno por cada proveedor)
         default_posts = [
             {
                 'title': 'Reparación de instalaciones eléctricas',
                 'description': 'Servicio completo de revisión y reparación de instalaciones eléctricas.',
                 'service_type': 'electricista',
                 'price': 150,
-                'service_time': 'Lunes a viernes'
+                'service_time': '9:00 am - 12:00 pm',
+                'service_timetable': 'Lunes a viernes'
             },
             {
                 'title': 'Instalación de tuberías de agua',
                 'description': 'Colocación e instalación de tuberías de agua en edificaciones.',
-                'service_type': 'gasfiter',
+                'service_type': 'gasfitero',
                 'price': 200,
-                'service_time': 'viernes'
+                'service_time': '7:00 am - 4:00 pm',
+                'service_timetable': 'Viernes'
             },
             {
                 'title': 'Mantenimiento de sistemas eléctricos',
                 'description': 'Diagnóstico y mantenimiento preventivo de sistemas eléctricos.',
                 'service_type': 'electricista',
                 'price': 120,
-                'service_time': 'fines de semana'
+                'service_time': '11:00 am - 5:00 pm',
+                'service_timetable': 'Fines de semana'
             },
             {
                 'title': 'Reparación de filtraciones',
                 'description': 'Detección y reparación de filtraciones en baños y cocinas.',
-                'service_type': 'gasfiter',
+                'service_type': 'gasfitero',
                 'price': 180,
-                'service_time': 'feriados y domingos'
+                'service_time': '9:00 am - 7:00 pm',
+                'service_timetable': 'Feriados y domingos'
             },
             {
                 'title': 'Instalación de enchufes y lámparas',
                 'description': 'Instalación de enchufes, interruptores y lámparas en toda la casa.',
                 'service_type': 'electricista',
-                'price': 100,
-                'service_time': 'lunes y martes'
+                'price': 100, 
+                'service_time': '10:00 am - 2:00 pm',
+                'service_timetable': 'Lunes y martes'
+            },
+            {
+                'title': 'Servicio de plomería para baños',
+                'description': 'Mantenimiento y reparación de tuberías en baños.',
+                'service_type': 'plomero',
+                'price': 160,
+                'service_time': '8:00 am - 3:00 pm',
+                'service_timetable': 'Sábados y domingos'
+            },
+            {
+                'title': 'Instalación de calentadores de agua',
+                'description': 'Instalación de calentadores de agua eléctricos o a gas.',
+                'service_type': 'plomero',
+                'price': 250,
+                'service_time': '8:00 am - 3:00 pm',
+                'service_timetable': 'Miércoles y jueves'
             }
         ]
 
-        # Crear una publicacion por cada proveedor existente hasta que sea igual o menor a 5
-        for i, provider in enumerate(providers[:5]):
-            new_post = ServicePost(
-                title=default_posts[i]['title'],
-                description=default_posts[i]['description'],
-                service_type=default_posts[i]['service_type'],
-                price=default_posts[i]['price'],
-                service_time=default_posts[i]['service_time'],
+        # Asignar las publicaciones a los usuarios proveedores
+        for i, provider in enumerate(providers):
+            post_data = default_posts[i % len(default_posts)]
+            post = ServicePost(
+                title=post_data['title'],
+                description=post_data['description'],
+                service_type=post_data['service_type'],
+                price=post_data['price'],
+                service_time=post_data['service_time'],
+                service_timetable=post_data['service_timetable'],
                 user_id=provider.id
             )
-            db.session.add(new_post)
-        db.session.commit()
+            db.session.add(post)
 
+        db.session.commit()
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -196,7 +207,7 @@ def register():
             return jsonify({"message": "Todos los campos son requeridos"}), 400
 
         if role not in ["client", "provider"]:
-            return jsonify({"message": "El rol debe ser 'proveedor' o 'cliente'"}), 400
+            return jsonify({"message": "El rol debe ser 'provider' o 'client'"}), 400
 
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return jsonify({"message": "Email inválido"}), 400
@@ -213,7 +224,7 @@ def register():
             dni=dni,
             phone=phone,
             role=role,
-            service_type=service_type,
+            service_type=service_type if role == 'provider' else None,
             email=email,
             password=hashed_password
         )
@@ -373,6 +384,7 @@ def create_post():
         service_type = body.get('service_type')
         price = body.get('price')
         service_time = body.get('service_time')
+        service_timetable = body.get('service_timetable')
 
         if not title or not description or not service_type or not service_time:
             return jsonify({"message": "Todos los campos son requeridos"}), 400
@@ -384,6 +396,7 @@ def create_post():
             service_type=service_type,
             price=price,
             service_time=service_time,
+            service_timetable=service_timetable,
             user_id=user_id
         )
 
@@ -400,6 +413,7 @@ def create_post():
                 "last_name": user.lastname,
                 "phone": user.phone,
                 "service_type": user.service_type,
+                "service_timetable": user.service_timetable
             }
         }), 201
 
