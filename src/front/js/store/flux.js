@@ -5,7 +5,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			username: localStorage.getItem('name'),
 			resetEmail: "",
 			clientInfo: null,  
-			providerInfo: null  
+			providerInfo: null,
+			dataUserLogin: {}
 		},
 		actions: {
 			register: async (values) => {
@@ -169,6 +170,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json()
 					setStore({ listServices: data })
 					return data
+				} catch (err) {
+					console.error(err)
+				}
+			},
+			newPostProvider: async (dataPost) => {
+				const actions = getActions()
+				let token = localStorage.getItem('token')
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/create_posts', {
+						method: 'POST',
+						headers: {
+							'Authorization': `Bearer ${token}`,
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(dataPost)
+					})
+
+					const data =  await response.json()
+					console.log(data)
+					actions.getPostsProviders()
+					
 				} catch (err) {
 					console.error(err)
 				}

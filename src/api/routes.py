@@ -413,7 +413,7 @@ def create_post():
                 "last_name": user.lastname,
                 "phone": user.phone,
                 "service_type": user.service_type,
-                "service_timetable": user.service_timetable
+                # "service_timetable": user.service_timetable
             }
         }), 201
 

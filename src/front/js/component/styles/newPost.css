@@ -1,0 +1,10 @@
+input, textarea {
+    width: 200px;
+    padding: 5px;
+    /* border: none; */
+}
+
+textarea {
+    height: 50px;
+    resize: none;
+}
