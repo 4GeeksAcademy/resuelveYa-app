@@ -127,14 +127,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			// Obtener información de un proveedor por su ID
-			getProviderInformation: async (providerId) => {
+			// Get provider information when logged in
+			getProviderInformation: async() => {
+				let token = localStorage.getItem('token')
+				if (!token) {
+					console.log("First log in to get a token")
+					return
+				}
 				try {
-					const response = await fetch(`/api/provider_information/${providerId}`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/provider_information", {
 						method: "GET",
 						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${localStorage.getItem('token')}`
+							Authorization: `Bearer ${token}`,
 						}
 					});
 					const data = await response.json();
