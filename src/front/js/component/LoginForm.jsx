@@ -48,10 +48,6 @@ export const LoginForm = () => {
             }
         },
     });
-    const handleOut = () => {
-        actions.logout()
-        navigate("/")
-    }
 	return (
         <div className="login text-center bg-white rounded-3 p-4 border border-dark-subtle">
             {showAlert.visible && (
@@ -101,7 +97,6 @@ export const LoginForm = () => {
             <div className="mt-4 p-0">
                 <p className="m-0">¿Aun no tienes cuenta? <Link to="/register" className="text-black fw-semibold">Regístrate</Link></p>
             </div>
-            <p><a className="btn btn-link mt-2" href="#" onClick={handleOut}>Log Out</a></p>
         </div>
 	);
 };
