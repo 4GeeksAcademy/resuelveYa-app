@@ -3,7 +3,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			listServices: [],
 			username: localStorage.getItem('name'),
-			resetEmail: ""
+			resetEmail: "",
+			clientInfo: null,  
+			providerInfo: null  
 		},
 		actions: {
 			register: async (values) => {
@@ -102,6 +104,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (e) {
 					console.error("Error in newPassword:", e);
 					return { success: false, message: "Error al cambiar la contraseña" };
+				}
+			},
+
+			// Obtener información de un cliente por su ID
+			getClientInformation: async (clientId) => {
+				try {
+					const response = await fetch(`/api/client_information/${clientId}`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem('token')}`
+						}
+					});
+					const data = await response.json();
+					if (response.ok) {
+						setStore({ clientInfo: data });
+					}
+					return data;
+				} catch (error) {
+					console.error("Error fetching client information:", error);
+				}
+			},
+
+			// Obtener información de un proveedor por su ID
+			getProviderInformation: async (providerId) => {
+				try {
+					const response = await fetch(`/api/provider_information/${providerId}`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem('token')}`
+						}
+					});
+					const data = await response.json();
+					if (response.ok) {
+						setStore({ providerInfo: data });
+					}
+					return data;
+				} catch (error) {
+					console.error("Error fetching provider information:", error);
 				}
 			},
 			getUsers: async () => {
