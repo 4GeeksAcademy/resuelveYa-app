@@ -85,7 +85,8 @@ def create_default_posts():
                 'service_type': 'electricista',
                 'price': 150,
                 'service_time': '9:00 am - 12:00 pm',
-                'service_timetable': 'Lunes a viernes'
+                'service_timetable': 'Lunes a viernes',
+                'post_img': 'https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg'
             },
             {
                 'title': 'Instalación de tuberías de agua',
@@ -93,7 +94,8 @@ def create_default_posts():
                 'service_type': 'gasfitero',
                 'price': 200,
                 'service_time': '7:00 am - 4:00 pm',
-                'service_timetable': 'Viernes'
+                'service_timetable': 'Viernes',
+                'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg'
             },
             {
                 'title': 'Mantenimiento de sistemas eléctricos',
@@ -101,7 +103,8 @@ def create_default_posts():
                 'service_type': 'electricista',
                 'price': 120,
                 'service_time': '11:00 am - 5:00 pm',
-                'service_timetable': 'Fines de semana'
+                'service_timetable': 'Fines de semana',
+                'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg'
             },
             {
                 'title': 'Reparación de filtraciones',
@@ -109,7 +112,8 @@ def create_default_posts():
                 'service_type': 'gasfitero',
                 'price': 180,
                 'service_time': '9:00 am - 7:00 pm',
-                'service_timetable': 'Feriados y domingos'
+                'service_timetable': 'Feriados y domingos',
+                'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg'
             },
             {
                 'title': 'Instalación de enchufes y lámparas',
@@ -117,7 +121,8 @@ def create_default_posts():
                 'service_type': 'electricista',
                 'price': 100, 
                 'service_time': '10:00 am - 2:00 pm',
-                'service_timetable': 'Lunes y martes'
+                'service_timetable': 'Lunes y martes',
+                'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg'
             },
             {
                 'title': 'Servicio de plomería para baños',
@@ -125,7 +130,8 @@ def create_default_posts():
                 'service_type': 'plomero',
                 'price': 160,
                 'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Sábados y domingos'
+                'service_timetable': 'Sábados y domingos',
+                'post_img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7SakxvIF-1aMxKlaishIbRu5VpL5u2cZ8A&s'
             },
             {
                 'title': 'Instalación de calentadores de agua',
@@ -133,7 +139,8 @@ def create_default_posts():
                 'service_type': 'plomero',
                 'price': 250,
                 'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Miércoles y jueves'
+                'service_timetable': 'Miércoles y jueves',
+                'post_img': 'https://i0.wp.com/plomeros.uno/wp-content/uploads/2021/08/plomero.png?fit=635%2C877&ssl=1'
             }
         ]
 
@@ -147,6 +154,7 @@ def create_default_posts():
                 price=post_data['price'],
                 service_time=post_data['service_time'],
                 service_timetable=post_data['service_timetable'],
+                post_img=post_data['post_img'],
                 user_id=provider.id
             )
             db.session.add(post)
@@ -365,7 +373,7 @@ def get_service_posts():
     
     
 @api.route('/create_posts', methods=['POST'])
-@jwt_required()  
+@jwt_required()
 def create_post():
     try:
         user_id = get_jwt_identity()  
@@ -492,4 +500,83 @@ def provider_information():
     except Exception as e:
         return jsonify({"msg": "An error occurred", "error": str(e)}), 500
        
+
+@api.route('/edit_post/<int:post_id>', methods=['PUT'])
+@jwt_required()
+def edit_post(post_id):
+    current_user_id = get_jwt_identity()
+    try:
+        body = request.get_json()
+        
+        data_post_edit = ServicePost.query.filter_by(id=post_id, user_id=current_user_id).first()
+
+        if not data_post_edit:
+            return jsonify({'msg': 'Post not found or unauthorized'}), 404
+
+        if body.get('title'):
+            data_post_edit.title = body.get('title')
+        if body.get('description'):
+            data_post_edit.description = body.get('description')
+        if body.get('price'):
+            data_post_edit.price = body.get('price')
+        if body.get('service_time'):
+            data_post_edit.service_time = body.get('service_time')
+        if body.get('service_timetable'):
+            data_post_edit.service_timetable = body.get('service_timetable')
+
+        db.session.commit()
+
+        return jsonify({
+            'user_id': current_user_id,
+            'new_data_post': {
+                'title': data_post_edit.title,
+                'description': data_post_edit.description,
+                'price': data_post_edit.price,
+                'service_time': data_post_edit.service_time,
+                'service_timetable': data_post_edit.service_timetable
+            },
+        }), 200
+
+    except Exception as e:
+        return jsonify({'msg': "An error occurred", 'error': str(e)}), 500
     
+
+@api.route('/edit_profile', methods=['PUT'])
+@jwt_required()
+def edit_profile_provider():
+    current_user_id = get_jwt_identity()
+    try:
+        body = request.get_json()
+        current_password = body.get('password') 
+        new_first_name = body.get('first_name')
+        new_last_name = body.get('last_name')
+        new_phone_number = body.get('phone')
+        new_password = body.get('new_password')  
+
+        data_user = User.query.filter_by(id=current_user_id).first()
+
+        if not data_user:
+            return jsonify({'msg': 'User not found'}), 404
+
+        if current_password:
+            if not check_password_hash(data_user.password, current_password):
+                return jsonify({"msg": "Incorrect password"}), 401
+
+        if new_first_name:
+            data_user.first_name = new_first_name
+        if new_last_name:
+            data_user.last_name = new_last_name
+        if new_phone_number:
+            data_user.phone = new_phone_number
+        if new_password:
+            data_user.password = generate_password_hash(new_password)  
+
+        db.session.commit()
+
+        return jsonify({
+            'msg': 'Profile updated successfully',
+            'new_data': data_user.serialize()
+        }), 200
+
+    except Exception as e:
+        return jsonify({'msg': 'An error occurred', 'error': str(e)}), 500

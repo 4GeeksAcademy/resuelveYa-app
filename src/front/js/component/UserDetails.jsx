@@ -170,7 +170,7 @@ export const UserDetails = () => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     disabled={!isEditing}
-                                    className={`form-control border-bottom ${formik.touched.first_name && formik.errors.first_name ? 'is-invalid' : ''}`}
+                                    className="form-control"
                                 />
                                 {formik.touched.first_name && formik.errors.first_name ? (
                                     <div className="text-danger">{formik.errors.first_name}</div>
@@ -185,7 +185,7 @@ export const UserDetails = () => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     disabled={!isEditing}
-                                    className={`form-control border-bottom ${formik.touched.last_name && formik.errors.last_name ? 'is-invalid' : ''}`}
+                                    className="form-control"
                                 />
                                 {formik.touched.last_name && formik.errors.last_name ? (
                                     <div className="text-danger">{formik.errors.last_name}</div>
@@ -201,7 +201,7 @@ export const UserDetails = () => {
                                     name="dni"
                                     value={formik.values.dni}
                                     disabled
-                                    className="form-control border-bottom"
+                                    className="form-control"
                                 />
                             </div>
                             <div className="col-md-6 mb-3">
@@ -213,7 +213,7 @@ export const UserDetails = () => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     disabled={!isEditing}
-                                    className={`form-control border-bottom ${formik.touched.phone && formik.errors.phone ? 'is-invalid' : ''}`}
+                                    className="form-control"
                                 />
                                 {formik.touched.phone && formik.errors.phone ? (
                                     <div className="text-danger">{formik.errors.phone}</div>
@@ -229,7 +229,7 @@ export const UserDetails = () => {
                                     name="email"
                                     value={formik.values.email}
                                     disabled
-                                    className="form-control border-bottom"
+                                    className="form-control"
                                 />
                             </div>
                         </div>
@@ -261,7 +261,7 @@ export const UserDetails = () => {
                                 value={passwordFormik.values.currentPassword}
                                 onChange={passwordFormik.handleChange}
                                 onBlur={passwordFormik.handleBlur}
-                                className={`form-control ${passwordFormik.touched.currentPassword && passwordFormik.errors.currentPassword ? 'is-invalid' : ''}`}
+                                className="form-control"
                             />
                             {passwordFormik.touched.currentPassword && passwordFormik.errors.currentPassword ? (
                                 <div className="text-danger">{passwordFormik.errors.currentPassword}</div>
@@ -276,7 +276,7 @@ export const UserDetails = () => {
                                 value={passwordFormik.values.newPassword}
                                 onChange={passwordFormik.handleChange}
                                 onBlur={passwordFormik.handleBlur}
-                                className={`form-control ${passwordFormik.touched.newPassword && passwordFormik.errors.newPassword ? 'is-invalid' : ''}`}
+                                className="form-control"
                             />
                             {passwordFormik.touched.newPassword && passwordFormik.errors.newPassword ? (
                                 <div className="text-danger">{passwordFormik.errors.newPassword}</div>
@@ -291,7 +291,7 @@ export const UserDetails = () => {
                                 value={passwordFormik.values.confirmPassword}
                                 onChange={passwordFormik.handleChange}
                                 onBlur={passwordFormik.handleBlur}
-                                className={`form-control ${passwordFormik.touched.confirmPassword && passwordFormik.errors.confirmPassword ? 'is-invalid' : ''}`}
+                                className="form-control"
                             />
                             {passwordFormik.touched.confirmPassword && passwordFormik.errors.confirmPassword ? (
                                 <div className="text-danger">{passwordFormik.errors.confirmPassword}</div>
