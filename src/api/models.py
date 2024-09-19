@@ -91,6 +91,7 @@ class ServicePost(db.Model):
     service_time = db.Column(db.String(250), nullable=False)
     service_timetable = db.Column(db.String(250),nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    post_img = db.Column(db.String(400), nullable=True)
 
     user = db.relationship('User', backref='service_posts', lazy=True)
 
@@ -105,6 +106,7 @@ class ServicePost(db.Model):
             "service_time": self.service_time,
             "service_timetable": self.service_timetable,
            # "created_at": self.created_at(),
+            "post_img": self.post_img,
             "username": self.user.username,
             "lastname": self.user.lastname,
             "phone": self.user.phone
