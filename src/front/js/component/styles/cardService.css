@@ -7,8 +7,10 @@
 .img {
     height: 250px;
     background-color: rgb(151, 151, 151);
+    object-fit: cover;
 }
 
 .img-container {
     overflow: hidden;
+    object-fit: cover;
 }
