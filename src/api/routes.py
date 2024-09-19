@@ -623,18 +623,21 @@ def edit_profile_user():
         if not data_user:
             return jsonify({'msg': 'User not found'}), 404
 
-        if current_password:
+        # Verificar la contraseña solo si se está actualizando la contraseña
+        if new_password and current_password:
             if not check_password_hash(data_user.password, current_password):
                 return jsonify({"msg": "Incorrect password"}), 401
+            data_user.password = generate_password_hash(new_password)
 
         if new_first_name:
-            data_user.first_name = new_first_name
+            data_user.username = new_first_name
         if new_last_name:
-            data_user.last_name = new_last_name
+            data_user.lastname = new_last_name
         if new_phone_number:
             data_user.phone = new_phone_number
-        if new_password:
-            data_user.password = generate_password_hash(new_password)  
+
+        
+        print("Datos antes del commit:", data_user.serialize())
 
         db.session.commit()
 

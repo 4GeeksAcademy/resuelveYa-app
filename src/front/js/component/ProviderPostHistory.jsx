@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 
 export const ProviderPostHistory = () => {
         const { store, actions } = useContext(Context)
-        
+
 
         useEffect(() => {
                 actions.getProviderInformation()
         }, [])
         return (
-                <div className="mt-3">
-                        
+                <div className="my-5 p-4" style={{ backgroundColor: '#fff', borderRadius: '10px' }}>
+
                         <div className="d-flex justify-content-between m-0">
                                 <label className="fs-4 pb-2">Mis publicaciones:</label>
                                 <Link to="/providernewpost" className="fw-semibold text-black mb-2">

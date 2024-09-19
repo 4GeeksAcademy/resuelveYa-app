@@ -162,7 +162,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const response = await fetch(process.env.BACKEND_URL + '/api/users')
 
 					const data = await response.json()
-					setStore({ listServices: data })
+					// setStore({ listServices: data })
 					return data
 
 				} catch (err) {
@@ -208,7 +208,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ username: null })
 			},
 			editUserPersonalData: async (userData) => {
-				console.log("Datos enviados al backend:", userData);
 
 				const token = localStorage.getItem("token");
 				try {
@@ -222,7 +221,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					const data = await response.json();
-					console.log(data)
+
 					if (response.ok) {
 						console.log("Perfil actualizado correctamente:", data);
 						setStore({ dataUserLogin: data.new_data });
@@ -245,8 +244,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`, // Enviar el token en el header
 						},
 						body: JSON.stringify({
-							password: currentPassword,  // Contraseña actual
-							new_password: newPassword   // Nueva contraseña
+							password: currentPassword,
+							new_password: newPassword
 						})
 					});
 

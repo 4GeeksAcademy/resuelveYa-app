@@ -5,10 +5,9 @@ import { Context } from "../store/appContext";
 
 export const UserDetails = () => {
     const { store, actions } = useContext(Context);
-    const [image, setImage] = useState(""); // Para gestionar la imagen
-    const [isChanged, setIsChanged] = useState(false); // Para habilitar el botón cuando hay cambios
+    const [image, setImage] = useState("");
+    const [isChanged, setIsChanged] = useState(false);
 
-    // Inicializamos formik con valores vacíos para evitar problemas de inputs no controlados
     const formik = useFormik({
         initialValues: {
             first_name: "",
@@ -32,11 +31,10 @@ export const UserDetails = () => {
         }),
         onSubmit: async (values) => {
             const updatedData = { ...values };
-            console.log("Datos enviados al backend:", updatedData)
             await actions.editUserPersonalData(updatedData);
-            setIsChanged(false); // Deshabilitar el botón después de guardar
+            setIsChanged(false);
         },
-        enableReinitialize: true, // Permite que los valores se reinitialicen cuando el store cambie
+        enableReinitialize: true,
     });
 
     // Formik para cambiar la contraseña
@@ -67,14 +65,14 @@ export const UserDetails = () => {
     // Detectar cambios en los inputs para habilitar el botón de guardar
     const handleInputChange = (e) => {
         formik.handleChange(e);
-        setIsChanged(true); // Habilitar el botón cuando haya un cambio
+        setIsChanged(true);
     };
 
     useEffect(() => {
         const getUserData = async () => {
             const user_id = localStorage.getItem('user_id');
             if (!user_id) {
-                formik.resetForm(); // Si no hay usuario logueado, resetear el formulario
+                formik.resetForm();
                 return;
             }
 
@@ -92,10 +90,8 @@ export const UserDetails = () => {
             }
         };
         getUserData();
-        // Ejecutar solo una vez al cargar el componente
     }, []);
 
-    // Manejo de la imagen subida
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -108,7 +104,7 @@ export const UserDetails = () => {
     };
 
     return (
-        <div className="container mt-5 p-5" style={{ backgroundColor: '#f5f5f5' }}>
+        <div className="">
             <div className="d-flex justify-content-center">
                 <div className="d-flex align-items-center">
                     <div className="position-relative">
@@ -249,7 +245,8 @@ export const UserDetails = () => {
                             <button
                                 type="submit"
                                 className="btn btn-dark fw-bold text-white"
-                                disabled={!isChanged} // Deshabilitar el botón hasta que se detecte un cambio
+                                // Deshabilitar el botón hasta que se detecte un cambio
+                                disabled={!isChanged}
                             >
                                 Guardar
                             </button>
