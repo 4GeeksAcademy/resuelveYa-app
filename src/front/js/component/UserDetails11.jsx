@@ -5,16 +5,15 @@ import { Context } from "../store/appContext";
 
 export const UserDetails = () => {
     const { store, actions } = useContext(Context);
+    const [isEditing, setIsEditing] = useState(false);
     const [image, setImage] = useState(""); // Para gestionar la imagen
-    const [isChanged, setIsChanged] = useState(false); // Para habilitar el botón cuando hay cambios
 
     // Inicializamos formik con valores vacíos para evitar problemas de inputs no controlados
     const formik = useFormik({
         initialValues: {
-            first_name: "",
-            last_name: "",
-            phone: "",
-            dni: ""
+            first_name: store.user?.first_name || "",
+            last_name: store.user?.last_name || "",
+            phone: store.user?.phone || ""
         },
         validationSchema: Yup.object({
             first_name: Yup.string()
@@ -26,15 +25,11 @@ export const UserDetails = () => {
             phone: Yup.string()
                 .matches(/^[0-9]{9}$/, "El teléfono debe tener 9 dígitos")
                 .required("Ingresa un teléfono válido"),
-            dni: Yup.string()
-                .matches(/^[0-9]{8}$/, "El DNI debe tener 8 dígitos")
-                .required("Ingresa un DNI válido")
         }),
         onSubmit: async (values) => {
             const updatedData = { ...values };
-            console.log("Datos enviados al backend:", updatedData)
-            await actions.editUserPersonalData(updatedData);
-            setIsChanged(false); // Deshabilitar el botón después de guardar
+            await actions.editUserProfile(updatedData);
+            setIsEditing(false);
         },
         enableReinitialize: true, // Permite que los valores se reinitialicen cuando el store cambie
     });
@@ -59,25 +54,14 @@ export const UserDetails = () => {
                 .required("Confirma la nueva contraseña"),
         }),
         onSubmit: async (values) => {
-            await actions.editUserPassword(values.currentPassword, values.newPassword);
+            await actions.changePassword(values.currentPassword, values.newPassword);
             passwordFormik.resetForm();
         }
     });
 
-    // Detectar cambios en los inputs para habilitar el botón de guardar
-    const handleInputChange = (e) => {
-        formik.handleChange(e);
-        setIsChanged(true); // Habilitar el botón cuando haya un cambio
-    };
-
     useEffect(() => {
         const getUserData = async () => {
             const user_id = localStorage.getItem('user_id');
-            if (!user_id) {
-                formik.resetForm(); // Si no hay usuario logueado, resetear el formulario
-                return;
-            }
-
             const users = await actions.getUsers();
             const user = users.find(user => user.id === parseInt(user_id));
 
@@ -85,15 +69,14 @@ export const UserDetails = () => {
                 formik.setValues({
                     first_name: user.username || "",
                     last_name: user.lastname || "",
-                    phone: user.phone || "",
                     dni: user.dni || "",
+                    phone: user.phone || "",
                     email: user.email || ""
                 });
             }
         };
         getUserData();
-        // Ejecutar solo una vez al cargar el componente
-    }, []);
+    }, [actions]);
 
     // Manejo de la imagen subida
     const handleImageChange = (e) => {
@@ -105,6 +88,10 @@ export const UserDetails = () => {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleEdit = () => {
+        setIsEditing(true);
     };
 
     return (
@@ -181,8 +168,9 @@ export const UserDetails = () => {
                                     type="text"
                                     name="first_name"
                                     value={formik.values.first_name || ""}
-                                    onChange={handleInputChange}
+                                    onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    disabled={!isEditing}
                                     className="form-control"
                                 />
                                 {formik.touched.first_name && formik.errors.first_name ? (
@@ -195,8 +183,9 @@ export const UserDetails = () => {
                                     type="text"
                                     name="last_name"
                                     value={formik.values.last_name || ""}
-                                    onChange={handleInputChange}
+                                    onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    disabled={!isEditing}
                                     className="form-control"
                                 />
                                 {formik.touched.last_name && formik.errors.last_name ? (
@@ -222,8 +211,9 @@ export const UserDetails = () => {
                                     type="text"
                                     name="phone"
                                     value={formik.values.phone || ""}
-                                    onChange={handleInputChange}
+                                    onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    disabled={!isEditing}
                                     className="form-control"
                                 />
                                 {formik.touched.phone && formik.errors.phone ? (
@@ -246,13 +236,11 @@ export const UserDetails = () => {
                         </div>
 
                         <div className="mt-3">
-                            <button
-                                type="submit"
-                                className="btn btn-dark fw-bold text-white"
-                                disabled={!isChanged} // Deshabilitar el botón hasta que se detecte un cambio
-                            >
-                                Guardar
-                            </button>
+                            {isEditing ? (
+                                <button type="submit" className="btn btn-dark fw-bold text-white">Guardar</button>
+                            ) : (
+                                <button type="button" className="btn btn-dark fw-bold text-white" onClick={handleEdit}>Editar</button>
+                            )}
                         </div>
                     </form>
                 </div>

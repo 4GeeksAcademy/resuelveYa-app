@@ -547,6 +547,8 @@ def edit_profile_provider():
     current_user_id = get_jwt_identity()
     try:
         body = request.get_json()
+        print("Datos recibidos:", body)
+
         current_password = body.get('password') 
         new_first_name = body.get('first_name')
         new_last_name = body.get('last_name')

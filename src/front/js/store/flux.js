@@ -4,7 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			listServices: [],
 			username: localStorage.getItem('name'),
 			resetEmail: "",
-			clientInfo: null,  
+			clientInfo: null,
 			providerInfo: null,
 			dataUserLogin: {}
 		},
@@ -54,7 +54,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logout: () => {
 				localStorage.removeItem('token');
 				localStorage.removeItem('name');
-				setStore({ username: "" });
+				localStorage.removeItem('user_id');
+				setStore({
+					username: "",       // Limpiar el username
+					user: null,         // Limpiar los datos de usuario
+					clientInfo: null,   // Limpiar cualquier otro dato almacenado
+					providerInfo: null
+				});
 				console.log("Logged out successfully!");
 			},
 			// Send password reset code
@@ -129,7 +135,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			// Get provider information when logged in
-			getProviderInformation: async() => {
+			getProviderInformation: async () => {
 				let token = localStorage.getItem('token')
 				if (!token) {
 					console.log("First log in to get a token")
@@ -187,10 +193,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(dataPost)
 					})
 
-					const data =  await response.json()
+					const data = await response.json()
 					console.log(data)
 					actions.getPostsProviders()
-					
+
 				} catch (err) {
 					console.error(err)
 				}
@@ -200,7 +206,63 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			changeValueUsername: () => {
 				setStore({ username: null })
+			},
+			editUserPersonalData: async (userData) => {
+				console.log("Datos enviados al backend:", userData);
+
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/edit_profile", {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(userData),
+					});
+
+					const data = await response.json();
+					console.log(data)
+					if (response.ok) {
+						console.log("Perfil actualizado correctamente:", data);
+						setStore({ dataUserLogin: data.new_data });
+						return { success: true, message: data.msg };
+					} else {
+						return { success: false, message: data.msg };
+					}
+				} catch (error) {
+					console.error("Error en editUserProfile:", error);
+					return { success: false, message: "Error al actualizar el perfil" };
+				}
+			},
+			editUserPassword: async (currentPassword, newPassword) => {
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/edit_profile", {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`, // Enviar el token en el header
+						},
+						body: JSON.stringify({
+							password: currentPassword,  // Contraseña actual
+							new_password: newPassword   // Nueva contraseña
+						})
+					});
+
+					const data = await response.json();
+					if (response.ok) {
+						console.log("Contraseña cambiada correctamente:", data);
+						return { success: true, message: data.msg };
+					} else {
+						return { success: false, message: data.msg };
+					}
+				} catch (error) {
+					console.error("Error en changePassword:", error);
+					return { success: false, message: "Error al cambiar la contraseña" };
+				}
 			}
+
 		}
 	}
 }
