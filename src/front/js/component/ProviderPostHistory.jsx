@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export const ProviderPostHistory = () => {
         const { store, actions } = useContext(Context)
-        console.log(store.providerInfo)
+        
 
         useEffect(() => {
                 actions.getProviderInformation()

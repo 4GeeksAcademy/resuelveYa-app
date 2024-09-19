@@ -44,9 +44,6 @@ export const UserDetails = () => {
             currentPassword: Yup.string().required("Ingresa tu contraseña actual"),
             newPassword: Yup.string()
                 .min(8, "La nueva contraseña debe tener al menos 8 caracteres")
-                .matches(/[a-z]/, "La nueva contraseña debe contener al menos una letra minúscula")
-                .matches(/[A-Z]/, "La nueva contraseña debe contener al menos una letra mayúscula")
-                .matches(/\d/, "La nueva contraseña debe contener al menos un número")
                 .required("Ingresa una nueva contraseña"),
             confirmPassword: Yup.string()
                 .oneOf([Yup.ref('newPassword'), null], "Las contraseñas no coinciden")
@@ -124,7 +121,7 @@ export const UserDetails = () => {
             <ul className="nav nav-tabs mt-5 custom-tabs" style={{ borderBottom: 'none' }}>
                 <li className="nav-item col-6">
                     <a
-                        className="nav-link active text-center text-black"
+                        className="nav-link active text-center"
                         id="datos-personales-tab"
                         data-bs-toggle="tab"
                         href="#datos-personales"
@@ -137,7 +134,7 @@ export const UserDetails = () => {
                 </li>
                 <li className="nav-item col-6">
                     <a
-                        className="nav-link text-center text-black"
+                        className="nav-link text-center"
                         id="cambiar-contrasena-tab"
                         data-bs-toggle="tab"
                         href="#cambiar-contrasena"
@@ -145,7 +142,7 @@ export const UserDetails = () => {
                         aria-controls="cambiar-contrasena"
                         aria-selected="false"
                     >
-                        Seguridad
+                        Cambiar Contraseña
                     </a>
                 </li>
             </ul>
@@ -222,7 +219,7 @@ export const UserDetails = () => {
                         </div>
 
                         <div className="row">
-                            <div className="col-md-6 mb-3">
+                            <div className="col-md-12 mb-3">
                                 <label className="fw-bold">Correo Electrónico</label>
                                 <input
                                     type="email"
