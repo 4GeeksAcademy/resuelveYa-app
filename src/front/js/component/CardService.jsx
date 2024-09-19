@@ -5,7 +5,7 @@ export const CardService = ({ user }) => {
     return (
         <div className='border card-service rounded'>
             <div className='img d-flex justify-content-center align-items-center img-container' >
-                <img src='https://static.comunicae.com/photos/notas/1219543/1605095138_shutterstock65134090.jpg'/>
+                <img src={user.post_img}/>
                 {/* <h4>Imagen</h4> */}
             </div>
             <div className='p-2'>

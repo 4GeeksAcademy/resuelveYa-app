@@ -22,7 +22,7 @@ export const NewPost = () => {
                 }
                 console.log(newPost)
                 actions.newPostProvider(newPost)
-                navigate('/providerprofile')
+                navigate('/')
         }
 
         const dataProvider = async () => {

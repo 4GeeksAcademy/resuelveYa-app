@@ -1,10 +1,10 @@
 import React from "react";
 import { CardPostProvider } from "../component/CardPostProvider.jsx";
 
-export const CardNewPost = () => {
+export const CardPostsList = () => {
     
 	return (
-        <div className="text-center">
+        <div className="bg-light">
             <CardPostProvider/>
         </div>
 	);
