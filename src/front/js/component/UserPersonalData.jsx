@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Context } from "../store/appContext";
 
-export const UserDetails = () => {
+export const UserPersonalData = () => {
     const { store, actions } = useContext(Context);
     const [image, setImage] = useState("");
     const [isChanged, setIsChanged] = useState(false);

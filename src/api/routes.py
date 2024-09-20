@@ -237,7 +237,6 @@ def login():
             return jsonify({
                 "token": access_token,
                 "username": admin.username,
-                "user_id": admin.id,
                 "role": "admin",
                 "message": "Inicio de sesión exitoso como administrador"
             }), 200
