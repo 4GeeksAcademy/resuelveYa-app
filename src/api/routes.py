@@ -645,12 +645,12 @@ def edit_profile_user():
         data_user = User.query.filter_by(id=current_user_id).first()
 
         if not data_user:
-            return jsonify({'msg': 'User not found'}), 404
+            return jsonify({'msg': 'User no encontrado'}), 404
 
         # Verificar la contraseña solo si se está actualizando la contraseña
         if new_password and current_password:
             if not check_password_hash(data_user.password, current_password):
-                return jsonify({"msg": "Incorrect password"}), 401
+                return jsonify({"msg": "Password incorrecto"}), 401
             data_user.password = generate_password_hash(new_password)
 
         if new_first_name:
@@ -666,7 +666,7 @@ def edit_profile_user():
         db.session.commit()
 
         return jsonify({
-            'msg': 'Profile updated successfully',
+            'msg': 'Perfil actualizado exitosamente',
             'new_data': data_user.serialize()
         }), 200
 

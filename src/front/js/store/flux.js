@@ -6,7 +6,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			resetEmail: "",
 			clientInfo: null,
 			providerInfo: null,
-			dataUserLogin: {}
+			dataUserLogin: {},
+			user: null,
 		},
 		actions: {
 			register: async (values) => {
@@ -112,24 +113,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			getClientInformation: async (clientId) => {
-				try {
-					const response = await fetch(`/api/client_information/${clientId}`, {
-						method: "GET",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${localStorage.getItem('token')}`
-						}
-					});
-					const data = await response.json();
-					if (response.ok) {
-						setStore({ clientInfo: data });
-					}
-					return data;
-				} catch (error) {
-					console.error("Error fetching client information:", error);
-				}
-			},
+			// getClientInformation: async (clientId) => {
+			// 	try {
+			// 		const response = await fetch(`/api/client_information/${clientId}`, {
+			// 			method: "GET",
+			// 			headers: {
+			// 				"Content-Type": "application/json",
+			// 				Authorization: `Bearer ${localStorage.getItem('token')}`
+			// 			}
+			// 		});
+			// 		const data = await response.json();
+			// 		if (response.ok) {
+			// 			setStore({ clientInfo: data });
+			// 		}
+			// 		return data;
+			// 	} catch (error) {
+			// 		console.error("Error fetching client information:", error);
+			// 	}
+			// },
 
 			getProviderInformation: async () => {
 				let token = localStorage.getItem('token');
@@ -272,7 +273,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error in processPayment:", error);
 					return { success: false, message: "Error en el procesamiento del pago" };
 				}
-			}
+			},
+			getUserInfoById: async (user_id) => {
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/user/${user_id}`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`
+						}
+					});
+
+					const data = await response.json();
+					if (response.ok) {
+
+						setStore({
+							user: data,
+						});
+						return { success: true, data: data };
+					} else {
+						console.error("Error obteniendo la información del usuario:", data.message);
+						return { success: false, message: data.message };
+					}
+				} catch (error) {
+					console.error("Error en getUserInfoById:", error);
+					return { success: false, message: "Error al obtener la información del usuario" };
+				}
+			},
+
 		}
 	};
 };

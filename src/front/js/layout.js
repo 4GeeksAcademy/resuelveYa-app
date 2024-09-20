@@ -12,9 +12,9 @@ import { Login } from "./pages/login.js";
 import { Register } from "./pages/register.js";
 import { SendVerificationCode } from "./pages/sendVerificationCode.js";
 import { NewPassword } from "./pages/newPassword.js";
-import { ProviderProfile } from "./pages/providerProfile.js";
+import { UserProfile } from "./pages/userProfile.js";
 import { ProviderNewPost } from "./pages/providerNewPost.js";
-import { PaymentPage } from "./pages/payment.js"; 
+import { PaymentPage } from "./pages/payment.js";
 import { CardPostsList } from "./pages/cardPostsList.js";
 
 
@@ -30,20 +30,20 @@ const Layout = () => {
     return (
         <div>
             <BrowserRouter basename={basename}>
-                    <Navbar />
-                    <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Login />} path="/login" />
-                        <Route element={<Register />} path="/register" />
-                        <Route element={<SendVerificationCode />} path="/sendverificationcode" />
-                        <Route element={<NewPassword />} path="/newpassword" />
-                        <Route element={<ProviderProfile/>} path="/providerprofile"/>
-                        <Route element={<ProviderNewPost/>} path="/providernewpost"/>
-                        <Route element={<PaymentPage/>} path="/payment"/> 
-                        <Route element={<CardPostsList/>} path="/cardPostsList"/>
+                <Navbar />
+                <Routes>
+                    <Route element={<Home />} path="/" />
+                    <Route element={<Login />} path="/login" />
+                    <Route element={<Register />} path="/register" />
+                    <Route element={<SendVerificationCode />} path="/sendverificationcode" />
+                    <Route element={<NewPassword />} path="/newpassword" />
+                    <Route element={<UserProfile />} path="/userprofile" />
+                    <Route element={<ProviderNewPost />} path="/providernewpost" />
+                    <Route element={<PaymentPage />} path="/payment" />
+                    <Route element={<CardPostsList />} path="/cardPostsList" />
 
-                    </Routes>
-                    <Footer />
+                </Routes>
+                <Footer />
             </BrowserRouter>
         </div>
     );

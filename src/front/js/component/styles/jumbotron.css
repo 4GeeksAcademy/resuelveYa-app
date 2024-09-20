@@ -63,7 +63,7 @@ i {
     overflow: hidden;
 }
 
-.container {
+.container-jumbotron {
     flex-wrap: wrap;
     max-width: 600px;
     margin: 0 auto;
