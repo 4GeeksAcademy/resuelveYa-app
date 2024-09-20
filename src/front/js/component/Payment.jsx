@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -6,8 +6,9 @@ import { Context } from '../store/appContext';
 import './styles/payment.css';
 
 export const Payments = () => {
-    const navigate = useNavigate(); 
-    
+    const { actions } = useContext(Context); 
+    const navigate = useNavigate();
+
     const formik = useFormik({
         initialValues: {
             cardNumber: '',
@@ -31,12 +32,35 @@ export const Payments = () => {
                 .min(1, 'El monto debe ser mayor a 0')
                 .required('Requerido'),
         }),
-        onSubmit: async (values) => {
-            alert(JSON.stringify(values, null, 2));
-            navigate('/home'); 
-        },
-    });
+        
+        onSubmit: async (values, formikActions) => {
+            try {
+                const paymentData = {
+                    cardNumber: values.cardNumber,
+                    cardHolder: values.cardHolder,
+                    expiryDate: values.expiryDate,
+                    cvv: values.cvv,
+                    amount: values.amount
+                };
+                
+                const result = await actions.processPayment(paymentData); 
+                console.log(paymentData);
 
+                if (result.success) {
+                    navigate('/home');
+                } else {
+                    alert(result.message);
+                }
+                
+                formikActions.setSubmitting(false);
+                formikActions.resetForm();
+            } catch (error) {
+                console.error('Error en el procesamiento del pago:', error);
+                formikActions.setSubmitting(false);
+            }
+        }
+    });
+    
     // Funciones de formato y validación
     const handleCardNumberChange = (e) => {
         const value = e.target.value.replace(/\D/g, '').slice(0, 16);
@@ -73,11 +97,9 @@ export const Payments = () => {
         <div className="container mt-5 d-flex flex-column align-items-center">
             <h2 className="text-center mb-4">Realizar Pago</h2>
 
-            <div className={`card-preview ${cardType}`}>
-                <div className="card-logo">
-                    {cardType === 'visa' && <i className="bi bi-credit-card-2-front-fill visa-icon"></i>}
-                    {cardType === 'mastercard' && <i className="bi bi-credit-card-2-front-fill mastercard-icon"></i>}
-                </div>
+            <div className={`card-preview ${cardType} position-relative`} style={{transition: "all 0.5s ease-in-out"}}>
+                {cardType === 'visa' && <i className='bx bxl-visa text-light' style={{fontSize:"100px", position:"absolute", right:"85px", top:"0"}}></i>}
+                {cardType === 'mastercard' && <i className='bx bxl-mastercard text-light' style={{fontSize:"100px", position:"absolute", right:"85px", top:"0"}} ></i>}
                 <div className="card-number">{formik.values.cardNumber || '• • • • • • • • • • • • • • • •'}</div>
                 <div className="card-details">
                     <div className="card-holder">{formik.values.cardHolder || 'Nombre del Titular'}</div>
@@ -96,7 +118,7 @@ export const Payments = () => {
                         value={formik.values.cardNumber}
                         onChange={handleCardNumberChange}
                         onBlur={formik.handleBlur}
-                        placeholder="1234 5678 9012 3456"
+                        placeholder="0000 0000 0000 0000"
                     />
                     {formik.touched.cardNumber && formik.errors.cardNumber ? (
                         <div className="invalid-feedback">{formik.errors.cardNumber}</div>
@@ -171,9 +193,12 @@ export const Payments = () => {
                         <div className="invalid-feedback">{formik.errors.amount}</div>
                     ) : null}
                 </div>
-                <button type="submit" className="btn btn-danger btn-block">
-                    <i className="fas fa-credit-card"></i> Pagar
-                </button>
+                <br />
+                <div className="payment-button-container">
+                    <button type="submit" className="btn btn-danger btn-block">
+                        <i className="fas fa-credit-card"></i> Pagar
+                    </button>
+                </div> 
             </form>
         </div>
     );
