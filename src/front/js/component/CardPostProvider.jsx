@@ -1,15 +1,26 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import { Context } from "../store/appContext";
 import "./styles/cardPostProvider.css"
+import { SearchFilter } from "./SearchFilter.jsx";
+// import './styles/jumbotron.css'
 
 export const CardPostProvider = () => {
-    const{store} = useContext(Context)
-    // console.log(store.listServices)
+    const{store, actions} = useContext(Context)
+    console.log(store.listServices)
+
+    useEffect(() => {
+        // if( store.listServices.length === 0){
+        //     actions.getPostsProviders()
+        // }
+    }, [])
 
     return(
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center" style={{paddingTop: '100px'}}>
+
+            <SearchFilter />
+            
             {
-                store.listServices.map((item, index) => (
+                store.listServices?.map((item, index) => (
                     <div key={index} className="card mt-3">
                         <div className="card-header">
                             <div className="row">
@@ -17,7 +28,8 @@ export const CardPostProvider = () => {
                                     <img src="https://via.placeholder.com/75" alt="" className="photo rounded-circle" />
                                 </div>
                                 <div className="col-md-7 d-flex flex-column justify-content-center">
-                                    <h3 className="m-0 text-capitalize">{item.lastname}</h3>
+                                    <h3 className="m-0 text-capitalize">{item.title}</h3>
+                                    <p className="m-0 fs-5 text-capitalize">{item.username}</p>
                                     <p className="m-0 fs-5 text-capitalize">{item.service_type}</p>
                                 </div>
                                 <div className="col-md-3 text-start">

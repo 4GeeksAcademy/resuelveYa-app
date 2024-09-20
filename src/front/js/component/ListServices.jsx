@@ -67,34 +67,16 @@ export const ListServices = () => {
     // }, [])
 
     return (
-        <div className='mt-4'>
+        <div className='mt-4 w-100 mx-auto'>
             <h1>Servicios Mas Populares</h1>
-            {/* {
-                store.listServices.map((user, index) => (
-                    <CardService user={user} key={index}/>
-                ))
-            } */}
-            {/* <div id="carouselExampleAutoplaying" className="carousel slide bg-secondary p-5 w-75 mx-auto rounded" data-bs-ride="carousel">
-                <div className="carousel-inner">
-                    <div className="carousel-item active">
-                        <div className='fs-2 fw-bold text-white bg-danger'>Electricista</div>
-                    </div>
-                    <div className="carousel-item">
-                        <div className='fs-2 fw-bold text-white bg-warning'>Gasfitero</div>
-                    </div>
-                    <div className="carousel-item">
-                        <div className='fs-2 fw-bold text-white bg-success '>Cerrajero</div>
-                    </div>
-                </div>
-                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Previous</span>
-                </button>
-                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Next</span>
-                </button>
-            </div> */}
+            <div className='grid-container w-100 mx-auto'>
+                {
+                    store.listServices.map((user, index) => (
+                        <CardService user={user} key={index} />
+                    ))
+                }
+            </div>
+
         </div>
     )
 }

@@ -81,7 +81,7 @@ export const Navbar = () => {
 					{
 						visible ? (
 							<div className="d-flex gap-2 justify-content-center align-items-center">
-								<Link to='/providerprofile'>
+								<Link to='/userprofile'>
 									<h2 className="fs-4 p-0 m-0 fw-semibold text-white">{store.username && store.username}</h2>
 								</Link>
 								<button onClick={() => { actions.changeValueUsername(), localStorage.clear() }} className="btn p-0 bg-transparent text-white fw-semibold fs-4">Cerrar Sesión</button>
@@ -118,7 +118,7 @@ export const Navbar = () => {
 				{
 					visible ? (
 						<div className="d-flex flex-column gap-2 justify-content-center align-items-center">
-							<Link to='/providerprofile'>
+							<Link to='/userprofile'>
 								<h2 className="username fs-2 p-0 m-0 fw-semibold text-white li-ham">{store.username && store.username}</h2>
 							</Link>
 							<button onClick={() => { actions.changeValueUsername(), localStorage.clear() }} className="btn btn-ham p-0 bg-transparent text-white fw-semibold fs-2 li-ham">Cerrar Sesión</button>
