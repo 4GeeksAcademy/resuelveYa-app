@@ -3,7 +3,7 @@ import { CardService } from './CardService.jsx'
 import './styles/listServices.css'
 import { Context } from "../store/appContext";
 export const ListServices = () => {
-    const {actions, store} = useContext(Context)
+    const { actions, store } = useContext(Context)
     const [users, setUsers] = useState([])
     const demoList = [
         {
@@ -66,13 +66,17 @@ export const ListServices = () => {
     //     getUsers()
     // }, [])
 
-    return(
-        <div className='grid-container mx-auto'>
-            {
-                store.listServices.map((user, index) => (
-                    <CardService user={user} key={index}/>
-                ))
-            }
+    return (
+        <div className='mt-4 w-100 mx-auto'>
+            <h1>Servicios Mas Populares</h1>
+            <div className='grid-container w-100 mx-auto'>
+                {
+                    store.listServices.map((user, index) => (
+                        <CardService user={user} key={index} />
+                    ))
+                }
+            </div>
+
         </div>
     )
 }

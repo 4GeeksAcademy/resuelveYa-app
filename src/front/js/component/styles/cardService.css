@@ -1,5 +1,6 @@
 .card-service {
-    width: 300px;
+    width: 350px;
+    height: 510px;
     overflow: hidden;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
