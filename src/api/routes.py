@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 import resend
 import os
 from flask import request, jsonify, Blueprint
-from api.models import db, User, ServicePost, ServiceHistory
+from api.models import db, User, ServicePost, ServiceHistory, Admin, Payment
 from api.utils import APIException
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -21,7 +21,7 @@ CORS(api)
 resend.api_key = os.getenv("RESEND_API_KEY")
 
 users_created = False
-
+admin_created = False
 @api.before_app_request
 def create_test_users():
     global users_created
@@ -161,6 +161,58 @@ def create_default_posts():
 
         db.session.commit()
 
+@api.before_app_request
+def initialize_admin():
+        global admin_created
+        if not Admin.query.first():
+
+            create_admin = Admin(
+                username="admin",
+                email="admin@admin.com",
+                password=generate_password_hash("administrador"),
+                created_at=datetime.utcnow()
+            )
+            db.session.add(create_admin)
+            db.session.commit()
+            print("Administrador cargado.")
+            admin_created = True
+        else:
+            print("Administrador ya existe.")
+
+
+@api.route('/create_admin', methods=['POST'])
+def create_admin():
+    try:
+        body = request.get_json()
+        username = body.get("username")
+        email = body.get("email")
+        password = body.get("password")
+
+        if not username or not email or not password:
+            return jsonify({"message": "Nombre, correo, y contraseña son requeridos"}), 400
+
+        if Admin.query.filter_by(email=email).first():
+            return jsonify({"message": "Administrador ya existente"}), 400
+
+        hashed_password = generate_password_hash(password, method='sha256')
+
+        new_admin = Admin(
+            username=username, email=email, password=hashed_password,
+            created_at=datetime.utcnow()
+        )
+
+        db.session.add(new_admin)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Administrador creado.",
+            "admin": new_admin.serialize()
+        }), 201
+
+    except Exception as e:
+        return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
+
+
 @api.route('/login', methods=['POST'])
 def login():
     try:
@@ -173,29 +225,40 @@ def login():
         if not email or not password:
             return jsonify({"message": "Email y contraseña son requeridos"}), 400
 
-        # Buscar al usuario en la base de datos por email
+        # Buscar en la tabla de administradores
+        admin = Admin.query.filter_by(email=email).first()
+
+        # Si es un administrador
+        if admin and admin.check_password(password):
+            expires = timedelta(hours=1)
+            access_token = create_access_token(identity=admin.id, expires_delta=expires)
+            return jsonify({
+                "token": access_token,
+                "username": admin.username,
+                "user_id": admin.id,
+                "role": "admin",
+                "message": "Inicio de sesión exitoso como administrador"
+            }), 200
+
+        # Si no es un administrador, buscar al usuario 
         user = User.query.filter_by(email=email).first()
-        if not user:
-            return jsonify({"message": "Usuario no encontrado"}), 404
+        if user and check_password_hash(user.password, password):
+            expires = timedelta(hours=1)
+            access_token = create_access_token(identity=user.id, expires_delta=expires)
+            return jsonify({
+                "token": access_token,
+                "username": user.username,
+                "user_id": user.id,
+                "role": "user",
+                "message": "Inicio de sesión exitoso"
+            }), 200
 
-        # Verificar la contraseña hasheada
-        if not check_password_hash(user.password, password):
-            return jsonify({"message": "Contraseña incorrecta"}), 401
-
-        # Generar un token JWT si la contraseña es válida
-        expires = timedelta(hours=1)
-        access_token = create_access_token(identity=user.id, expires_delta=expires)
-
-        # Devolver el token JWT al cliente
-        return jsonify({
-            "token": access_token,
-            "username": user.username,
-            "user_id": user.id,
-            "message": "Inicio de sesión exitoso"
-        }), 200
+        return jsonify({"message": "Credenciales incorrectas"}), 401
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
+
+
 
 @api.route('/register', methods=['POST'])
 def register():
@@ -543,10 +606,12 @@ def edit_post(post_id):
 
 @api.route('/edit_profile', methods=['PUT'])
 @jwt_required()
-def edit_profile_provider():
+def edit_profile_user():
     current_user_id = get_jwt_identity()
     try:
         body = request.get_json()
+        print("Datos recibidos:", body)
+
         current_password = body.get('password') 
         new_first_name = body.get('first_name')
         new_last_name = body.get('last_name')
@@ -558,18 +623,21 @@ def edit_profile_provider():
         if not data_user:
             return jsonify({'msg': 'User not found'}), 404
 
-        if current_password:
+        # Verificar la contraseña solo si se está actualizando la contraseña
+        if new_password and current_password:
             if not check_password_hash(data_user.password, current_password):
                 return jsonify({"msg": "Incorrect password"}), 401
+            data_user.password = generate_password_hash(new_password)
 
         if new_first_name:
-            data_user.first_name = new_first_name
+            data_user.username = new_first_name
         if new_last_name:
-            data_user.last_name = new_last_name
+            data_user.lastname = new_last_name
         if new_phone_number:
             data_user.phone = new_phone_number
-        if new_password:
-            data_user.password = generate_password_hash(new_password)  
+
+        
+        print("Datos antes del commit:", data_user.serialize())
 
         db.session.commit()
 
@@ -580,3 +648,60 @@ def edit_profile_provider():
 
     except Exception as e:
         return jsonify({'msg': 'An error occurred', 'error': str(e)}), 500
+
+
+      
+@api.route('/payments', methods=['POST'])
+def add_payment():
+    try:
+        body = request.get_json()
+        service_history_id = body.get("service_history_id")
+        payment_method = body.get("payment_method")
+        payment_id = body.get("payment_id")
+        amount_paid = body.get("amount_paid")
+
+        # Verificar que todos los campos estén presentes
+        if not service_history_id or not payment_method or not payment_id or not amount_paid:
+            return jsonify({"message": "Todos los campos son requeridos"}), 400
+
+        # Verificar si el historial de servicio existe
+        service_history = ServiceHistory.query.get(service_history_id)
+        if not service_history:
+            return jsonify({"message": "Historial de servicio no encontrado"}), 404
+
+        # Crear un nuevo pago
+        new_payment = Payment(
+            service_history_id=service_history_id,
+            payment_method=payment_method,
+            payment_id=payment_id,
+            amount_paid=amount_paid,
+            payment_date=datetime.utcnow()
+        )
+
+        db.session.add(new_payment)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Pago agregado exitosamente",
+            "payment": new_payment.serialize()
+        }), 201
+
+    except Exception as e:
+        return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500    
+
+
+@api.route('/payments', methods=['GET'])
+def get_payments():
+    try:
+        payments = Payment.query.all()
+        if not payments:
+            return jsonify({"message": "No hay pagos registrados"}), 404
+
+        return jsonify({
+            "payments": [payment.serialize() for payment in payments]
+        }), 200
+
+    except Exception as e:
+        return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
+
+    
