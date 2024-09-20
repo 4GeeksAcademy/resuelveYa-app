@@ -17,14 +17,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: {
 							"content-type": "application/json"
 						}
-					})
-					let data = await response.json()
+					});
+					let data = await response.json();
 					console.log(data);
 
-					return data
-
+					return data;
 				} catch (e) {
-					console.error("Error in registration:", e)
+					console.error("Error in registration:", e);
 				}
 			},
 
@@ -34,36 +33,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "POST",
 						body: JSON.stringify(dataLogin),
 						headers: { "content-type": "application/json" }
-					})
-					let data = await response.json()
-					console.log(data)
+					});
+					let data = await response.json();
+					console.log(data);
 					if (data.token) {
-						console.log(`Welcome ${data.username}`)
-						localStorage.setItem('token', data.token)
-						localStorage.setItem('name', data.username)
-						localStorage.setItem('user_id', data.user_id)
-						setStore({ username: data.username })
+						console.log(`Welcome ${data.username}`);
+						localStorage.setItem('token', data.token);
+						localStorage.setItem('name', data.username);
+						localStorage.setItem('user_id', data.user_id);
+						setStore({ username: data.username });
 					} else {
-						console.log("Something went wrong")
+						console.log("Something went wrong");
 					}
-					return data
+					return data;
 				} catch (e) {
-					console.error(e)
+					console.error(e);
 				}
 			},
+
 			logout: () => {
 				localStorage.removeItem('token');
 				localStorage.removeItem('name');
 				localStorage.removeItem('user_id');
 				setStore({
-					username: "",       // Limpiar el username
-					user: null,         // Limpiar los datos de usuario
-					clientInfo: null,   // Limpiar cualquier otro dato almacenado
+					username: "",
+					user: null,
+					clientInfo: null,
 					providerInfo: null
 				});
 				console.log("Logged out successfully!");
 			},
-			// Send password reset code
+
 			sendCode: async (email) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/request_reset_password", {
@@ -77,7 +77,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(data);
 
 					if (response.ok) {
-						// We save the email in the store and then display it in the NewPasswordForm component.
 						setStore({ resetEmail: email });
 						return { success: true, message: data.message };
 					} else {
@@ -88,7 +87,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, message: "Error al enviar el código" };
 				}
 			},
-			// Change password using verification code
+
 			newPassword: async (email, reset_code, new_password) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/reset_password", {
@@ -107,14 +106,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					} else {
 						return { success: false, message: data.message };
 					}
-
 				} catch (e) {
 					console.error("Error in newPassword:", e);
 					return { success: false, message: "Error al cambiar la contraseña" };
 				}
 			},
 
-			// Obtener información de un cliente por su ID
 			getClientInformation: async (clientId) => {
 				try {
 					const response = await fetch(`/api/client_information/${clientId}`, {
@@ -134,12 +131,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			// Get provider information when logged in
 			getProviderInformation: async () => {
-				let token = localStorage.getItem('token')
+				let token = localStorage.getItem('token');
 				if (!token) {
-					console.log("First log in to get a token")
-					return
+					console.log("First log in to get a token");
+					return;
 				}
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/provider_information", {
@@ -157,32 +153,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error fetching provider information:", error);
 				}
 			},
+
 			getUsers: async () => {
 				try {
-					const response = await fetch(process.env.BACKEND_URL + '/api/users')
-
-					const data = await response.json()
-					// setStore({ listServices: data })
-					return data
-
+					const response = await fetch(process.env.BACKEND_URL + '/api/users');
+					const data = await response.json();
+					return data;
 				} catch (err) {
-					console.error(err)
+					console.error(err);
 				}
 			},
+
 			getPostsProviders: async () => {
 				try {
-					const response = await fetch(process.env.BACKEND_URL + '/api/posts')
-
-					const data = await response.json()
-					setStore({ listServices: data })
-					return data
+					const response = await fetch(process.env.BACKEND_URL + '/api/posts');
+					const data = await response.json();
+					setStore({ listServices: data });
+					return data;
 				} catch (err) {
-					console.error(err)
+					console.error(err);
 				}
 			},
+
 			newPostProvider: async (dataPost) => {
-				const actions = getActions()
-				let token = localStorage.getItem('token')
+				const actions = getActions();
+				let token = localStorage.getItem('token');
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/create_posts', {
 						method: 'POST',
@@ -191,24 +186,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Content-Type': 'application/json'
 						},
 						body: JSON.stringify(dataPost)
-					})
+					});
 
-					const data = await response.json()
-					console.log(data)
-					actions.getPostsProviders()
-
+					const data = await response.json();
+					console.log(data);
+					actions.getPostsProviders();
 				} catch (err) {
-					console.error(err)
+					console.error(err);
 				}
 			},
-			setListServices: (newList) => {
-				setStore({ listServices: newList })
-			},
-			changeValueUsername: () => {
-				setStore({ username: null })
-			},
-			editUserPersonalData: async (userData) => {
 
+			setListServices: (newList) => {
+				setStore({ listServices: newList });
+			},
+
+			editUserPersonalData: async (userData) => {
 				const token = localStorage.getItem("token");
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/edit_profile", {
@@ -221,9 +213,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					const data = await response.json();
-
 					if (response.ok) {
-						console.log("Perfil actualizado correctamente:", data);
 						setStore({ dataUserLogin: data.new_data });
 						return { success: true, message: data.msg };
 					} else {
@@ -234,6 +224,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, message: "Error al actualizar el perfil" };
 				}
 			},
+
 			editUserPassword: async (currentPassword, newPassword) => {
 				const token = localStorage.getItem("token");
 				try {
@@ -241,7 +232,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
-							Authorization: `Bearer ${token}`, // Enviar el token en el header
+							Authorization: `Bearer ${token}`,
 						},
 						body: JSON.stringify({
 							password: currentPassword,
@@ -251,7 +242,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const data = await response.json();
 					if (response.ok) {
-						console.log("Contraseña cambiada correctamente:", data);
 						return { success: true, message: data.msg };
 					} else {
 						return { success: false, message: data.msg };
@@ -260,10 +250,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en changePassword:", error);
 					return { success: false, message: "Error al cambiar la contraseña" };
 				}
+			},
+
+			// Payment 
+			processPayment: async (paymentData) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(process.env.BACKEND_URL + "/api/payment", {
+						method: "POST",
+						headers: {
+							"Authorization": `Bearer ${token}`,
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify(paymentData)
+					});
+
+					const data = await response.json();
+					console.log("Payment response:", data);
+					return data;
+				} catch (error) {
+					console.error("Error in processPayment:", error);
+					return { success: false, message: "Error en el procesamiento del pago" };
+				}
 			}
-
 		}
-	}
-}
+	};
+};
 
-export default getState
+export default getState;

@@ -14,7 +14,7 @@ import { SendVerificationCode } from "./pages/sendVerificationCode.js";
 import { NewPassword } from "./pages/newPassword.js";
 import { ProviderProfile } from "./pages/providerProfile.js";
 import { ProviderNewPost } from "./pages/providerNewPost.js";
-
+import { PaymentPage } from "./pages/payment.js"; 
 
 //create your first component
 const Layout = () => {
@@ -36,6 +36,7 @@ const Layout = () => {
                         <Route element={<NewPassword />} path="/newpassword" />
                         <Route element={<ProviderProfile/>} path="/providerprofile"/>
                         <Route element={<ProviderNewPost/>} path="/providernewpost"/>
+                        <Route element={<PaymentPage/>} path="/payment"/> 
                     </Routes>
                     <Footer />
             </BrowserRouter>

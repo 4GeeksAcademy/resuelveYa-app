@@ -1,0 +1,56 @@
+.payment-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Ancho máximo del formulario */
+}
+
+.card-preview {
+    width: 100%;
+    max-width: 400px; /* Ancho máximo de la tarjeta */
+    height: 200px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card-preview.visa {
+    background-color: #1a1f71; /* Azul oscuro para Visa */
+    color: white;
+}
+
+.card-preview.mastercard {
+    background-color: #ff5f00; /* Naranja para Mastercard */
+    color: white;
+}
+
+.card-logo {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.card-number {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.card-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+.input-group-append .input-group-text {
+    background-color: #e9ecef;
+}
