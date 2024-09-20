@@ -6,7 +6,7 @@ import { SearchFilter } from './SearchFilter.jsx';
 export const Jumbotron = () => {
     const [searchInp1, setSearchInp1] = useState('')
     const [searchLocation, setSearchLocation] = useState('')
-    
+
     return (
         <header className="header text-white d-flex flex-column justify-content-center align-items-center" style={{ backgroundImage: `url(${bgImage})` }}>
             {/* <form className=''>
@@ -21,7 +21,7 @@ export const Jumbotron = () => {
             {/* <form className='w-75 p-4'>
                 <h1>Bienvenido a ResuelveYa!</h1>
                 <h2>Aqui encontraras la solucion</h2>
-                <div className='container'>
+                <div className='container-jumbotron'>
                     <div className='input-1 input'>
                         <i className="fa-solid fs-3 fa-magnifying-glass d-flex justify-content-center align-items-center"></i>
                         <input className='' type="text" placeholder='¿Qué estás buscando...?' />
