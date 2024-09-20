@@ -7,6 +7,8 @@ export const UserDetails = () => {
     const { store, actions } = useContext(Context);
     const [image, setImage] = useState("");
     const [isChanged, setIsChanged] = useState(false);
+    const [personalDataAlert, setPersonalDataAlert] = useState({ visible: false, message: "", type: "" });
+    const [passwordAlert, setPasswordAlert] = useState({ visible: false, message: "", type: "" });
 
     const formik = useFormik({
         initialValues: {
@@ -30,9 +32,19 @@ export const UserDetails = () => {
                 .required("Ingresa un DNI válido")
         }),
         onSubmit: async (values) => {
-            const updatedData = { ...values };
-            await actions.editUserPersonalData(updatedData);
-            setIsChanged(false);
+            try {
+                const updatedData = { ...values };
+                const response = await actions.editUserPersonalData(updatedData);
+                if (response.success) {
+                    showAlert(setPersonalDataAlert, "Se actualizaron tus datos exitosamente", "success");
+                    setIsChanged(false);
+                } else {
+                    showAlert(setPersonalDataAlert, "Error al actualizar tu perfil", "danger");
+                }
+            } catch (error) {
+                console.error("Error al actualizar los datos personales:", error);
+                showAlert(setPersonalDataAlert, "Error inesperado. Intenta nuevamente.", "danger");
+            }
         },
         enableReinitialize: true,
     });
@@ -57,8 +69,18 @@ export const UserDetails = () => {
                 .required("Confirma la nueva contraseña"),
         }),
         onSubmit: async (values) => {
-            await actions.editUserPassword(values.currentPassword, values.newPassword);
-            passwordFormik.resetForm();
+            try {
+                const response = await actions.editUserPassword(values.currentPassword, values.newPassword);
+                if (response.success) {
+                    showAlert(setPasswordAlert, "Contraseña actualizada existosamente", "success");
+                    passwordFormik.resetForm();
+                } else {
+                    showAlert(setPasswordAlert, "Error al cambiar la contraseña", "danger");
+                }
+            } catch (error) {
+                console.error("Error al cambiar la contraseña:", error);
+                showAlert(setPasswordAlert, "Error inesperado. Intenta nuevamente.", "danger");
+            }
         }
     });
 
@@ -101,6 +123,14 @@ export const UserDetails = () => {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    // Mostrar alertas por un tiempo limitado
+    const showAlert = (setAlert, message, type) => {
+        setAlert({ visible: true, message, type });
+        setTimeout(() => {
+            setAlert({ visible: false, message: "", type: "" });
+        }, 3000); // Desaparecer después de 3 segundos
     };
 
     return (
@@ -168,6 +198,13 @@ export const UserDetails = () => {
                     role="tabpanel"
                     aria-labelledby="datos-personales-tab"
                 >
+                    {/* Alertas para los formularios */}
+                    {personalDataAlert.visible && (
+                        <div className={`alert alert-${personalDataAlert.type} alert-dismissible fade show`} role="alert">
+                            {personalDataAlert.message}
+                        </div>
+                    )}
+
                     <form onSubmit={formik.handleSubmit} className="p-4" style={{ backgroundColor: '#fff', borderRadius: '10px' }}>
                         {/* Formulario de Datos Personales */}
                         <div className="row">
@@ -261,6 +298,12 @@ export const UserDetails = () => {
                     role="tabpanel"
                     aria-labelledby="cambiar-contrasena-tab"
                 >
+                    {passwordAlert.visible && (
+                        <div className={`alert alert-${passwordAlert.type} alert-dismissible fade show`} role="alert">
+                            {passwordAlert.message}
+                        </div>
+                    )}
+
                     <form onSubmit={passwordFormik.handleSubmit} className="p-4" style={{ backgroundColor: '#fff', borderRadius: '10px' }}>
                         {/* Formulario para Cambiar Contraseña */}
                         <div className="form-group mb-3">
