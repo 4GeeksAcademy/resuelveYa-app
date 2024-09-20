@@ -54,3 +54,8 @@ input:focus {
 .input-group-append .input-group-text {
     background-color: #e9ecef;
 }
+
+.payment-button-container {
+    display: flex;
+    justify-content: center;
+}

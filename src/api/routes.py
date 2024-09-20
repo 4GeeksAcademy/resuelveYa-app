@@ -18,7 +18,7 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 # clave de stripe
-stripe.api_key = 'sk_test_CGGvfNiIPwLXiDwaOfZ3oX6Y'
+stripe.api_key = 'pk_test_51Q1DjJ08azY4afaiVCy4VrScZd0rQzikkuPV2V63QMtr0DAX2qQisavxa6qxBBIxGALZ2gyXiz4P8PNCJK0LjBuk00U5e8PFew'
 # Configura la API Key de Resend desde el entorno
 resend.api_key = os.getenv("RESEND_API_KEY")
 
@@ -237,7 +237,6 @@ def login():
             return jsonify({
                 "token": access_token,
                 "username": admin.username,
-                "user_id": admin.id,
                 "role": "admin",
                 "message": "Inicio de sesión exitoso como administrador"
             }), 200
@@ -675,21 +674,22 @@ def edit_profile_user():
 
 
 @api.route('/payments', methods=['POST'])
+#@jwt_required()
 def add_payment():
     try:
         body = request.get_json()
-        service_history_id = body.get("service_history_id")
+       # service_history_id = body.get("service_history_id")
         payment_method = body.get("payment_method")  
         amount_paid = body.get("amount_paid")
 
-        # Verificar que todos los campos estén presentes
-        if not service_history_id or not payment_method or not amount_paid:
-            return jsonify({"message": "Todos los campos son requeridos"}), 400
+        # # Verificar que todos los campos estén presentes
+        # if not service_history_id or not payment_method or not amount_paid:
+        #     return jsonify({"message": "Todos los campos son requeridos"}), 400
 
-        # Verificar si el historial de servicio existe
-        service_history = ServiceHistory.query.get(service_history_id)
-        if not service_history:
-            return jsonify({"message": "Historial de servicio no encontrado"}), 404
+        # # Verificar si el historial de servicio existe
+        # service_history = ServiceHistory.query.get(service_history_id)
+        # if not service_history:
+        #     return jsonify({"message": "Historial de servicio no encontrado"}), 404
 
         # Crear PaymentIntent con Stripe (solo tarjetas de crédito/débito)
         try:
@@ -699,7 +699,7 @@ def add_payment():
                 payment_method=payment_method,
                 confirm=True,  
                 metadata={
-                    'service_history_id': service_history_id,
+                    #'service_history_id': service_history_id,
                 }
             )
         except stripe.error.CardError as e:
@@ -707,7 +707,7 @@ def add_payment():
 
         # Crear un nuevo pago en la base de datos
         new_payment = Payment(
-            service_history_id=service_history_id,
+            #service_history_id=service_history_id,
             payment_method=payment_method,
             payment_id=intent.id,  # ID de Stripe
             amount_paid=amount_paid,
