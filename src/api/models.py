@@ -86,7 +86,8 @@ class ServicePost(db.Model):
             "post_img": self.post_img,
             "username": self.user.username,
             "lastname": self.user.lastname,
-            "phone": self.user.phone
+            "phone": self.user.phone,
+            
         }
    
 class ServiceHistory(db.Model):

@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 import resend
 import os
 from flask import request, jsonify, Blueprint
-from api.models import db, User, ServicePost, ServiceHistory, Admin, Payment
+from api.models import db, User, ServicePost, ServiceHistory, Admin, Payment, Review 
 from api.utils import APIException
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -12,11 +12,13 @@ from flask_jwt_extended import create_access_token, decode_token, JWTManager, ge
 import re
 from datetime import datetime, timedelta
 import random
+import stripe
 
 api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
-
+# clave de stripe
+stripe.api_key = 'sk_test_CGGvfNiIPwLXiDwaOfZ3oX6Y'
 # Configura la API Key de Resend desde el entorno
 resend.api_key = os.getenv("RESEND_API_KEY")
 
@@ -259,7 +261,6 @@ def login():
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
 
 
-
 @api.route('/register', methods=['POST'])
 def register():
     try:
@@ -333,6 +334,29 @@ def get_users():
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
     
+@api.route('/user/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_user_by_id(user_id):
+    try:
+        # Obtener el id del usuario autenticado
+        current_user_id = get_jwt_identity()
+
+        # Verificar si el usuario autenticado es el mismo que el solicitado
+        if current_user_id != user_id:
+            return jsonify({"message": "No tienes permiso para ver esta información"}), 403
+
+        # Buscar al usuario por id en la base de datos
+        user = User.query.get(user_id)
+
+        if not user:
+            return jsonify({"message": "Usuario no encontrado"}), 404
+
+        # Retornar la información de usuario
+        return jsonify(user.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
+
 
 @api.route('/request_reset_password', methods=['POST'])
 def request_reset_password():
@@ -650,18 +674,16 @@ def edit_profile_user():
         return jsonify({'msg': 'An error occurred', 'error': str(e)}), 500
 
 
-      
 @api.route('/payments', methods=['POST'])
 def add_payment():
     try:
         body = request.get_json()
         service_history_id = body.get("service_history_id")
-        payment_method = body.get("payment_method")
-        payment_id = body.get("payment_id")
+        payment_method = body.get("payment_method")  
         amount_paid = body.get("amount_paid")
 
         # Verificar que todos los campos estén presentes
-        if not service_history_id or not payment_method or not payment_id or not amount_paid:
+        if not service_history_id or not payment_method or not amount_paid:
             return jsonify({"message": "Todos los campos son requeridos"}), 400
 
         # Verificar si el historial de servicio existe
@@ -669,11 +691,25 @@ def add_payment():
         if not service_history:
             return jsonify({"message": "Historial de servicio no encontrado"}), 404
 
-        # Crear un nuevo pago
+        # Crear PaymentIntent con Stripe (solo tarjetas de crédito/débito)
+        try:
+            intent = stripe.PaymentIntent.create(
+                amount=int(amount_paid * 100),  # pagos en centavos
+                currency='pen',  # tipo de moneda
+                payment_method=payment_method,
+                confirm=True,  
+                metadata={
+                    'service_history_id': service_history_id,
+                }
+            )
+        except stripe.error.CardError as e:
+            return jsonify({"message": "Error con el método de pago", "error": str(e)}), 402
+
+        # Crear un nuevo pago en la base de datos
         new_payment = Payment(
             service_history_id=service_history_id,
             payment_method=payment_method,
-            payment_id=payment_id,
+            payment_id=intent.id,  # ID de Stripe
             amount_paid=amount_paid,
             payment_date=datetime.utcnow()
         )
@@ -683,11 +719,12 @@ def add_payment():
 
         return jsonify({
             "message": "Pago agregado exitosamente",
-            "payment": new_payment.serialize()
+            "payment": new_payment.serialize(),
+            "stripe_payment_intent": intent.id
         }), 201
 
     except Exception as e:
-        return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500    
+        return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500  
 
 
 @api.route('/payments', methods=['GET'])
@@ -703,5 +740,96 @@ def get_payments():
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
-
     
+@api.route('/add_review', methods=['POST'])
+@jwt_required()
+def add_review():
+    try:
+        # Obtener el usuario autenticado
+        user_id = get_jwt_identity()
+        user = User.query.get(user_id)
+
+        if not user:
+            return jsonify({"message": "Usuario no encontrado"}), 404
+
+        # Solo los usuarios con el rol "client" pueden dejar reseñas
+        if user.role == 'provider':
+            return jsonify({"message": "Solo los clientes pueden hacer reseñas"}), 403
+
+        # Obtener los datos enviados en la solicitud
+        body = request.get_json()
+        post_id = body.get('post_id')
+        rating = body.get('rating')
+        comment = body.get('comment')
+
+        # Verificar que el post existe
+        post = ServicePost.query.get(post_id)
+        if not post:
+            return jsonify({"message": "Post no encontrado"}), 404
+
+        # Crear una nueva review
+        new_review = Review(
+            post_id=post_id,
+            user_id=user_id,
+            rating=rating,
+            comment=comment
+        )
+
+        db.session.add(new_review)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Review creada con éxito",
+            "review": new_review.serialize(),
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "lastname": user.lastname
+            }
+        }), 201
+
+    except Exception as e:
+        return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
+    
+
+@api.route('/posts/<int:post_id>', methods=['GET'])
+def get_post_by_id(post_id):
+    try:
+        post = ServicePost.query.get(post_id)
+
+        if not post:
+            return jsonify({"message": "Post no encontrado"}), 404
+
+        # Obtener las reviews del post
+        reviews = Review.query.filter_by(post_id=post_id).all()
+        reviews_list = list(map(lambda review: review.serialize(), reviews))
+
+        return jsonify({
+            "post": post.serialize(),
+            "reviews": reviews_list,
+            "number_of_reviews": len(reviews_list)
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
+
+# --------------------------------------------Magui        
+@api.route('/user_reviews', methods=['GET'])
+@jwt_required()
+def get_user_reviews():
+    try:
+        # Usar la ruta del usuario protegdo
+        user_id = get_jwt_identity()
+
+        # Obtener todas las reviews del usuario
+        reviews = Review.query.filter_by(user_id=user_id).all()
+        reviews_list = list(map(lambda review: review.serialize(), reviews))
+
+        return jsonify({
+            "user_id": user_id,
+            "reviews": reviews_list,
+            "number_of_reviews": len(reviews_list)
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
