@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 export const NewPost = () => {
         const {actions} = useContext(Context)
         const [info, setInfo] = useState({})
-        const [dataPost, setDataPost] = useState({})
         const navigate = useNavigate()
 
         const handleSubmit = (e) => {
