@@ -3,6 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			listServices: [],
 			username: localStorage.getItem('name'),
+			role: localStorage.getItem('role'),
 			resetEmail: "",
 			clientInfo: null,
 			providerInfo: null,
@@ -22,7 +23,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 					let data = await response.json();
-					console.log(data);
 
 					return data;
 				} catch (e) {
@@ -43,8 +43,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(`Welcome ${data.username}`);
 						localStorage.setItem('token', data.token);
 						localStorage.setItem('name', data.username);
+						localStorage.setItem('role', data.role);
 						localStorage.setItem('user_id', data.user_id);
-						setStore({ username: data.username });
+						setStore({ username: data.username, role: data.role });
 					} else {
 						console.log("Something went wrong");
 					}
@@ -58,6 +59,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem('token');
 				localStorage.removeItem('name');
 				localStorage.removeItem('user_id');
+				localStorage.removeItem('role');
 				setStore({
 					username: "",
 					user: null,
@@ -115,25 +117,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			// getClientInformation: async (clientId) => {
-			// 	try {
-			// 		const response = await fetch(`/api/client_information/${clientId}`, {
-			// 			method: "GET",
-			// 			headers: {
-			// 				"Content-Type": "application/json",
-			// 				Authorization: `Bearer ${localStorage.getItem('token')}`
-			// 			}
-			// 		});
-			// 		const data = await response.json();
-			// 		if (response.ok) {
-			// 			setStore({ clientInfo: data });
-			// 		}
-			// 		return data;
-			// 	} catch (error) {
-			// 		console.error("Error fetching client information:", error);
-			// 	}
-			// },
-
 			getProviderInformation: async () => {
 				let token = localStorage.getItem('token');
 				if (!token) {
@@ -156,17 +139,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error fetching provider information:", error);
 				}
 			},
-
-			getUsers: async () => {
+			getUsers: async (role) => {
 				try {
-					const response = await fetch(process.env.BACKEND_URL + '/api/users');
+					// La URL siempre incluye el rol para filtrar usuarios
+					const url = `${process.env.BACKEND_URL}/api/users?role=${role}`;
+
+					const response = await fetch(url, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`  // Enviar el token JWT
+						}
+					});
 					const data = await response.json();
-					return data;
+
+					if (response.ok) {
+						return data; // Devuelve la lista de usuarios con ese rol
+					} else {
+						console.error(`Error obteniendo usuarios con rol ${role}:`, data.message);
+						return [];
+					}
 				} catch (err) {
-					console.error(err);
+					console.error("Error en getUsers:", err);
+					return [];
 				}
 			},
+			deleteUser: async (userId) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
+						method: "DELETE",
+						headers: {
+							"Authorization": `Bearer ${localStorage.getItem("token")}`,
+							"Content-Type": "application/json"
+						}
+					});
 
+					if (response.ok) {
+						const result = await response.json();
+						console.log(result.message);
+						return { success: true, message: result.message };
+					} else {
+						const errorData = await response.json();
+						console.error("Error al eliminar usuario:", errorData.message);
+						return { success: false, message: errorData.message };
+					}
+				} catch (error) {
+					console.error("Error:", error);
+					return { success: false, message: "Error en el servidor. Inténtalo de nuevo más tarde." };
+				}
+			},
 			getPostsProviders: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/posts');
@@ -257,7 +278,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			// Payment 
 			processPayment: async (paymentData) => {
-			// console.log("Este es el paymentData:" , paymentData);
+				// console.log("Este es el paymentData:" , paymentData);
 				try {
 					//const token = localStorage.getItem("token");
 					const response = await fetch(process.env.BACKEND_URL + "/api/payments", {
@@ -287,7 +308,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`
 						}
 					});
-
 					const data = await response.json();
 					if (response.ok) {
 
@@ -305,7 +325,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			setDataNewPost: (dataPost) => {
-				setStore({dataNewPost: dataPost })
+				setStore({ dataNewPost: dataPost })
 			},
 
 			newReview: async (dataReview) => {

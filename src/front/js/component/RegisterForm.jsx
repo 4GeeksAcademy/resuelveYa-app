@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Context } from "../store/appContext.js"
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik';
@@ -17,7 +17,7 @@ function RegisterForm() {
             phone: "",
             email: "",
             password: "",
-            role: "cliente",
+            role: "",
             category: ""
         },
         validationSchema: Yup.object({
@@ -53,7 +53,6 @@ function RegisterForm() {
             }),
         }),
         onSubmit: async (values, { resetForm }) => {
-            console.log('Formulario enviado con valores:', values);
             try {
                 const data = await actions.register(values)
                 console.log('Respuesta del registro:', data);
@@ -70,6 +69,9 @@ function RegisterForm() {
             }
         },
     });
+    useEffect(() => {
+        formik.setFieldValue("role", "client")
+    }, [])
 
     // console.log("Errores del formulario:", formik.errors);
 

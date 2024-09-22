@@ -6,15 +6,17 @@ export const AdminPanel = () => {
     const [activeTab, setActiveTab] = useState("clientes");
     const [clients, setClients] = useState([]);
     const [providers, setProviders] = useState([]);
+    const [alertMessage, setAlertMessage] = useState(null);
+    const [alertType, setAlertType] = useState("");
 
     useEffect(() => {
         const fetchClients = async () => {
-            const clientData = await actions.getUsersByRole("client");
+            const clientData = await actions.getUsers("client");
             setClients(clientData);
         };
 
         const fetchProviders = async () => {
-            const providerData = await actions.getUsersByRole("provider");
+            const providerData = await actions.getUsers("provider");
             setProviders(providerData);
         };
 
@@ -27,20 +29,44 @@ export const AdminPanel = () => {
         setActiveTab(tabName);
     };
 
-    // Función para borrar cliente o proveedor
     const handleDelete = async (userId) => {
-        await actions.deleteUser(userId);
-        if (activeTab === "clientes") {
-            setClients(clients.filter(client => client.id !== userId));
+        const result = await actions.deleteUser(userId);
+
+        if (result.success) {
+            if (activeTab === "clientes") {
+                setClients(clients.filter(client => client.id !== userId));
+                setAlertMessage("Cliente eliminado exitosamente.");
+                setAlertType("success");
+            } else {
+                setProviders(providers.filter(provider => provider.id !== userId));
+                setAlertMessage("Proveedor eliminado exitosamente.");
+                setAlertType("success");
+            }
+
+            setTimeout(() => {
+                setAlertMessage(null);
+            }, 3000);
         } else {
-            setProviders(providers.filter(provider => provider.id !== userId));
+            setAlertMessage(`Error al eliminar: ${result.message}`);
+            setAlertType("danger");
+
+            setTimeout(() => {
+                setAlertMessage(null);
+            }, 3000);
         }
     };
 
+
     return (
-        <div className="container mt-5 p-5 bg-light" style={{ borderRadius: '10px' }}>
-            <h1 className="text-center mb-4">Perfil de Administrador</h1>
-            <ul className="nav nav-tabs">
+        <div className="p-5" style={{ borderRadius: '10px' }}>
+            <h1 className="text-center mb-5">Perfil de Administrador</h1>
+            {/* Mostrar alerta condicionalmente */}
+            {alertMessage && (
+                <div className={`alert alert-${alertType}`} role="alert">
+                    {alertMessage}
+                </div>
+            )}
+            <ul className="nav nav-tabs" style={{ marginTop: "70px" }}>
                 <li className="nav-item col-6">
                     <a
                         className={`nav-link text-center ${activeTab === "clientes" ? "active" : ""}`}
@@ -94,9 +120,9 @@ export const AdminPanel = () => {
                         <tbody>
                             {clients.map((client) => (
                                 <tr key={client.id}>
-                                    <td>{`${client.first_name} ${client.last_name}`}</td>
+                                    <td>{`${client.username} ${client.lastname}`}</td>
                                     <td>{client.email}</td>
-                                    <td>{new Date(client.created_at).toLocaleDateString()}</td>
+                                    <td>{client.created_at}</td>
                                     <td>
                                         <button
                                             className="btn btn-danger"
@@ -118,16 +144,16 @@ export const AdminPanel = () => {
                             <tr>
                                 <th>Nombres y Apellidos</th>
                                 <th>Correo Electrónico</th>
-                                <th>Fecha de Registro</th>
+                                <th>Categoría de Servicio</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             {providers.map((provider) => (
                                 <tr key={provider.id}>
-                                    <td>{`${provider.first_name} ${provider.last_name}`}</td>
+                                    <td>{`${provider.username} ${provider.lastname}`}</td>
                                     <td>{provider.email}</td>
-                                    <td>{new Date(provider.created_at).toLocaleDateString()}</td>
+                                    <td>{provider.service_type}</td>
                                     <td>
                                         <button
                                             className="btn btn-danger"
