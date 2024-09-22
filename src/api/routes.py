@@ -269,7 +269,6 @@ def login():
         email = body.get("email", None)
         password = body.get("password", None)
 
-        # Verificar que ambos campos estén presentes
         if not email or not password:
             return jsonify({"message": "Email y contraseña son requeridos"}), 400
 
@@ -279,10 +278,11 @@ def login():
         # Si es un administrador
         if admin and admin.check_password(password):
             expires = timedelta(hours=1)
-            access_token = create_access_token(identity=admin.id, expires_delta=expires)
+            access_token = create_access_token({"id": admin.id, "role": "admin"}, expires_delta=expires)
             return jsonify({
                 "token": access_token,
                 "username": admin.username,
+                "id": admin.id,
                 "role": "admin",
                 "message": "Inicio de sesión exitoso como administrador"
             }), 200
@@ -291,7 +291,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password, password):
             expires = timedelta(hours=1)
-            access_token = create_access_token(identity=user.id, expires_delta=expires)
+            access_token = create_access_token({"id":user.id, "role": user.role}, expires_delta=expires)
             return jsonify({
                 "token": access_token,
                 "username": user.username,
@@ -365,8 +365,16 @@ def register():
 @api.route('/users', methods=['GET'])
 def get_users():
     try:
-        # Obtener todos los usuarios de la base de datos
-        users = User.query.all()
+        # Obtener el rol 
+        role = request.args.get('role')
+       
+        # Si se proporciona un rol, filtrar por rol
+        if role:
+            if role not in ['client', 'provider']:
+                return jsonify({"message": "El rol debe ser 'client' o 'provider'"}), 400
+            users = User.query.filter_by(role=role).all()
+        else:
+            users = User.query.all()
 
         if not users:
             return jsonify({"message": "No se encontraron usuarios"}), 404
@@ -842,7 +850,7 @@ def get_post_by_id(post_id):
     except Exception as e:
         return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
 
-# --------------------------------------------Magui        
+       
 @api.route('/user_reviews', methods=['GET'])
 @jwt_required()
 def get_user_reviews():
@@ -859,6 +867,37 @@ def get_user_reviews():
             "reviews": reviews_list,
             "number_of_reviews": len(reviews_list)
         }), 200
+
+    except Exception as e:
+        return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
+
+@api.route('/review_posts', methods=['GET'])
+def get_reviews_post():
+    try:
+        posts = ServicePost.query.all()
+
+        if not posts:
+            return jsonify({"message": "No se encontraron posts"}), 404
+
+        serialized_post=[]
+        for post in posts:
+            reviews = Review.query.filter_by(post_id=post.id).all()
+            #Filtrar calificaciones validas que no sean "none"
+            valid_ratings = [review.rating for review in reviews if review.rating is not None]
+            total_rating = sum(valid_ratings)
+            #Promedio de calificaciones enteros
+            average_rating = int(total_rating/len(valid_ratings) if valid_ratings else 0)
+            
+            valid_commets = [review.comment for review in reviews if review.comment is not None]
+
+            obj = {
+                "post": post.serialize(),
+                "average_rating": average_rating,
+                "total_rating": len(valid_ratings),
+                "comment": valid_commets
+            }
+            serialized_post.append(obj)
+        return jsonify(serialized_post), 200
 
     except Exception as e:
         return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
