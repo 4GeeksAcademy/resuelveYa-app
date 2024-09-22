@@ -123,64 +123,71 @@ def create_default_posts():
                 'title': 'Reparación de instalaciones eléctricas',
                 'description': 'Servicio completo de revisión y reparación de instalaciones eléctricas.',
                 'service_type': 'electricista',
-                'price': 150,
-                'service_time': '9:00 am - 12:00 pm',
-                'service_timetable': 'Lunes a viernes',
-                'post_img': 'https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg'
+                # 'price': 150,
+                # 'service_time': '9:00 am - 12:00 pm',
+                # 'service_timetable': 'Lunes a viernes',
+                'post_img': 'https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg',
+                'location': 'Trujillo'
             },
             {
                 'title': 'Instalación de tuberías de agua',
                 'description': 'Colocación e instalación de tuberías de agua en edificaciones.',
                 'service_type': 'gasfitero',
-                'price': 200,
-                'service_time': '7:00 am - 4:00 pm',
-                'service_timetable': 'Viernes',
-                'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg'
+                # 'price': 200,
+                # 'service_time': '7:00 am - 4:00 pm',
+                # 'service_timetable': 'Viernes',
+                'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg',
+                'location': 'Lima'
             },
             {
                 'title': 'Mantenimiento de sistemas eléctricos',
                 'description': 'Diagnóstico y mantenimiento preventivo de sistemas eléctricos.',
                 'service_type': 'electricista',
-                'price': 120,
-                'service_time': '11:00 am - 5:00 pm',
-                'service_timetable': 'Fines de semana',
-                'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg'
+                # 'price': 120,
+                # 'service_time': '11:00 am - 5:00 pm',
+                # 'service_timetable': 'Fines de semana',
+                'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg',
+                'location': 'Cuzco'
             },
             {
                 'title': 'Reparación de filtraciones',
                 'description': 'Detección y reparación de filtraciones en baños y cocinas.',
                 'service_type': 'gasfitero',
-                'price': 180,
-                'service_time': '9:00 am - 7:00 pm',
-                'service_timetable': 'Feriados y domingos',
-                'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg'
+                # 'price': 180,
+                # 'service_time': '9:00 am - 7:00 pm',
+                # 'service_timetable': 'Feriados y domingos',
+                'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg',
+                'location': 'Tacna'
             },
             {
                 'title': 'Instalación de enchufes y lámparas',
                 'description': 'Instalación de enchufes, interruptores y lámparas en toda la casa.',
                 'service_type': 'electricista',
-                'price': 100, 
-                'service_time': '10:00 am - 2:00 pm',
-                'service_timetable': 'Lunes y martes',
-                'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg'
+                # 'price': 100, 
+                # 'service_time': '10:00 am - 2:00 pm',
+                # 'service_timetable': 'Lunes y martes',
+                'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg',
+                'location': 'Arequipa'
             },
             {
                 'title': 'Servicio de plomería para baños',
                 'description': 'Mantenimiento y reparación de tuberías en baños.',
                 'service_type': 'plomero',
-                'price': 160,
-                'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Sábados y domingos',
-                'post_img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7SakxvIF-1aMxKlaishIbRu5VpL5u2cZ8A&s'
+                # 'price': 160,
+                # 'service_time': '8:00 am - 3:00 pm',
+                # 'service_timetable': 'Sábados y domingos',
+                'post_img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7SakxvIF-1aMxKlaishIbRu5VpL5u2cZ8A&s',
+                'location': 'Puno'
             },
             {
                 'title': 'Instalación de calentadores de agua',
                 'description': 'Instalación de calentadores de agua eléctricos o a gas.',
                 'service_type': 'plomero',
-                'price': 250,
-                'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Miércoles y jueves',
-                'post_img': 'https://i0.wp.com/plomeros.uno/wp-content/uploads/2021/08/plomero.png?fit=635%2C877&ssl=1'
+                # 'price': 250,
+                # 'service_time': '8:00 am - 3:00 pm',
+                # 'service_timetable': 'Miércoles y jueves',
+                'post_img': 'https://i0.wp.com/plomeros.uno/wp-content/uploads/2021/08/plomero.png?fit=635%2C877&ssl=1',
+                'location': 'lima'
             }
         ]
 
@@ -191,11 +198,12 @@ def create_default_posts():
                 title=post_data['title'],
                 description=post_data['description'],
                 service_type=post_data['service_type'],
-                price=post_data['price'],
-                service_time=post_data['service_time'],
-                service_timetable=post_data['service_timetable'],
+                # price=post_data['price'],
+                # service_time=post_data['service_time'],
+                # service_timetable=post_data['service_timetable'],
                 post_img=post_data['post_img'],
-                user_id=provider.id
+                user_id=provider.id,
+                location=post_data['location']
             )
             db.session.add(post)
 

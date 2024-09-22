@@ -56,11 +56,11 @@ export const ListServices = () => {
         },
     ]
 
-    const getUsers = async () => {
-        const data = await actions.getUsers()
-        setUsers(data)
-        console.log(data)
-    }
+    // const getUsers = async () => {
+    //     const data = await actions.getUsers()
+    //     setUsers(data)
+    //     console.log(data)
+    // }
 
     // useEffect(() => {
     //     getUsers()

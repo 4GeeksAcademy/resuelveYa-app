@@ -74,26 +74,26 @@ class ServicePost(db.Model):
     service_timetable = db.Column(db.String(250),nullable=True)
     created_at = db.Column(db.DateTime, default=get_local_time)
     post_img = db.Column(db.String(400), nullable=True)
-    localtion = db.Column(db.String(100), nullable=True)
+    location = db.Column(db.String(100), nullable=True)
 
     user = db.relationship('User', backref='service_posts', lazy=True)
 
     def serialize(self):
         return {
             "id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "service_type": self.service_type,
-            "price": self.price,
+            "title": self.title, #recibido desde el front --title
+            "description": self.description, # recibido desde el front --description
+            "service_type": self.service_type, # recibido desde el front --service_type
+            # "price": self.price,
             "user_id": self.user_id,
-            "service_time": self.service_time,
-            "service_timetable": self.service_timetable,
+            # "service_time": self.service_time,
+            # "service_timetable": self.service_timetable,
             "created_at": self.created_at.strftime('%d/%m/%Y %H:%M'),
-            "post_img": self.post_img,
-            "username": self.user.username,
+            "post_img": self.post_img, # recibido desde el front --post_img
+            "username": self.user.username, # 
             "lastname": self.user.lastname,
             "phone": self.user.phone,
-            
+            "location": self.location # recibido desde el front  --location
         }
    
 class ServiceHistory(db.Model):

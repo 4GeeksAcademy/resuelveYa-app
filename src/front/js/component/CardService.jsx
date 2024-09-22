@@ -16,11 +16,8 @@ export const CardService = ({ user }) => {
                     {/* <p className='text-start m-0'><span className='fw-bold'>Horarios: </span>{user.service_time}</p> */}
                 </div>
                 <div className='d-flex mt-1 border rounded p-2 gap-2 justify-content-between align-items-center'>
-                    <p className='m-0 fw-bold' style={{textTransform: 'capitalize'}}>{user.service_type}</p>
-                    <div className='d-flex gap-1 '>
-                        <i className="fs-4 fa-solid fa-thumbs-up"></i>
-                        <i className="fs-4 fa-solid fa-plus"></i>
-                    </div>
+                    <p className='m-0 fw-bold' style={{textTransform: 'capitalize'}}>Ubicacion: </p>
+                    <p className='m-0'>{user.location}</p>
                 </div>
             </div>
         </div>
