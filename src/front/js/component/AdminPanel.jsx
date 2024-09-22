@@ -8,13 +8,11 @@ export const AdminPanel = () => {
     const [providers, setProviders] = useState([]);
 
     useEffect(() => {
-        // Obtener clientes
         const fetchClients = async () => {
             const clientData = await actions.getUsersByRole("client");
             setClients(clientData);
         };
 
-        // Obtener proveedores
         const fetchProviders = async () => {
             const providerData = await actions.getUsersByRole("provider");
             setProviders(providerData);
