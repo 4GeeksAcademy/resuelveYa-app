@@ -18,9 +18,47 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 # clave de stripe
-stripe.api_key = 'pk_test_51Q1DjJ08azY4afaiVCy4VrScZd0rQzikkuPV2V63QMtr0DAX2qQisavxa6qxBBIxGALZ2gyXiz4P8PNCJK0LjBuk00U5e8PFew'
+stripe.api_key = 'sk_test_51Q1FbbI0qjatixCToePA8DTZdA3NyWBbRJcZHOUrqcO5s5qNRA5l9FhhGTTjf62lIspx2UuiRWqrGlyIf5YBRrkE00W1fCX8OO'
 # Configura la API Key de Resend desde el entorno
 resend.api_key = os.getenv("RESEND_API_KEY")
+
+def process_payment(provider_id, service_post_id, amount, payment_method):
+    # 1. Crear entrada en ServiceHistory
+    service_history = ServiceHistory(
+        provider_id=provider_id,
+        service_post_id=service_post_id,
+        payment_method=payment_method,  # Inicialmente puede ser None
+        amount_paid=amount
+    )
+    db.session.add(service_history)
+    db.session.commit()  # Asegúrate de que el ID se genere
+
+    # 2. Procesar el pago con Stripe
+    payment_intent = stripe.PaymentIntent.create(
+        amount=amount,  # Monto en centavos
+        currency="gbp",
+        payment_method=payment_method  # Aquí debes usar el payment_method_id correcto
+    )
+
+    # 3. Actualizar ServiceHistory con el payment_id
+    service_history.payment_id = payment_intent.id
+    db.session.commit()
+
+    # 4. Crear entrada en Payment
+    payment = Payment(
+        service_history_id=service_history.id,
+        payment_method=payment_method,
+        payment_id=payment_intent.id,
+        amount_paid=amount
+    )
+    db.session.add(payment)
+    db.session.commit()
+
+    return {
+        "service_history_id": service_history.id,
+        "payment_id": payment.id,
+        "message": "Pago procesado con éxito"
+    }
 
 users_created = False
 admin_created = False
@@ -41,7 +79,7 @@ def create_test_users():
 
             # Crear usuarios con imágenes de perfil
             user1 = User(
-                username='Ericka', lastname='lastname1', dni='12345678', phone='12341234', role='provider', service_type='maestro de obra', 
+                username='Ericka', lastname='lastname1', dni='12345678', phone='12341234', role='provider', service_type='electricista', 
                 email='user1@example.com', password=generate_password_hash('password1'),
                 profile_image=profile_images[0]
             )
@@ -476,11 +514,12 @@ def create_post():
         title = body.get('title')
         description = body.get('description')
         service_type = body.get('service_type')
-        price = body.get('price')
-        service_time = body.get('service_time')
-        service_timetable = body.get('service_timetable')
+        post_img = body.get('post_img')
+        location = body.get('location')
+        # service_time = body.get('service_time')
+        # service_timetable = body.get('service_timetable')
 
-        if not title or not description or not service_type or not service_time:
+        if not title or not description or not service_type or not location or not post_img:
             return jsonify({"message": "Todos los campos son requeridos"}), 400
 
         # Crear el nuevo post
@@ -488,10 +527,11 @@ def create_post():
             title=title,
             description=description,
             service_type=service_type,
-            price=price,
-            service_time=service_time,
-            service_timetable=service_timetable,
-            user_id=user_id
+            post_img=post_img,
+            user_id=user_id,
+            location=location
+            # service_time=service_time,
+            # service_timetable=service_timetable,
         )
 
         db.session.add(new_post)
@@ -674,54 +714,35 @@ def edit_profile_user():
 
 
 @api.route('/payments', methods=['POST'])
-#@jwt_required()
+# @jwt_required()
 def add_payment():
     try:
         body = request.get_json()
        # service_history_id = body.get("service_history_id")
-        payment_method = body.get("payment_method")  
-        amount_paid = body.get("amount_paid")
+        card_number = body.get("card_number")  
+        name = body.get("name")
+        expiry_date = body.get("expiry_date")
+        cvv = body.get("cvv")
+        amount = body.get("amount")
 
-        # # Verificar que todos los campos estén presentes
-        # if not service_history_id or not payment_method or not amount_paid:
-        #     return jsonify({"message": "Todos los campos son requeridos"}), 400
+        if not all([card_number, name, expiry_date, cvv, amount]):
+            return jsonify({"message": "Faltan datos requeridos"}), 400
 
-        # # Verificar si el historial de servicio existe
-        # service_history = ServiceHistory.query.get(service_history_id)
-        # if not service_history:
-        #     return jsonify({"message": "Historial de servicio no encontrado"}), 404
-
-        # Crear PaymentIntent con Stripe (solo tarjetas de crédito/débito)
-        try:
-            intent = stripe.PaymentIntent.create(
-                amount=int(amount_paid * 100),  # pagos en centavos
-                currency='pen',  # tipo de moneda
-                payment_method=payment_method,
-                confirm=True,  
-                metadata={
-                    #'service_history_id': service_history_id,
-                }
-            )
-        except stripe.error.CardError as e:
-            return jsonify({"message": "Error con el método de pago", "error": str(e)}), 402
-
-        # Crear un nuevo pago en la base de datos
-        new_payment = Payment(
-            #service_history_id=service_history_id,
-            payment_method=payment_method,
-            payment_id=intent.id,  # ID de Stripe
-            amount_paid=amount_paid,
-            payment_date=datetime.utcnow()
+        payment_intent = stripe.PaymentIntent.create(
+            amount=amount * 100,
+            currency="pen",
+            payment_method="pm_card_visa"
         )
 
-        db.session.add(new_payment)
-        db.session.commit()
 
-        return jsonify({
-            "message": "Pago agregado exitosamente",
-            "payment": new_payment.serialize(),
-            "stripe_payment_intent": intent.id
-        }), 201
+        
+        return jsonify({'Pago completado con los siguientes datos': {
+            "number_card": card_number,
+            "name": name,
+            "data_ex": expiry_date,
+            "amount": amount,
+            'payment_id': payment_intent.id
+        }}), 200
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500  

@@ -39,3 +39,43 @@ def generate_sitemap(app):
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
+
+
+def process_payment(provider_id, service_post_id, amount, payment_method):
+    # 1. Crear entrada en ServiceHistory
+    service_history = ServiceHistory(
+        provider_id=provider_id,
+        service_post_id=service_post_id,
+        payment_method=payment_method,
+        amount_paid=amount
+    )
+    db.session.add(service_history)
+    db.session.flush()  # Para obtener el ID del nuevo registro sin hacer commit
+
+    # 2. Procesar el pago con Stripe
+    payment_intent = stripe.PaymentIntent.create(
+        amount=amount * 100,  # Monto en centavos
+        currency="pen",
+        payment_method="pm_card_visa"  # Asegúrate de usar el método de pago correcto
+    )
+
+    # 3. Actualizar ServiceHistory con el payment_id
+    service_history.payment_id = payment_intent.id
+
+    # 4. Crear entrada en Payment
+    payment = Payment(
+        service_history_id=service_history.id,
+        payment_method=payment_method,
+        payment_id=payment_intent.id,
+        amount_paid=amount
+    )
+    db.session.add(payment)
+
+    # Hacer commit para guardar todos los cambios
+    db.session.commit()
+
+    return {
+        "service_history_id": service_history.id,
+        "payment_id": payment.id,
+        "message": "Pago procesado con éxito"
+    }

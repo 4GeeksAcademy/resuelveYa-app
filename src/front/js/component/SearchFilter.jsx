@@ -51,7 +51,7 @@ export const SearchFilter = () => {
         <form onSubmit={handleSubmit} className='form-filters-services w-75 mx-auto p-3 py-5 mb-5' style={{maxWidth: '950px'}}>
             <h1 className='text-center text-white'>Bienvenido a ResuelveYa!</h1>
             <h3 className='text-center text-white'>Ecuentra tu solucion aqui...! 🐼</h3>
-            <div className='container bg-white rounded p-2 container d-flex gap-2'>
+            <div className='container-jumbotron bg-white rounded p-2 container d-flex gap-2'>
                 <div className='d-flex align-items-center input-1'>
                     <i className="fa-solid fs-3 fa-magnifying-glass"></i>
                     <input className='' id='titleOrName' type="text" placeholder='Que estas buscando...?' onChange={handleChangeTitleAndName} autoComplete='off'/>

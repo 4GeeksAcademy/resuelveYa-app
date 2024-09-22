@@ -1,10 +1,25 @@
-input, textarea {
-    width: 200px;
-    padding: 5px;
+.inputs-new-post, .textarea-new-post {
+    width: 280px;
+    padding: 10px;
     /* border: none; */
 }
 
-textarea {
-    height: 50px;
+.textarea-new-post {
+    width: 280px;
+    height: 100px;
     resize: none;
+    outline: none;
+}
+
+.custom-file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgb(74, 159, 185);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.file-input {
+    display: none;
 }
