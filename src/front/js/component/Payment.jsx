@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Context } from '../store/appContext';
 import './styles/payment.css';
 
 export const Payments = () => {
-    const { actions } = useContext(Context);
+    const { actions, store } = useContext(Context);
     const navigate = useNavigate();
     const [payComplete, setPayComplete] = useState(false)
     const [payDetails, setPayDetails] = useState({})
@@ -100,15 +100,20 @@ export const Payments = () => {
                 payComplete ?
                     <div style={{ paddingTop: '100px' }}>
                         <h2 className='text-center'>¡Pago Realizado con Éxito!</h2>
-                        <div className='w-75 mx-auto w-md-50 bg-light p-3 rounded'>
+                        <div className='w-75 mx-auto bg-light p-3 rounded' style={{ maxWidth: '400px' }}>
                             <p>Número de Tarjeta: <strong>{payDetails.card_number}</strong></p>
                             <p>Nombre del Titular: <strong>{payDetails.name}</strong></p>
                             <p>CVV: <strong>***</strong></p> {/* No muestres el CVV por razones de seguridad */}
                             <p>Monto: <strong>S/{payDetails.amount}</strong></p>
                         </div>
+                        <div className='d-flex justify-content-center align-items-center p-3'>
+                            <Link to='/userprofile'>
+                                <button className='btn btn-secondary'>Volver a mis publicaciones</button>
+                            </Link>
+                        </div>
                         <p className='text-center'>Gracias por tu compra. ¡Tu pago ha sido procesado exitosamente!</p>
                     </div> :
-                    <div className="container mt-5 d-flex flex-column align-items-center">
+                    <div className="container d-flex flex-column align-items-center" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
                         <h2 className="text-center mb-4 text-white">Realizar Pago</h2>
 
                         <div className={`card-preview ${cardType} position-relative`} >

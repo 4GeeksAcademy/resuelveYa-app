@@ -22,6 +22,44 @@ stripe.api_key = 'sk_test_51Q1FbbI0qjatixCToePA8DTZdA3NyWBbRJcZHOUrqcO5s5qNRA5l9
 # Configura la API Key de Resend desde el entorno
 resend.api_key = os.getenv("RESEND_API_KEY")
 
+def process_payment(provider_id, service_post_id, amount, payment_method):
+    # 1. Crear entrada en ServiceHistory
+    service_history = ServiceHistory(
+        provider_id=provider_id,
+        service_post_id=service_post_id,
+        payment_method=payment_method,  # Inicialmente puede ser None
+        amount_paid=amount
+    )
+    db.session.add(service_history)
+    db.session.commit()  # Asegúrate de que el ID se genere
+
+    # 2. Procesar el pago con Stripe
+    payment_intent = stripe.PaymentIntent.create(
+        amount=amount,  # Monto en centavos
+        currency="gbp",
+        payment_method=payment_method  # Aquí debes usar el payment_method_id correcto
+    )
+
+    # 3. Actualizar ServiceHistory con el payment_id
+    service_history.payment_id = payment_intent.id
+    db.session.commit()
+
+    # 4. Crear entrada en Payment
+    payment = Payment(
+        service_history_id=service_history.id,
+        payment_method=payment_method,
+        payment_id=payment_intent.id,
+        amount_paid=amount
+    )
+    db.session.add(payment)
+    db.session.commit()
+
+    return {
+        "service_history_id": service_history.id,
+        "payment_id": payment.id,
+        "message": "Pago procesado con éxito"
+    }
+
 users_created = False
 admin_created = False
 @api.before_app_request
@@ -674,7 +712,7 @@ def edit_profile_user():
 
 
 @api.route('/payments', methods=['POST'])
-#@jwt_required()
+# @jwt_required()
 def add_payment():
     try:
         body = request.get_json()
@@ -688,18 +726,20 @@ def add_payment():
         if not all([card_number, name, expiry_date, cvv, amount]):
             return jsonify({"message": "Faltan datos requeridos"}), 400
 
-        stripe.PaymentIntent.create(
+        payment_intent = stripe.PaymentIntent.create(
             amount=amount * 100,
             currency="pen",
             payment_method="pm_card_visa"
         )
+
+
         
         return jsonify({'Pago completado con los siguientes datos': {
             "number_card": card_number,
             "name": name,
             "data_ex": expiry_date,
-            "cvv": cvv,
-            "amount": amount
+            "amount": amount,
+            'payment_id': payment_intent.id
         }}), 200
 
     except Exception as e:
