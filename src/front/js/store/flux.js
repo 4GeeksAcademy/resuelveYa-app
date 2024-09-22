@@ -8,6 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			providerInfo: null,
 			dataUserLogin: {},
 			user: null,
+			dataNewPost: {}
 		},
 		actions: {
 			register: async (values) => {
@@ -255,7 +256,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			// Payment 
 			processPayment: async (paymentData) => {
-			console.log("Este es el paymentData:" , paymentData);
+			// console.log("Este es el paymentData:" , paymentData);
 				try {
 					//const token = localStorage.getItem("token");
 					const response = await fetch(process.env.BACKEND_URL + "/api/payments", {
@@ -302,7 +303,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, message: "Error al obtener la información del usuario" };
 				}
 			},
-
+			setDataNewPost: (dataPost) => {
+				setStore({dataNewPost: dataPost })
+			},
 		}
 	};
 };

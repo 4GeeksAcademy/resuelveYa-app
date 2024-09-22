@@ -18,7 +18,7 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 # clave de stripe
-stripe.api_key = 'pk_test_51Q1DjJ08azY4afaiVCy4VrScZd0rQzikkuPV2V63QMtr0DAX2qQisavxa6qxBBIxGALZ2gyXiz4P8PNCJK0LjBuk00U5e8PFew'
+stripe.api_key = 'sk_test_51Q1FbbI0qjatixCToePA8DTZdA3NyWBbRJcZHOUrqcO5s5qNRA5l9FhhGTTjf62lIspx2UuiRWqrGlyIf5YBRrkE00W1fCX8OO'
 # Configura la API Key de Resend desde el entorno
 resend.api_key = os.getenv("RESEND_API_KEY")
 
@@ -679,49 +679,28 @@ def add_payment():
     try:
         body = request.get_json()
        # service_history_id = body.get("service_history_id")
-        payment_method = body.get("payment_method")  
-        amount_paid = body.get("amount_paid")
+        card_number = body.get("card_number")  
+        name = body.get("name")
+        expiry_date = body.get("expiry_date")
+        cvv = body.get("cvv")
+        amount = body.get("amount")
 
-        # # Verificar que todos los campos estén presentes
-        # if not service_history_id or not payment_method or not amount_paid:
-        #     return jsonify({"message": "Todos los campos son requeridos"}), 400
+        if not all([card_number, name, expiry_date, cvv, amount]):
+            return jsonify({"message": "Faltan datos requeridos"}), 400
 
-        # # Verificar si el historial de servicio existe
-        # service_history = ServiceHistory.query.get(service_history_id)
-        # if not service_history:
-        #     return jsonify({"message": "Historial de servicio no encontrado"}), 404
-
-        # Crear PaymentIntent con Stripe (solo tarjetas de crédito/débito)
-        try:
-            intent = stripe.PaymentIntent.create(
-                amount=int(amount_paid * 100),  # pagos en centavos
-                currency='pen',  # tipo de moneda
-                payment_method=payment_method,
-                confirm=True,  
-                metadata={
-                    #'service_history_id': service_history_id,
-                }
-            )
-        except stripe.error.CardError as e:
-            return jsonify({"message": "Error con el método de pago", "error": str(e)}), 402
-
-        # Crear un nuevo pago en la base de datos
-        new_payment = Payment(
-            #service_history_id=service_history_id,
-            payment_method=payment_method,
-            payment_id=intent.id,  # ID de Stripe
-            amount_paid=amount_paid,
-            payment_date=datetime.utcnow()
+        stripe.PaymentIntent.create(
+            amount=amount * 100,
+            currency="pen",
+            payment_method="pm_card_visa"
         )
-
-        db.session.add(new_payment)
-        db.session.commit()
-
-        return jsonify({
-            "message": "Pago agregado exitosamente",
-            "payment": new_payment.serialize(),
-            "stripe_payment_intent": intent.id
-        }), 201
+        
+        return jsonify({'Pago completado con los siguientes datos': {
+            "number_card": card_number,
+            "name": name,
+            "data_ex": expiry_date,
+            "cvv": cvv,
+            "amount": amount
+        }}), 200
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500  
