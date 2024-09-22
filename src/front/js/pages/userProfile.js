@@ -11,7 +11,6 @@ export const UserProfile = () => {
     useEffect(() => {
         const user_id = localStorage.getItem("user_id");
         if (user_id) {
-            console.log("este es el user id", user_id)
             actions.getUserInfoById(user_id);
         }
     }, [])
@@ -21,7 +20,7 @@ export const UserProfile = () => {
         navigate("/")
     }
     return (
-        <div className="container mt-5 p-5" style={{ backgroundColor: '#f5f5f5' }}>
+        <div className="container p-5 bg-light" style={{ marginTop: "100px" }}>
             <UserPersonalData />
             {store.user?.role === "provider" && <ProviderPostHistory />}
             <button className="btn btn-dark fw-bold text-white mx-auto d-block mt-5" type="submit" onClick={handleOut}>Cerrar sesión</button>
