@@ -8,7 +8,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			providerInfo: null,
 			dataUserLogin: {},
 			user: null,
-			dataNewPost: {}
+			dataNewPost: {},
+			reviews: []
 		},
 		actions: {
 			register: async (values) => {
@@ -305,6 +306,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			setDataNewPost: (dataPost) => {
 				setStore({dataNewPost: dataPost })
+			},
+
+			newReview: async (dataReview) => {
+				const actions = getActions()
+				let token = localStorage.getItem('token')
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/add_review', {
+						method: 'POST',
+						headers: {
+							'Authorization': `Bearer ${token}`,
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(dataReview)
+					})
+					const data = await response.json()
+					console.log(data)
+					actions.getReviews()
+
+				} catch (err) {
+					console.error(err)
+				}
+			},
+			getReviews: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/review_posts')
+
+					const data = await response.json();
+					setStore({ reviews: data });
+					return data;
+				} catch (err) {
+					console.error(err)
+				}
 			},
 		}
 	};

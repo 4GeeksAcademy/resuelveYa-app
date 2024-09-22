@@ -842,7 +842,7 @@ def get_post_by_id(post_id):
     except Exception as e:
         return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
 
-# --------------------------------------------Magui        
+       
 @api.route('/user_reviews', methods=['GET'])
 @jwt_required()
 def get_user_reviews():
@@ -859,6 +859,37 @@ def get_user_reviews():
             "reviews": reviews_list,
             "number_of_reviews": len(reviews_list)
         }), 200
+
+    except Exception as e:
+        return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
+
+@api.route('/review_posts', methods=['GET'])
+def get_reviews_post():
+    try:
+        posts = ServicePost.query.all()
+
+        if not posts:
+            return jsonify({"message": "No se encontraron posts"}), 404
+
+        serialized_post=[]
+        for post in posts:
+            reviews = Review.query.filter_by(post_id=post.id).all()
+            #Filtrar calificaciones validas que no sean "none"
+            valid_ratings = [review.rating for review in reviews if review.rating is not None]
+            total_rating = sum(valid_ratings)
+            #Promedio de calificaciones enteros
+            average_rating = int(total_rating/len(valid_ratings) if valid_ratings else 0)
+            
+            valid_commets = [review.comment for review in reviews if review.comment is not None]
+
+            obj = {
+                "post": post.serialize(),
+                "average_rating": average_rating,
+                "total_rating": len(valid_ratings),
+                "comment": valid_commets
+            }
+            serialized_post.append(obj)
+        return jsonify(serialized_post), 200
 
     except Exception as e:
         return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
