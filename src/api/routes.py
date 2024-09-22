@@ -79,7 +79,7 @@ def create_test_users():
 
             # Crear usuarios con imágenes de perfil
             user1 = User(
-                username='Ericka', lastname='lastname1', dni='12345678', phone='12341234', role='provider', service_type='maestro de obra', 
+                username='Ericka', lastname='lastname1', dni='12345678', phone='12341234', role='provider', service_type='electricista', 
                 email='user1@example.com', password=generate_password_hash('password1'),
                 profile_image=profile_images[0]
             )
@@ -514,11 +514,12 @@ def create_post():
         title = body.get('title')
         description = body.get('description')
         service_type = body.get('service_type')
-        price = body.get('price')
-        service_time = body.get('service_time')
-        service_timetable = body.get('service_timetable')
+        post_img = body.get('post_img')
+        location = body.get('location')
+        # service_time = body.get('service_time')
+        # service_timetable = body.get('service_timetable')
 
-        if not title or not description or not service_type or not service_time:
+        if not title or not description or not service_type or not location or not post_img:
             return jsonify({"message": "Todos los campos son requeridos"}), 400
 
         # Crear el nuevo post
@@ -526,10 +527,11 @@ def create_post():
             title=title,
             description=description,
             service_type=service_type,
-            price=price,
-            service_time=service_time,
-            service_timetable=service_timetable,
-            user_id=user_id
+            post_img=post_img,
+            user_id=user_id,
+            location=location
+            # service_time=service_time,
+            # service_timetable=service_timetable,
         )
 
         db.session.add(new_post)

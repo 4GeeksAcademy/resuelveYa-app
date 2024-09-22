@@ -1,10 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import current_app
+from zoneinfo import ZoneInfo
 from werkzeug.security import check_password_hash
 
-
 db = SQLAlchemy()
+
+def get_local_time():
+    universal_time = datetime.now(timezone.utc)
+    local_time = universal_time.astimezone(ZoneInfo('Etc/GMT+5'))
+    return local_time
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -60,15 +65,16 @@ class Admin(db.Model):
 class ServicePost(db.Model):
     __tablename__ = 'service_posts'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.String(500), nullable=False)
     service_type = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    service_time = db.Column(db.String(250), nullable=False)
-    service_timetable = db.Column(db.String(250),nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    service_time = db.Column(db.String(250), nullable=True)
+    service_timetable = db.Column(db.String(250),nullable=True)
+    created_at = db.Column(db.DateTime, default=get_local_time)
     post_img = db.Column(db.String(400), nullable=True)
+    localtion = db.Column(db.String(100), nullable=True)
 
     user = db.relationship('User', backref='service_posts', lazy=True)
 
@@ -145,7 +151,7 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)  # Calificación del 1 al 5
+    rating = db.Column(db.Integer, nullable=True)  # Calificación del 1 al 5
     comment = db.Column(db.String(500), nullable=True)  # Comentarios
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

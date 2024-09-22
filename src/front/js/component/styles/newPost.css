@@ -1,11 +1,11 @@
 .inputs-new-post, .textarea-new-post {
-    width: 300px;
+    width: 280px;
     padding: 10px;
     /* border: none; */
 }
 
 .textarea-new-post {
-    width: 300px;
+    width: 280px;
     height: 100px;
     resize: none;
     outline: none;

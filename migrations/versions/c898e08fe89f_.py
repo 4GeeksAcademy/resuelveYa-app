@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 319e79143b8f
+Revision ID: c898e08fe89f
 Revises: 
-Create Date: 2024-09-20 20:17:42.604700
+Create Date: 2024-09-22 16:09:52.226131
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '319e79143b8f'
+revision = 'c898e08fe89f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -47,15 +47,16 @@ def upgrade():
     )
     op.create_table('service_posts',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('title', sa.String(length=100), nullable=False),
+    sa.Column('title', sa.String(length=150), nullable=False),
     sa.Column('description', sa.String(length=500), nullable=False),
     sa.Column('service_type', sa.String(length=100), nullable=False),
     sa.Column('price', sa.Float(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('service_time', sa.String(length=250), nullable=False),
-    sa.Column('service_timetable', sa.String(length=250), nullable=False),
+    sa.Column('service_time', sa.String(length=250), nullable=True),
+    sa.Column('service_timetable', sa.String(length=250), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('post_img', sa.String(length=400), nullable=True),
+    sa.Column('localtion', sa.String(length=100), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -63,7 +64,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('post_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('rating', sa.Integer(), nullable=False),
+    sa.Column('rating', sa.Integer(), nullable=True),
     sa.Column('comment', sa.String(length=500), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['post_id'], ['service_posts.id'], ),

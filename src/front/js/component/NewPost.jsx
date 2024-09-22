@@ -20,14 +20,16 @@ export const NewPost = () => {
                         'title': e.target.title.value,
                         'description': e.target.description.value,
                         'service_type': info.provider_info.service_type,
-                        'price': Number(e.target.price.value),
-                        'service_time': e.target.serviceTime.value,
-                        'service_timetable': e.target.serviceTable.value,
-                        'post_img': imgUrl
+                        // 'phone_number': e.target.phone_number.value,
+                        // 'service_time': e.target.serviceTime.value,
+                        // 'service_timetable': e.target.serviceTable.value,
+                        'post_img': imgUrl,
+                        'location': e.target.location.value
                 }
                 console.log(newPost)
                 // actions.newPostProvider(newPost)
-                navigate('/')
+                actions.setDataNewPost(newPost)
+                // navigate('/')
         }
 
         const handleChangeImg = async (item) => {
@@ -74,21 +76,19 @@ export const NewPost = () => {
                                         <label htmlFor="description">Descripción: </label>
                                         <textarea className="textarea-new-post border rounded" name="description" id="description" required></textarea>
                                 </div>
-                                <div className="d-flex justify-content-between align-items-center gap-1">
-                                        <label htmlFor="price">Número de celularr:</label>
-                                        <input className="inputs-new-post border rounded" type="text" id="price" required />
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center gap-1">
+                                {/* <div className="d-flex justify-content-between align-items-center gap-1">
                                         <label htmlFor="serviceTime">Horarios: </label>
                                         <input className="inputs-new-post border rounded" type="text" id="serviceTime" required />
-                                </div>
+                                </div> */}
                                 <div className="d-flex justify-content-between align-items-center gap-1">
                                         <label htmlFor="serviceTable">Ubicación: </label>
                                         <input className="inputs-new-post border rounded" type="text" id="location" name="location" required />
                                 </div>
-                                <div className="d-flex gap-2">
+                                <div className="d-flex gap-2 justify-content-center align-items-center">
                                         <label htmlFor="category">Categoria:</label>
-                                        <p className="p-1 border rounded text-secondary" style={{ textTransform: 'capitalize' }}>{info.provider_info?.service_type}</p>
+                                        <p className="p-1 border rounded text-secondary m-0" style={{ textTransform: 'capitalize' }}>{info.provider_info?.service_type}</p>
+                                        <label htmlFor="phone_number" style={{maxWidth: '100px'}}>Número de contacto:</label>
+                                        <p className="p-1 border rounded text-secondary m-0" style={{ textTransform: 'capitalize' }}>{info.provider_info?.phone}</p>
                                 </div>
                                 <div className="d-flex gap-2 justify-content-start">
                                         <div>Imagen de publicación: </div>
@@ -96,9 +96,9 @@ export const NewPost = () => {
                                         <input className="file-input" onChange={(e) => handleChangeImg(e.target.files)} type="file" name="img_url" id="img_url" accept=".jpg, .png, .jpeg" />
                                 </div>
                                 <div className="d-flex justify-content-center align-items-center p-2">
-                                        <Link to='/payment'>
+                                        {/* <Link to='/payment'> */}
                                                 <button className='btn btn-danger'>Continuar</button>
-                                        </Link>
+                                        {/* </Link> */}
                                 </div>
                         </form>
 
