@@ -22,13 +22,17 @@
 }
 
 .card-preview.visa {
-    background-color: #1a1f71; /* Azul oscuro para Visa */
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(29,92,190,1) 0%, rgba(109,9,215,1) 100%);
     color: white;
+    transition: all 0.5s ease;
 }
 
 .card-preview.mastercard {
-    background-color: #ff5f00; /* Naranja para Mastercard */
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(241,50,50,1) 0%, rgba(255,80,144,1) 100%);
     color: white;
+    transition: all 0.5s ease;
 }
 
 .card-logo {

@@ -74,6 +74,7 @@
 	},
 	"dependencies": {
 		"bootstrap-icons": "^1.11.3",
+		"cloudinary": "^2.5.0",
 		"formik": "^2.4.6",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",

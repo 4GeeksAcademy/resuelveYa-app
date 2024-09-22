@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './styles/navbar.css'
 import { Context } from "../store/appContext";
 
@@ -10,6 +10,7 @@ export const Navbar = () => {
 	const [posts, setPosts] = useState([])
 	const [visible, setVisible] = useState(false)
 	const [viewChange, setViewChange] = useState(false)
+	const navigate = useNavigate()
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -84,18 +85,18 @@ export const Navbar = () => {
 								<Link to='/userprofile'>
 									<h2 className="fs-4 p-0 m-0 fw-semibold text-white">{store.username && store.username}</h2>
 								</Link>
-								<button onClick={() => { actions.changeValueUsername(), localStorage.clear() }} className="btn p-0 bg-transparent text-white fw-semibold fs-4">Cerrar Sesión</button>
+								<button onClick={() => { actions.logout(), navigate('/')}} className="btn p-0 bg-transparent text-white fw-semibold fs-4">Cerrar Sesión</button>
 							</div>
 						) : (
 							<ul className='d-flex gap-3 my-auto fs-4 fw-semibold'>
 								<Link to='/login' className='text-white'>
-									<li className='list-group-item'>Iniciar Sesion</li>
+									<li className='list-group-item'>Iniciar sesión</li>
 								</Link>
 								<Link to='/register' className="text-white">
-									<li className='list-group-item'>Registrate</li>
+									<li className='list-group-item'>Regístrate</li>
 								</Link>
 								<Link to='/' className="text-white">
-									<li className='list-group-item'>Sobre Nosotros</li>
+									<li className='list-group-item'>Contáctanos</li>
 								</Link>
 							</ul>
 						)
@@ -121,9 +122,9 @@ export const Navbar = () => {
 							<Link to='/userprofile'>
 								<h2 className="username fs-2 p-0 m-0 fw-semibold text-white li-ham">{store.username && store.username}</h2>
 							</Link>
-							<button onClick={() => { actions.changeValueUsername(), localStorage.clear() }} className="btn btn-ham p-0 bg-transparent text-white fw-semibold fs-2 li-ham">Cerrar Sesión</button>
+							<button onClick={() => { actions.logout(), navigate('/') }} className="btn btn-ham p-0 bg-transparent text-white fw-semibold fs-2 li-ham">Cerrar Sesión</button>
 							<Link to='/contact' className="text-white">
-								<li className="list-group-item text-center li-ham fs-2 fw-semibold">Contactanos</li>
+								<li className="list-group-item text-center li-ham fs-2 fw-semibold">Contáctanos</li>
 							</Link>
 						</div>
 					) : (
@@ -135,7 +136,7 @@ export const Navbar = () => {
 								<li className='list-group-item fs-2 text-center li-ham'>Registrate</li>
 							</Link>
 							<Link to='/' className='text-white'>
-								<li className='list-group-item fs-2 text-center li-ham'>Contactanos</li>
+								<li className='list-group-item fs-2 text-center li-ham'>Contáctanos</li>
 							</Link>
 						</ul>
 					)
