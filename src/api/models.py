@@ -71,10 +71,9 @@ class ServicePost(db.Model):
     title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.String(500), nullable=False)
     service_type = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=True)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    service_time = db.Column(db.String(250), nullable=True)
-    service_timetable = db.Column(db.String(250),nullable=True)
+
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     post_img = db.Column(db.String(400), nullable=True)
     location = db.Column(db.String(100), nullable=True)
@@ -87,22 +86,20 @@ class ServicePost(db.Model):
             "title": self.title, #recibido desde el front --title
             "description": self.description, # recibido desde el front --description
             "service_type": self.service_type, # recibido desde el front --service_type
-            # "price": self.price,
             "user_id": self.user_id,
-            # "service_time": self.service_time,
-            # "service_timetable": self.service_timetable,
+            "user_name": self.user.username,
+            "user_lastname": self.user.lastname,
+            "user_phone": self.user.phone,
             "created_at": self.created_at.strftime('%d/%m/%Y %H:%M'),
             "post_img": self.post_img, # recibido desde el front --post_img
-            # "username": self.user.username, # 
-            # "lastname": self.user.lastname,
-            # "phone": self.user.phone,
             "location": self.location # recibido desde el front  --location
         }
    
 class ServiceHistory(db.Model):
     __tablename__ = 'service_history'
     id = db.Column(db.Integer, primary_key=True)
-    provider_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Usuario proveedor
+    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+
     service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
 
     payment_method = db.Column(db.String(255), nullable=True)  # 'Tarjeta de crédito', 'Tarjeta de débito'
@@ -130,7 +127,7 @@ class ServiceHistory(db.Model):
 class Payment(db.Model):
     __tablename__ = 'payments'
     id = db.Column(db.Integer, primary_key=True)
-    service_history_id = db.Column(db.Integer, db.ForeignKey('service_history.id'), nullable=False)
+    service_history_id = db.Column(db.Integer, db.ForeignKey('service_history.id', ondelete='CASCADE'), nullable=False)
     payment_method = db.Column(db.String(255), nullable=False)  # Tarjeta de crédito, débito, etc.
     payment_id = db.Column(db.String(100), unique=True, nullable=False)  # ID de la transacción del procesador de pagos
     amount_paid = db.Column(db.Float, nullable=False)  # Monto pagado
@@ -152,8 +149,11 @@ class Payment(db.Model):
 class Review(db.Model):
     __tablename__ = 'reviews'
     id = db.Column(db.Integer, primary_key=True)
+
     post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+
     rating = db.Column(db.Integer, nullable=True)  # Calificación del 1 al 5
     comment = db.Column(db.String(500), nullable=True)  # Comentarios
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -168,6 +168,27 @@ class Review(db.Model):
             "user_id": self.user_id,
             "rating": self.rating,
             "comment": self.comment,
+            "user_name": self.user.username,
+            "last_name": self.user.lastname,
+            "profile_img": self.user.profile_image,
             "created_at": self.created_at.strftime('%d/%m/%Y %H:%M')
         }
 
+class Message(db.Model):
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    role = db.Column(db.String(50), nullable=False)  # 'user' o 'system' 
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref='messages', lazy=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "role": self.role,
+            "content": self.content,
+            "created_at": self.created_at.strftime('%d/%m/%Y %H:%M')
+        }

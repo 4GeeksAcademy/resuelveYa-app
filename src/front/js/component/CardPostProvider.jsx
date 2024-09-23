@@ -138,7 +138,7 @@ export const CardPostProvider = () => {
                                 }
                                 {/* calificar */}
                                 {token?
-                                    <div className="col-12 col-md-6 pt-2">
+                                    <div className="col-12 col-md-6 pt-2"> calificar
                                         {
                                             [... new Array(5)].map((_, indx) => {
                                                 const isRated = rankings[item.post.id] > indx; //verificar si la estrella esta calificada
@@ -152,7 +152,7 @@ export const CardPostProvider = () => {
                                                         onClick={() => handlerRating(indx, item.post.id)}>
                                                     </i>
                                             })
-                                        } calificar
+                                        }
                                     </div> :
                                     <div className="col-12 col-md-6 pt-2">
                                         <Link to="/login" className="text-black mb-2">
@@ -172,21 +172,31 @@ export const CardPostProvider = () => {
                                 <div className="col-md-2">
                                     <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
                                 </div>
-                                <div className="col-md-8">
+                                {/* <div className="col-md-8">
                                     <p className="m-0">{name}</p>
                                     <input className="form-control w-100" type="text" placeholder="Escribe un comentario" aria-label="default input example" />
+                                </div> */}
+                                <div className="input-group form-floating mb-3">
+                                    <input type="text" className="form-control" placeholder="Escribe un comentario" id="floatingPlaintextInput"/>
+                                    <label htmlFor="floatingPlaintextInput">{name}</label>
+                                    <span className="btn input-group-text border" type="submit" id="basic-addon2">Enviar</span>
                                 </div>
+                                {/* <div className='d-flex align-items-center input-1'>
+                                    <input className='form-control' type="text" placeholder="Escribe un comentario" autoComplete='off' />
+                                    <i className="fa-solid fs-3 fa-magnifying-glass"></i>
+                                </div> */}
                                 <div className="col-md-2">
-                                    <i className='bx bx-send fs-3' type="submit"></i>
-                                    <button className="btn btn-light mt-2 fw-semibold border border-black fw-bold" type="submit">Enviar</button>
+                                    {/* <i className='bx bx-send fs-3 text-success' type="submit"></i> */}
+                                    
                                 </div>
                             </div>
                              <div className="row">
-                                <div className="col-md-2">
+                                {/* <div className="col-md-1">
                                     <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
-                                </div>
-                                <div className="col-10 rounded">
-                                <input className="form-control w-100" value={"creo que el trabajo estuvo muy bueno, muy recomendado, lo contratare la proxima vez y le avisare a mis amigas y familiares sobre este excelente tecnico y claro la pagina que me ayudo a contactarlo"} type="text" aria-label="default input example" disabled/>
+                                </div> */}
+                                <div className="col-md-12 form-floating mb-3 border rounded">
+                                    <input value={"Muy buen trabajo"} type="text" readonly className="form-control-plaintext" id="floatingPlaintextInput"/>
+                                    <label htmlFor="floatingPlaintextInput">Nombre de quien hizo el comentario</label>
                                 </div>
                             </div>
                         </div>
