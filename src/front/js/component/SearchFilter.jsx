@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Context } from '../store/appContext'
 import { useNavigate } from 'react-router-dom'
 
-export const SearchFilter = () => {
+export const SearchFilter = ({title, subTitle}) => {
     const {actions} = useContext(Context)
     const navigate = useNavigate()
     const [postsData, setPostData] = useState([])
@@ -51,8 +51,8 @@ export const SearchFilter = () => {
 
     return (
         <form onSubmit={handleSubmit} className='form-filters-services w-75 mx-auto p-3 py-5 mb-5' style={{maxWidth: '950px'}}>
-            <h1 className='text-center text-white'>Bienvenido a ResuelveYa!</h1>
-            <h3 className='text-center text-white'>Ecuentra tu solucion aqui...! 🐼</h3>
+            <h1 className='text-center text-white'>{title}</h1>
+            <h3 className='text-center text-white'>{subTitle}</h3>
             <div className='container-jumbotron bg-white rounded p-2 container d-flex gap-2'>
                 <div className='d-flex align-items-center input-1'>
                     <i className="fa-solid fs-3 fa-magnifying-glass"></i>

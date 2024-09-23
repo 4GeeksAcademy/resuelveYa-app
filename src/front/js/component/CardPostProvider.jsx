@@ -34,7 +34,7 @@ export const CardPostProvider = () => {
     return(
         <div className="d-flex flex-column align-items-center" style={{paddingTop: '100px'}}>
 
-            <SearchFilter />
+            <SearchFilter title={'¡Encuentra tu solución aquí!'} subTitle={'¡Porque nosotros sí resolvemos!'}/>
             
             {
                 store.reviews?.map((item, index) => (
