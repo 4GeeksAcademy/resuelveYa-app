@@ -543,7 +543,8 @@ def get_service_posts():
 def create_post():
     try:
         user_id = get_jwt_identity()  
-        user = User.query.get(user_id)
+        
+        user = User.query.get(user_id.get('id'))
 
         if not user:
             return jsonify({"message": "Usuario no encontrado"}), 404
@@ -570,7 +571,7 @@ def create_post():
             description=description,
             service_type=service_type,
             post_img=post_img,
-            user_id=user_id,
+            user_id=user_id.get('id'),
             location=location
             # service_time=service_time,
             # service_timetable=service_timetable,
@@ -730,16 +731,20 @@ def edit_profile_user():
 
 
 @api.route('/payments', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_payment():
     try:
+        current_user = get_jwt_identity()
+        user = User.query.get(current_user.get('id'))
         body = request.get_json()
        # service_history_id = body.get("service_history_id")
+        # title = body.get('title')
         card_number = body.get("card_number")  
         name = body.get("name")
         expiry_date = body.get("expiry_date")
         cvv = body.get("cvv")
         amount = body.get("amount")
+        new_post_data = body.get('new_post_data')
 
         if not all([card_number, name, expiry_date, cvv, amount]):
             return jsonify({"message": "Faltan datos requeridos"}), 400
@@ -750,14 +755,33 @@ def add_payment():
             payment_method="pm_card_visa"
         )
 
+        if user.role != 'provider':
+            return jsonify({"message": "Solo los proveedores pueden crear posts"}), 403
 
+        if not new_post_data.get('title') or not new_post_data.get('description') or not new_post_data.get('service_type') or not new_post_data.get('location') or not new_post_data.get('post_img'):
+            return jsonify({"message": "Todos los campos son requeridos"}), 400
+
+        new_post = ServicePost(
+            title=new_post_data.get('title'),
+            description=new_post_data.get('description'),
+            service_type=new_post_data.get('service_type'),
+            post_img=new_post_data.get('post_img'),
+            location=new_post_data.get('location'),
+            user_id=user.id
+        )
+
+        db.session.add(new_post)
+        db.session.commit()
         
         return jsonify({'Pago completado con los siguientes datos': {
+            "post_create": new_post.serialize(),
             "number_card": card_number,
             "name": name,
             "data_ex": expiry_date,
             "amount": amount,
-            'payment_id': payment_intent.id
+            'payment_id': payment_intent.id,
+            "new_post_data": new_post_data,
+            'jwt': current_user
         }}), 200
 
     except Exception as e:

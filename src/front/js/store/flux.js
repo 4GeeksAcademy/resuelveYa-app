@@ -279,12 +279,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// Payment 
 			processPayment: async (paymentData) => {
 				// console.log("Este es el paymentData:" , paymentData);
+				const token = localStorage.getItem("token");
 				try {
-					//const token = localStorage.getItem("token");
 					const response = await fetch(process.env.BACKEND_URL + "/api/payments", {
 						method: "POST",
 						headers: {
-							//"Authorization": `Bearer ${token}`,
+							"Authorization": `Bearer ${token}`,
 							"Content-Type": "application/json"
 						},
 						body: JSON.stringify(paymentData)

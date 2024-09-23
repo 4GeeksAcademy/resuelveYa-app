@@ -43,6 +43,7 @@ export const Payments = () => {
                     "expiry_date": values.expiry_date,
                     "cvv": values.cvv,
                     "amount": values.amount,
+                    "new_post_data": store.dataNewPost
                 };
                 console.log({ 'datos enviados': paymentData })
                 const result = await actions.processPayment(paymentData);

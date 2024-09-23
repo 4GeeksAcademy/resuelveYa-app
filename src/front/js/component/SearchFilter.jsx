@@ -37,10 +37,12 @@ export const SearchFilter = () => {
         return title.includes(searchQuery) || username.includes(searchQuery);
     });
 
+    const filterByLocation = filterByTitleAndName.filter((postProvider => postProvider.post.location.toLowerCase().includes(location.toLowerCase())))
+
     // const filterByLocation = filterByTitleAndName.filter(postLocation => postLocation.location.toLowerCase().include(location))
     
     useEffect(() => {
-        actions.setReviews(filterByTitleAndName)
+        actions.setReviews(filterByLocation)
     }, [searchTitleOrName, location])
     
     useEffect(() => {
