@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: afdc3c5c6a90
+Revision ID: 25a91830dbdc
 Revises: 
-Create Date: 2024-09-22 21:10:36.035303
+Create Date: 2024-09-23 20:57:54.098533
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'afdc3c5c6a90'
+revision = '25a91830dbdc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -45,18 +45,24 @@ def upgrade():
     sa.UniqueConstraint('dni'),
     sa.UniqueConstraint('email')
     )
+    op.create_table('messages',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('role', sa.String(length=50), nullable=False),
+    sa.Column('content', sa.Text(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('service_posts',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=150), nullable=False),
     sa.Column('description', sa.String(length=500), nullable=False),
     sa.Column('service_type', sa.String(length=100), nullable=False),
-    sa.Column('price', sa.Float(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('service_time', sa.String(length=250), nullable=True),
-    sa.Column('service_timetable', sa.String(length=250), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('post_img', sa.String(length=400), nullable=True),
-    sa.Column('localtion', sa.String(length=100), nullable=True),
+    sa.Column('location', sa.String(length=100), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -68,7 +74,7 @@ def upgrade():
     sa.Column('comment', sa.String(length=500), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['post_id'], ['service_posts.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('service_history',
@@ -80,7 +86,7 @@ def upgrade():
     sa.Column('amount_paid', sa.Float(), nullable=True),
     sa.Column('transaction_date', sa.DateTime(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['provider_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['provider_id'], ['users.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['service_post_id'], ['service_posts.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -91,7 +97,7 @@ def upgrade():
     sa.Column('payment_id', sa.String(length=100), nullable=False),
     sa.Column('amount_paid', sa.Float(), nullable=False),
     sa.Column('payment_date', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['service_history_id'], ['service_history.id'], ),
+    sa.ForeignKeyConstraint(['service_history_id'], ['service_history.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('payment_id')
     )
@@ -104,6 +110,7 @@ def downgrade():
     op.drop_table('service_history')
     op.drop_table('reviews')
     op.drop_table('service_posts')
+    op.drop_table('messages')
     op.drop_table('users')
     op.drop_table('admin')
     # ### end Alembic commands ###

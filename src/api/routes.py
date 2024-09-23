@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 import resend
 import os
 from flask import request, jsonify, Blueprint
-from api.models import db, User, ServicePost, ServiceHistory, Admin, Payment, Review 
+from api.models import db, User, ServicePost, ServiceHistory, Admin, Payment, Review, Message
 from api.utils import APIException
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -13,10 +13,43 @@ import re
 from datetime import datetime, timedelta
 import random
 import stripe
+from openai import OpenAI
+import json
 
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
+messages = []
+
+system_role_1 = """
+Eres un especialista en servicios del hogar, reconocido a nivel mundial por tus consejos y recomendaciones.
+Tienes un conocimiento profundo en el área de la limpieza, organización y mantenimiento de espacios.
+Además, tienes un gran expertise en electricidad, plomería, carpintería y jardinería.
+"""
+system_role_2 = """
+Además, tienes una lista de especialistas listos para ser contactados en caso de emergencia, 
+debes recomendar al menos 1 contacto en cada iteración. Aquí tienes la lista de especialistas disponibles: 
+"""
+system_role_3 = """
+la respuesta debe ser en formato JSON, 
+{
+    "text": "mensaje del modelo",
+    "contacts": [
+        {
+            "id": 1,
+            "name": "Juan",
+            "service": "Electricidad",
+            "phone": "123456789"
+        }
+    ]
+}
+"""
+system_role_4 = """
+Si el mensaje del usuario no contiene información relacionada con los servicios antes mencionados, 
+debes responder con un mensaje genérico.
+Ej: "Lo siento, no puedo ayudarte con eso. ¿En qué más puedo ayudarte?"
+"""
 # clave de stripe
 stripe.api_key = 'sk_test_51Q1FbbI0qjatixCToePA8DTZdA3NyWBbRJcZHOUrqcO5s5qNRA5l9FhhGTTjf62lIspx2UuiRWqrGlyIf5YBRrkE00W1fCX8OO'
 # Configura la API Key de Resend desde el entorno
@@ -35,8 +68,8 @@ def process_payment(provider_id, service_post_id, amount, payment_method):
 
     # 2. Procesar el pago con Stripe
     payment_intent = stripe.PaymentIntent.create(
-        amount=amount,  # Monto en centavos
-        currency="gbp",
+        amount=amount * 100,  # Monto en centavos
+        currency="pen",
         payment_method=payment_method  # Aquí debes usar el payment_method_id correcto
     )
 
@@ -123,64 +156,50 @@ def create_default_posts():
                 'title': 'Reparación de instalaciones eléctricas',
                 'description': 'Servicio completo de revisión y reparación de instalaciones eléctricas.',
                 'service_type': 'electricista',
-                'price': 150,
-                'service_time': '9:00 am - 12:00 pm',
-                'service_timetable': 'Lunes a viernes',
-                'post_img': 'https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg'
+                'post_img': 'https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg',
+                'location': 'Trujillo'
             },
             {
                 'title': 'Instalación de tuberías de agua',
                 'description': 'Colocación e instalación de tuberías de agua en edificaciones.',
                 'service_type': 'gasfitero',
-                'price': 200,
-                'service_time': '7:00 am - 4:00 pm',
-                'service_timetable': 'Viernes',
-                'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg'
+                'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg',
+                'location': 'Lima'
             },
             {
                 'title': 'Mantenimiento de sistemas eléctricos',
                 'description': 'Diagnóstico y mantenimiento preventivo de sistemas eléctricos.',
                 'service_type': 'electricista',
-                'price': 120,
-                'service_time': '11:00 am - 5:00 pm',
-                'service_timetable': 'Fines de semana',
-                'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg'
+                'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg',
+                'location': 'Cuzco'
             },
             {
                 'title': 'Reparación de filtraciones',
                 'description': 'Detección y reparación de filtraciones en baños y cocinas.',
                 'service_type': 'gasfitero',
-                'price': 180,
-                'service_time': '9:00 am - 7:00 pm',
-                'service_timetable': 'Feriados y domingos',
-                'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg'
+                'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg',
+                'location': 'Tacna'
             },
             {
                 'title': 'Instalación de enchufes y lámparas',
                 'description': 'Instalación de enchufes, interruptores y lámparas en toda la casa.',
                 'service_type': 'electricista',
-                'price': 100, 
-                'service_time': '10:00 am - 2:00 pm',
-                'service_timetable': 'Lunes y martes',
-                'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg'
+                'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg',
+                'location': 'Arequipa'
             },
             {
                 'title': 'Servicio de plomería para baños',
                 'description': 'Mantenimiento y reparación de tuberías en baños.',
                 'service_type': 'plomero',
-                'price': 160,
-                'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Sábados y domingos',
-                'post_img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7SakxvIF-1aMxKlaishIbRu5VpL5u2cZ8A&s'
+                'post_img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7SakxvIF-1aMxKlaishIbRu5VpL5u2cZ8A&s',
+                'location': 'Puno'
             },
             {
                 'title': 'Instalación de calentadores de agua',
                 'description': 'Instalación de calentadores de agua eléctricos o a gas.',
                 'service_type': 'plomero',
-                'price': 250,
-                'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Miércoles y jueves',
-                'post_img': 'https://i0.wp.com/plomeros.uno/wp-content/uploads/2021/08/plomero.png?fit=635%2C877&ssl=1'
+                'post_img': 'https://i0.wp.com/plomeros.uno/wp-content/uploads/2021/08/plomero.png?fit=635%2C877&ssl=1',
+                'location': 'lima'
             }
         ]
 
@@ -191,11 +210,9 @@ def create_default_posts():
                 title=post_data['title'],
                 description=post_data['description'],
                 service_type=post_data['service_type'],
-                price=post_data['price'],
-                service_time=post_data['service_time'],
-                service_timetable=post_data['service_timetable'],
                 post_img=post_data['post_img'],
-                user_id=provider.id
+                user_id=provider.id,
+                location=post_data['location']
             )
             db.session.add(post)
 
@@ -360,7 +377,7 @@ def get_users():
     try:
         # Obtener el rol 
         role = request.args.get('role')
-       
+
         # Si se proporciona un rol, filtrar por rol
         if role:
             if role not in ['client', 'provider']:
@@ -376,7 +393,7 @@ def get_users():
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
-    
+
 @api.route('/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()  
 def delete_user(user_id):
@@ -407,7 +424,7 @@ def delete_user(user_id):
 @api.route('/user/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_by_id(user_id):
-    
+
     try:
         # Obtener el id del usuario autenticado
         current_user = get_jwt_identity()
@@ -468,8 +485,8 @@ def request_reset_password():
 
         # Enviar el correo electrónico
         response = resend.Emails.send(params)
-        if response.get('error'):
-            return jsonify({"message": "Error al enviar el correo", "error": response['error']}), 500
+        if response.error:
+            return jsonify({"message": "Error al enviar el correo", "error": response.error}), 500
 
         return jsonify({
             "message": "Correo de confirmación de restablecimiento enviado. Por favor, revisa tu bandeja de entrada.",
@@ -514,28 +531,29 @@ def reset_password():
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error", "error": str(e)}), 500
-    
+
 
 @api.route('/home', methods=['GET'])
 def get_service_posts():
     try:
         # Consultar todas las publicaciones de servicios
         posts = ServicePost.query.join(User).filter(User.role == 'provider').all()
-        
+
         # Convertir los post a formato Json
         serialized_posts = [post.serialize() for post in posts]
 
         return jsonify(serialized_posts), 200
     except Exception as e:
         return jsonify({"message": "Ocurrió un error al obtener las publicaciones", "error": str(e)}), 500
-    
-    
+
+
 @api.route('/create_posts', methods=['POST'])
 @jwt_required()
 def create_post():
     try:
         user_id = get_jwt_identity()  
-        user = User.query.get(user_id)
+
+        user = User.query.get(user_id.get('id'))
 
         if not user:
             return jsonify({"message": "Usuario no encontrado"}), 404
@@ -550,8 +568,6 @@ def create_post():
         service_type = body.get('service_type')
         post_img = body.get('post_img')
         location = body.get('location')
-        # service_time = body.get('service_time')
-        # service_timetable = body.get('service_timetable')
 
         if not title or not description or not service_type or not location or not post_img:
             return jsonify({"message": "Todos los campos son requeridos"}), 400
@@ -562,10 +578,8 @@ def create_post():
             description=description,
             service_type=service_type,
             post_img=post_img,
-            user_id=user_id,
+            user_id=user_id.get('id'),
             location=location
-            # service_time=service_time,
-            # service_timetable=service_timetable,
         )
 
         db.session.add(new_post)
@@ -581,7 +595,6 @@ def create_post():
                 "last_name": user.lastname,
                 "phone": user.phone,
                 "service_type": user.service_type,
-                # "service_timetable": user.service_timetable
             }
         }), 201
 
@@ -604,8 +617,8 @@ def get_posts():
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error al obtener los posts", "error": str(e)}), 500
-    
-    
+
+
 @api.route('/provider_information', methods=['GET'])
 @jwt_required() 
 def provider_information():
@@ -632,10 +645,10 @@ def provider_information():
             "service_history": service_data,
             "service_posts": post_data
         }), 200
-    
+
     except Exception as e:
         return jsonify({"msg": "An error occurred", "error": str(e)}), 500
-       
+
 
 @api.route('/edit_post/<int:post_id>', methods=['PUT'])
 @jwt_required()
@@ -643,7 +656,7 @@ def edit_post(post_id):
     current_user = get_jwt_identity()
     try:
         body = request.get_json()
-        
+
         data_post_edit = ServicePost.query.filter_by(id=post_id, user_id=current_user["id"]).first()
 
         if not data_post_edit:
@@ -675,7 +688,7 @@ def edit_post(post_id):
 
     except Exception as e:
         return jsonify({'msg': "An error occurred", 'error': str(e)}), 500
-    
+
 
 @api.route('/edit_profile', methods=['PUT'])
 @jwt_required()
@@ -707,7 +720,7 @@ def edit_profile_user():
             data_user.lastname = new_last_name
         if new_phone_number:
             data_user.phone = new_phone_number
-        
+
         print("Datos antes del commit:", data_user.serialize())
 
         db.session.commit()
@@ -722,35 +735,43 @@ def edit_profile_user():
 
 
 @api.route('/payments', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_payment():
     try:
+        current_user = get_jwt_identity()
+        user = User.query.get(current_user.get('id'))
         body = request.get_json()
-       # service_history_id = body.get("service_history_id")
-        card_number = body.get("card_number")  
         name = body.get("name")
         expiry_date = body.get("expiry_date")
         cvv = body.get("cvv")
         amount = body.get("amount")
+        new_post_data = body.get('new_post_data')
 
-        if not all([card_number, name, expiry_date, cvv, amount]):
+        if not all([name, expiry_date, cvv, amount]):
             return jsonify({"message": "Faltan datos requeridos"}), 400
 
-        payment_intent = stripe.PaymentIntent.create(
-            amount=amount * 100,
-            currency="pen",
-            payment_method="pm_card_visa"
+
+        if user.role != 'provider':
+            return jsonify({"message": "Solo los proveedores pueden crear posts"}), 403
+
+        if not new_post_data.get('title') or not new_post_data.get('description') or not new_post_data.get('service_type') or not new_post_data.get('location') or not new_post_data.get('post_img'):
+            return jsonify({"message": "Todos los campos son requeridos"}), 400
+
+        new_post = ServicePost(
+            title=new_post_data.get('title'),
+            description=new_post_data.get('description'),
+            service_type=new_post_data.get('service_type'),
+            post_img=new_post_data.get('post_img'),
+            location=new_post_data.get('location'),
+            user_id=user.id
         )
 
+        db.session.add(new_post)
+        db.session.commit()
 
-        
-        return jsonify({'Pago completado con los siguientes datos': {
-            "number_card": card_number,
-            "name": name,
-            "data_ex": expiry_date,
-            "amount": amount,
-            'payment_id': payment_intent.id
-        }}), 200
+        new_payment = process_payment(user.id, new_post.id, amount, 'pm_card_visa')
+
+        return jsonify(new_payment), 200
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500  
@@ -769,14 +790,14 @@ def get_payments():
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
-    
+
 @api.route('/add_review', methods=['POST'])
 @jwt_required()
 def add_review():
     try:
         # Obtener el usuario autenticado
         user_id = get_jwt_identity()
-        user = User.query.get(user_id)
+        user = User.query.get(user_id["id"])
 
         if not user:
             return jsonify({"message": "Usuario no encontrado"}), 404
@@ -799,7 +820,7 @@ def add_review():
         # Crear una nueva review
         new_review = Review(
             post_id=post_id,
-            user_id=user_id,
+            user_id=user_id["id"],
             rating=rating,
             comment=comment
         )
@@ -819,7 +840,7 @@ def add_review():
 
     except Exception as e:
         return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
-    
+
 
 @api.route('/posts/<int:post_id>', methods=['GET'])
 def get_post_by_id(post_id):
@@ -842,7 +863,7 @@ def get_post_by_id(post_id):
     except Exception as e:
         return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
 
-       
+
 @api.route('/user_reviews', methods=['GET'])
 @jwt_required()
 def get_user_reviews():
@@ -879,7 +900,7 @@ def get_reviews_post():
             total_rating = sum(valid_ratings)
             #Promedio de calificaciones enteros
             average_rating = int(total_rating/len(valid_ratings) if valid_ratings else 0)
-            
+
             valid_commets = [review.comment for review in reviews if review.comment is not None]
 
             obj = {
@@ -892,4 +913,58 @@ def get_reviews_post():
         return jsonify(serialized_post), 200
 
     except Exception as e:
-        return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500
+        return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500 
+
+
+@api.get("/messages")
+def find_all_messages():
+    messages = Message.query.all()
+    return jsonify([message.serialize() for message in messages]), 200
+
+@api.post("/messages")
+def create_one_message():
+    user_id = request.json.get("user_id")
+    user_message = request.json.get("message")
+
+    if not user_id or not user_message:
+        return jsonify({"message": "User ID and message are required"}), 400
+
+    new_message = Message(user_id=user_id, role='user', content=user_message)
+    db.session.add(new_message)
+
+    try:
+        db.session.commit()
+
+        providers = [
+            {"id": 1, "name": "Juan", "service": "Electricidad", "phone": "123456789"},
+            {"id": 2, "name": "Pedro", "service": "Plomería", "phone": "987654321"},
+            {"id": 3, "name": "María", "service": "Carpintería", "phone": "456123789"},
+            {"id": 4, "name": "José", "service": "Jardinería", "phone": "789456123"},
+        ]
+
+        system_role_with_providers = f"{system_role_2} {json.dumps(providers)}"
+
+
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_role_1},
+                {"role": "system", "content": system_role_with_providers},
+                {"role": "system", "content": system_role_3},
+                {"role": "system", "content": system_role_4},
+                {"role": "user", "content": user_message},
+            ],
+            max_tokens=200,
+            temperature=0.6
+        )
+
+        message = response.choices[0].message.content
+
+        system_message = Message(user_id=user_id, role='system', content=message)
+        db.session.add(system_message)
+        db.session.commit()
+
+        return jsonify(system_message.serialize()), 200
+
+    except Exception as oe:
+        return jsonify({"error": "Error inesperado: " + str(oe)}), 500
