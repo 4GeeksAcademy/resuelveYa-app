@@ -56,11 +56,11 @@ export const ListServices = () => {
         },
     ]
 
-    const getUsers = async () => {
-        const data = await actions.getUsers()
-        setUsers(data)
-        console.log(data)
-    }
+    // const getUsers = async () => {
+    //     const data = await actions.getUsers()
+    //     setUsers(data)
+    //     console.log(data)
+    // }
 
     // useEffect(() => {
     //     getUsers()
@@ -71,7 +71,7 @@ export const ListServices = () => {
             <h1>Servicios Mas Populares</h1>
             <div className='grid-container w-100 mx-auto'>
                 {
-                    store.listServices.map((user, index) => (
+                    store.reviews.map((user, index) => (
                         <CardService user={user} key={index} />
                     ))
                 }

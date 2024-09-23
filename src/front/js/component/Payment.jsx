@@ -38,11 +38,12 @@ export const Payments = () => {
         onSubmit: async (values, formikActions) => {
             try {
                 const paymentData = {
-                    "card_number": values.card_number,
+                    // "card_number": values.card_number,
                     "name": values.name,
                     "expiry_date": values.expiry_date,
                     "cvv": values.cvv,
                     "amount": values.amount,
+                    "new_post_data": store.dataNewPost
                 };
                 console.log({ 'datos enviados': paymentData })
                 const result = await actions.processPayment(paymentData);
@@ -101,7 +102,7 @@ export const Payments = () => {
                     <div style={{ paddingTop: '100px' }}>
                         <h2 className='text-center'>¡Pago Realizado con Éxito!</h2>
                         <div className='w-75 mx-auto bg-light p-3 rounded' style={{ maxWidth: '400px' }}>
-                            <p>Número de Tarjeta: <strong>{payDetails.card_number}</strong></p>
+                            <p>Número de Tarjeta: <strong>**** **** **** ****</strong></p>
                             <p>Nombre del Titular: <strong>{payDetails.name}</strong></p>
                             <p>CVV: <strong>***</strong></p> {/* No muestres el CVV por razones de seguridad */}
                             <p>Monto: <strong>S/{payDetails.amount}</strong></p>

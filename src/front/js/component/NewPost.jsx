@@ -4,10 +4,11 @@ import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export const NewPost = () => {
-        const { actions } = useContext(Context)
+        const { actions, store } = useContext(Context)
         const [info, setInfo] = useState({})
         const navigate = useNavigate()
         const [loading, setLoading] = useState(false)
+        const [isDisabled, setIsDisabled] = useState(true)
         const [imgUrl, setImgUrl] = useState('')
 
         const cloud_name = 'dkpc68gvv'
@@ -24,12 +25,14 @@ export const NewPost = () => {
                         // 'service_time': e.target.serviceTime.value,
                         // 'service_timetable': e.target.serviceTable.value,
                         'post_img': imgUrl,
-                        'location': e.target.location.value
+                        'location': e.target.location.value,
+
+
                 }
                 console.log(newPost)
                 // actions.newPostProvider(newPost)
                 actions.setDataNewPost(newPost)
-                // navigate('/')
+                navigate('/payment')
         }
 
         const handleChangeImg = async (item) => {
@@ -46,8 +49,11 @@ export const NewPost = () => {
                                 body: data
                         })
                         const dataImg = await response.json()
+                        if(dataImg.url) {
+                                setImgUrl(dataImg.url)
+                                setIsDisabled(false)
+                        }
                         console.log(dataImg.url)
-                        setImgUrl(dataImg.url)
                 } catch (err){
                         console.log(err)
                 }
@@ -96,9 +102,7 @@ export const NewPost = () => {
                                         <input className="file-input" onChange={(e) => handleChangeImg(e.target.files)} type="file" name="img_url" id="img_url" accept=".jpg, .png, .jpeg" />
                                 </div>
                                 <div className="d-flex justify-content-center align-items-center p-2">
-                                        {/* <Link to='/payment'> */}
-                                                <button className='btn btn-danger'>Continuar</button>
-                                        {/* </Link> */}
+                                        <button className='btn btn-danger' disabled={isDisabled}>Continuar</button>
                                 </div>
                         </form>
 

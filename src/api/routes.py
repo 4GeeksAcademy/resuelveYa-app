@@ -35,8 +35,8 @@ def process_payment(provider_id, service_post_id, amount, payment_method):
 
     # 2. Procesar el pago con Stripe
     payment_intent = stripe.PaymentIntent.create(
-        amount=amount,  # Monto en centavos
-        currency="gbp",
+        amount=amount * 100,  # Monto en centavos
+        currency="pen",
         payment_method=payment_method  # Aquí debes usar el payment_method_id correcto
     )
 
@@ -123,64 +123,71 @@ def create_default_posts():
                 'title': 'Reparación de instalaciones eléctricas',
                 'description': 'Servicio completo de revisión y reparación de instalaciones eléctricas.',
                 'service_type': 'electricista',
-                'price': 150,
-                'service_time': '9:00 am - 12:00 pm',
-                'service_timetable': 'Lunes a viernes',
-                'post_img': 'https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg'
+                # 'price': 150,
+                # 'service_time': '9:00 am - 12:00 pm',
+                # 'service_timetable': 'Lunes a viernes',
+                'post_img': 'https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg',
+                'location': 'Trujillo'
             },
             {
                 'title': 'Instalación de tuberías de agua',
                 'description': 'Colocación e instalación de tuberías de agua en edificaciones.',
                 'service_type': 'gasfitero',
-                'price': 200,
-                'service_time': '7:00 am - 4:00 pm',
-                'service_timetable': 'Viernes',
-                'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg'
+                # 'price': 200,
+                # 'service_time': '7:00 am - 4:00 pm',
+                # 'service_timetable': 'Viernes',
+                'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg',
+                'location': 'Lima'
             },
             {
                 'title': 'Mantenimiento de sistemas eléctricos',
                 'description': 'Diagnóstico y mantenimiento preventivo de sistemas eléctricos.',
                 'service_type': 'electricista',
-                'price': 120,
-                'service_time': '11:00 am - 5:00 pm',
-                'service_timetable': 'Fines de semana',
-                'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg'
+                # 'price': 120,
+                # 'service_time': '11:00 am - 5:00 pm',
+                # 'service_timetable': 'Fines de semana',
+                'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg',
+                'location': 'Cuzco'
             },
             {
                 'title': 'Reparación de filtraciones',
                 'description': 'Detección y reparación de filtraciones en baños y cocinas.',
                 'service_type': 'gasfitero',
-                'price': 180,
-                'service_time': '9:00 am - 7:00 pm',
-                'service_timetable': 'Feriados y domingos',
-                'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg'
+                # 'price': 180,
+                # 'service_time': '9:00 am - 7:00 pm',
+                # 'service_timetable': 'Feriados y domingos',
+                'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg',
+                'location': 'Tacna'
             },
             {
                 'title': 'Instalación de enchufes y lámparas',
                 'description': 'Instalación de enchufes, interruptores y lámparas en toda la casa.',
                 'service_type': 'electricista',
-                'price': 100, 
-                'service_time': '10:00 am - 2:00 pm',
-                'service_timetable': 'Lunes y martes',
-                'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg'
+                # 'price': 100, 
+                # 'service_time': '10:00 am - 2:00 pm',
+                # 'service_timetable': 'Lunes y martes',
+                'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg',
+                'location': 'Arequipa'
             },
             {
                 'title': 'Servicio de plomería para baños',
                 'description': 'Mantenimiento y reparación de tuberías en baños.',
                 'service_type': 'plomero',
-                'price': 160,
-                'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Sábados y domingos',
-                'post_img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7SakxvIF-1aMxKlaishIbRu5VpL5u2cZ8A&s'
+                # 'price': 160,
+                # 'service_time': '8:00 am - 3:00 pm',
+                # 'service_timetable': 'Sábados y domingos',
+                'post_img': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7SakxvIF-1aMxKlaishIbRu5VpL5u2cZ8A&s',
+                'location': 'Puno'
             },
             {
                 'title': 'Instalación de calentadores de agua',
                 'description': 'Instalación de calentadores de agua eléctricos o a gas.',
                 'service_type': 'plomero',
-                'price': 250,
-                'service_time': '8:00 am - 3:00 pm',
-                'service_timetable': 'Miércoles y jueves',
-                'post_img': 'https://i0.wp.com/plomeros.uno/wp-content/uploads/2021/08/plomero.png?fit=635%2C877&ssl=1'
+                # 'price': 250,
+                # 'service_time': '8:00 am - 3:00 pm',
+                # 'service_timetable': 'Miércoles y jueves',
+                'post_img': 'https://i0.wp.com/plomeros.uno/wp-content/uploads/2021/08/plomero.png?fit=635%2C877&ssl=1',
+                'location': 'lima'
             }
         ]
 
@@ -191,11 +198,12 @@ def create_default_posts():
                 title=post_data['title'],
                 description=post_data['description'],
                 service_type=post_data['service_type'],
-                price=post_data['price'],
-                service_time=post_data['service_time'],
-                service_timetable=post_data['service_timetable'],
+                # price=post_data['price'],
+                # service_time=post_data['service_time'],
+                # service_timetable=post_data['service_timetable'],
                 post_img=post_data['post_img'],
-                user_id=provider.id
+                user_id=provider.id,
+                location=post_data['location']
             )
             db.session.add(post)
 
@@ -535,7 +543,8 @@ def get_service_posts():
 def create_post():
     try:
         user_id = get_jwt_identity()  
-        user = User.query.get(user_id)
+        
+        user = User.query.get(user_id.get('id'))
 
         if not user:
             return jsonify({"message": "Usuario no encontrado"}), 404
@@ -562,7 +571,7 @@ def create_post():
             description=description,
             service_type=service_type,
             post_img=post_img,
-            user_id=user_id,
+            user_id=user_id.get('id'),
             location=location
             # service_time=service_time,
             # service_timetable=service_timetable,
@@ -722,35 +731,52 @@ def edit_profile_user():
 
 
 @api.route('/payments', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def add_payment():
     try:
+        current_user = get_jwt_identity()
+        user = User.query.get(current_user.get('id'))
         body = request.get_json()
        # service_history_id = body.get("service_history_id")
-        card_number = body.get("card_number")  
+        # title = body.get('title')
+        # card_number = body.get("card_number")  
         name = body.get("name")
         expiry_date = body.get("expiry_date")
         cvv = body.get("cvv")
         amount = body.get("amount")
+        new_post_data = body.get('new_post_data')
 
-        if not all([card_number, name, expiry_date, cvv, amount]):
+        if not all([name, expiry_date, cvv, amount]):
             return jsonify({"message": "Faltan datos requeridos"}), 400
 
-        payment_intent = stripe.PaymentIntent.create(
-            amount=amount * 100,
-            currency="pen",
-            payment_method="pm_card_visa"
+
+        # payment_intent = stripe.PaymentIntent.create(
+        #     amount=amount * 100,
+        #     currency="pen",
+        #     payment_method="pm_card_visa"
+        # )
+
+        if user.role != 'provider':
+            return jsonify({"message": "Solo los proveedores pueden crear posts"}), 403
+
+        if not new_post_data.get('title') or not new_post_data.get('description') or not new_post_data.get('service_type') or not new_post_data.get('location') or not new_post_data.get('post_img'):
+            return jsonify({"message": "Todos los campos son requeridos"}), 400
+
+        new_post = ServicePost(
+            title=new_post_data.get('title'),
+            description=new_post_data.get('description'),
+            service_type=new_post_data.get('service_type'),
+            post_img=new_post_data.get('post_img'),
+            location=new_post_data.get('location'),
+            user_id=user.id
         )
 
+        db.session.add(new_post)
+        db.session.commit()
 
+        new_payment = process_payment(user.id, new_post.id, amount, 'pm_card_visa')
         
-        return jsonify({'Pago completado con los siguientes datos': {
-            "number_card": card_number,
-            "name": name,
-            "data_ex": expiry_date,
-            "amount": amount,
-            'payment_id': payment_intent.id
-        }}), 200
+        return jsonify(new_payment), 200
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500  

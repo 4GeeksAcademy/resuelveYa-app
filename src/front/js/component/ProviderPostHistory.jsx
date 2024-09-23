@@ -24,9 +24,9 @@ export const ProviderPostHistory = () => {
                                                 <div className="row">
                                                         <div className="col-12"><b>{item.service_type}</b></div>
                                                         <div className="col-12"><small></small></div>
-                                                        <div className="col-4 text-start">{item.service_timetable}</div>
-                                                        <div className="col-4 text-start">{item.service_time}</div>
-                                                        <div className="col-4 text-end">S/.{item.price}/h</div>
+                                                        {/* <div className="col-4 text-start">{item.service_timetable}</div> */}
+                                                        {/* <div className="col-4 text-start">{item.service_time}</div> */}
+                                                        {/* <div className="col-4 text-end">S/.{item.price}/h</div> */}
                                                 </div>
                                         </div>
                                 ))
