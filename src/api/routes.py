@@ -35,8 +35,8 @@ def process_payment(provider_id, service_post_id, amount, payment_method):
 
     # 2. Procesar el pago con Stripe
     payment_intent = stripe.PaymentIntent.create(
-        amount=amount,  # Monto en centavos
-        currency="gbp",
+        amount=amount * 100,  # Monto en centavos
+        currency="pen",
         payment_method=payment_method  # Aquí debes usar el payment_method_id correcto
     )
 
@@ -739,21 +739,22 @@ def add_payment():
         body = request.get_json()
        # service_history_id = body.get("service_history_id")
         # title = body.get('title')
-        card_number = body.get("card_number")  
+        # card_number = body.get("card_number")  
         name = body.get("name")
         expiry_date = body.get("expiry_date")
         cvv = body.get("cvv")
         amount = body.get("amount")
         new_post_data = body.get('new_post_data')
 
-        if not all([card_number, name, expiry_date, cvv, amount]):
+        if not all([name, expiry_date, cvv, amount]):
             return jsonify({"message": "Faltan datos requeridos"}), 400
 
-        payment_intent = stripe.PaymentIntent.create(
-            amount=amount * 100,
-            currency="pen",
-            payment_method="pm_card_visa"
-        )
+
+        # payment_intent = stripe.PaymentIntent.create(
+        #     amount=amount * 100,
+        #     currency="pen",
+        #     payment_method="pm_card_visa"
+        # )
 
         if user.role != 'provider':
             return jsonify({"message": "Solo los proveedores pueden crear posts"}), 403
@@ -772,17 +773,10 @@ def add_payment():
 
         db.session.add(new_post)
         db.session.commit()
+
+        new_payment = process_payment(user.id, new_post.id, amount, 'pm_card_visa')
         
-        return jsonify({'Pago completado con los siguientes datos': {
-            "post_create": new_post.serialize(),
-            "number_card": card_number,
-            "name": name,
-            "data_ex": expiry_date,
-            "amount": amount,
-            'payment_id': payment_intent.id,
-            "new_post_data": new_post_data,
-            'jwt': current_user
-        }}), 200
+        return jsonify(new_payment), 200
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500  

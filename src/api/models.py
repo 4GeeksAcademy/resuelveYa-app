@@ -91,7 +91,7 @@ class ServicePost(db.Model):
             "user_id": self.user_id,
             # "service_time": self.service_time,
             # "service_timetable": self.service_timetable,
-            # "created_at": self.created_at.strftime('%d/%m/%Y %H:%M'),
+            "created_at": self.created_at.strftime('%d/%m/%Y %H:%M'),
             "post_img": self.post_img, # recibido desde el front --post_img
             # "username": self.user.username, # 
             # "lastname": self.user.lastname,

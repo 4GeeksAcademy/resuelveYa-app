@@ -8,6 +8,7 @@ export const NewPost = () => {
         const [info, setInfo] = useState({})
         const navigate = useNavigate()
         const [loading, setLoading] = useState(false)
+        const [isDisabled, setIsDisabled] = useState(true)
         const [imgUrl, setImgUrl] = useState('')
 
         const cloud_name = 'dkpc68gvv'
@@ -48,8 +49,11 @@ export const NewPost = () => {
                                 body: data
                         })
                         const dataImg = await response.json()
+                        if(dataImg.url) {
+                                setImgUrl(dataImg.url)
+                                setIsDisabled(false)
+                        }
                         console.log(dataImg.url)
-                        setImgUrl(dataImg.url)
                 } catch (err){
                         console.log(err)
                 }
@@ -98,7 +102,7 @@ export const NewPost = () => {
                                         <input className="file-input" onChange={(e) => handleChangeImg(e.target.files)} type="file" name="img_url" id="img_url" accept=".jpg, .png, .jpeg" />
                                 </div>
                                 <div className="d-flex justify-content-center align-items-center p-2">
-                                                <button className='btn btn-danger'>Continuar</button>
+                                        <button className='btn btn-danger' disabled={isDisabled}>Continuar</button>
                                 </div>
                         </form>
 
