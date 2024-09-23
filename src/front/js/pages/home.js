@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import { Jumbotron } from "../component/Jumbotron.jsx";
 import { ListServices } from "../component/ListServices.jsx";
+import { ChatOpenia } from "../component/ChatOpenia.jsx"
 import "../../styles/home.css";
 
 
@@ -14,6 +15,7 @@ export const Home = () => {
 		<div className="text-center">
 			<Jumbotron />
 			<ListServices />
+			<ChatOpenia />
 		</div>
 	);
 };

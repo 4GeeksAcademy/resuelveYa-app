@@ -1,14 +1,14 @@
 import React from 'react';
 
 
-import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
+// import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
 
 
-import foto1 from "../../img/electra.jpg";
-import foto2 from "../../img/gasfitero.jpg";
-import foto3 from "../../img/enfermera.jpg";
+// import foto1 from "../../img/electra.jpg";
+// import foto2 from "../../img/gasfitero.jpg";
+// import foto3 from "../../img/enfermera.jpg";
 
-import '../../styles/footer.css';
+// import '../../styles/footer.css';
 
 export const Footer = () => {
 	return (
@@ -45,13 +45,13 @@ export const Footer = () => {
 							<div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
 								<div className="carousel-inner">
 									<div className="carousel-item active">
-										<img src={foto1} className="d-block w-100" alt="electicista" />
+										{/* <img src={foto1} className="d-block w-100" alt="electicista" /> */}
 									</div>
 									<div className="carousel-item">
-										<img src={foto2} className="d-block w-100" alt="plomero" />
+										{/* <img src={foto2} className="d-block w-100" alt="plomero" /> */}
 									</div>
 									<div className="carousel-item">
-										<img src={foto3} className="d-block w-100" alt="enfermera" />
+										{/* <img src={foto3} className="d-block w-100" alt="enfermera" /> */}
 									</div>
 								</div>
 								<button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -64,10 +64,10 @@ export const Footer = () => {
 								</button>
 							</div>
 							<div className='botones-md-3 d-flex flex-column m-2 py-1 fs-5'>
-								<button className='btns fs-5'><FaInstagramSquare /></button>
+								{/* <button className='btns fs-5'><FaInstagramSquare /></button>
 								<button className='btns'><FaFacebookSquare /></button>
 								<button className='btns'><FaGithubSquare /></button>
-								<button className='btns'><FaLinkedin /></button>
+								<button className='btns'><FaLinkedin /></button> */}
 
 							</div>
 						</div>
