@@ -339,6 +339,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error(err)
 				}
 			},
+			setReviews: (newList) => {
+				setStore({reviews: newList})
+			}
+
 		}
 	};
 };
