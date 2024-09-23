@@ -8,7 +8,7 @@ import { SearchFilter } from "./SearchFilter.jsx";
 export const CardPostProvider = () => {
     const{store, actions} = useContext(Context)
     const token = localStorage.getItem("token")
-    // const name = localStorage.getItem("name")
+    const name = localStorage.getItem("name")
     console.log(store.reviews)
     const [rankings, setRankings] = useState({})
 
@@ -168,26 +168,27 @@ export const CardPostProvider = () => {
                                     </div>
                                 }
                             </div>
-                            {/* <div className="row">
-                                <div>
-                                    {name}
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
                                 </div>
-                                <div className="col-md-9">
-                                    <input className="form-control" type="text" placeholder="Escribe un comentario" aria-label="default input example" />
+                                <div className="col-md-8">
+                                    <p className="m-0">{name}</p>
+                                    <input className="form-control w-100" type="text" placeholder="Escribe un comentario" aria-label="default input example" />
                                 </div>
-                                <div className="col-md-3">
+                                <div className="col-md-2">
                                     <i className='bx bx-send fs-3' type="submit"></i>
                                     <button className="btn btn-light mt-2 fw-semibold border border-black fw-bold" type="submit">Enviar</button>
                                 </div>
-                            </div> */}
-                            {/* imagen de quien hizo el comentario
+                            </div>
                              <div className="row">
-                                <div>
-                                    <img src={item.post.post_img} alt="" className="photo rounded-circle" />
+                                <div className="col-md-2">
+                                    <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
                                 </div>
                                 <div className="col-10 rounded">
+                                <input className="form-control w-100" value={"creo que el trabajo estuvo muy bueno, muy recomendado, lo contratare la proxima vez y le avisare a mis amigas y familiares sobre este excelente tecnico y claro la pagina que me ayudo a contactarlo"} type="text" aria-label="default input example" disabled/>
                                 </div>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 ))
