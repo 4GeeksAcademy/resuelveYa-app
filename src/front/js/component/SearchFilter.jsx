@@ -12,7 +12,7 @@ export const SearchFilter = () => {
     const [location, setLocation] = useState('')
 
     const getPosts = async () => {
-        const posts = await actions.getPostsProviders()
+        const posts = await actions.getReviews()
         console.log(posts)
         setPostData(posts)
     }
@@ -30,17 +30,19 @@ export const SearchFilter = () => {
     }
     
     const filterByTitleAndName = postsData.filter((postProvider) => {
-        const title = postProvider.title ? postProvider.title.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
-        const username = postProvider.username ? postProvider.username.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
+        const title = postProvider.post.title ? postProvider.post.title.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
+        const username = postProvider.post.username ? postProvider.post.username.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
         const searchQuery = searchTitleOrName.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     
         return title.includes(searchQuery) || username.includes(searchQuery);
     });
 
+    const filterByLocation = filterByTitleAndName.filter((postProvider => postProvider.post.location.toLowerCase().includes(location.toLowerCase())))
+
     // const filterByLocation = filterByTitleAndName.filter(postLocation => postLocation.location.toLowerCase().include(location))
     
     useEffect(() => {
-        actions.setListServices(filterByTitleAndName)
+        actions.setReviews(filterByLocation)
     }, [searchTitleOrName, location])
     
     useEffect(() => {

@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "./styles/cardPostProvider.css"
-// import { SearchFilter } from "./SearchFilter.jsx";
+import { SearchFilter } from "./SearchFilter.jsx";
 // import './styles/jumbotron.css'
 
 export const CardPostProvider = () => {
@@ -34,8 +34,8 @@ export const CardPostProvider = () => {
 
     return(
         <div className="d-flex flex-column align-items-center mx-auto" style={{paddingTop: '100px'}}>
-            {/* filtro
-            <SearchFilter /> */}
+            
+            <SearchFilter />
             
             {
                 store.reviews?.map((item, index) => (
