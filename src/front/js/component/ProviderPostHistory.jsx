@@ -13,7 +13,7 @@ export const ProviderPostHistory = () => {
                 <div className="my-5 p-4" style={{ backgroundColor: '#fff', borderRadius: '10px' }}>
 
                         <div className="d-flex justify-content-between m-0">
-                                <label className="fs-4 pb-2">Mis publicaciones:</label>
+                                <label className="fs-4 pb-2 fw-semibold">Mis publicaciones:</label>
                                 <Link to="/providernewpost" className="fw-semibold text-black mb-2">
                                         <button className="btn btn-light fw-semibold border border-black fw-bold" type="submit">Nueva publicación</button>
                                 </Link>
