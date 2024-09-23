@@ -33,7 +33,7 @@ export const Jumbotron = () => {
                 </div>
 
             </form> */}
-            <SearchFilter />
+            <SearchFilter title={'Bienvenido a ResuelveYa'} subTitle={'¡Encuentra tu solución aquí!'}/>
         </header>
     )
 }
