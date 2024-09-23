@@ -27,6 +27,9 @@ class User(db.Model):
     reset_code = db.Column(db.String(6), nullable=True)  # Código de restablecimiento agregado
     reset_code_expiration = db.Column(db.DateTime, nullable=True)  # Fecha de expiración agregado
 
+    # Relación con ServicePost
+    service_posts = db.relationship('ServicePost', cascade="all, delete", lazy=True)
+
     def __repr__(self):
         return f'<User {self.email}>'
 
@@ -69,14 +72,14 @@ class ServicePost(db.Model):
     description = db.Column(db.String(500), nullable=False)
     service_type = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     service_time = db.Column(db.String(250), nullable=True)
     service_timetable = db.Column(db.String(250),nullable=True)
     created_at = db.Column(db.DateTime, default=get_local_time)
     post_img = db.Column(db.String(400), nullable=True)
     location = db.Column(db.String(100), nullable=True)
 
-    user = db.relationship('User', backref='service_posts', lazy=True)
+    user = db.relationship('User', lazy=True)
 
     def serialize(self):
         return {

@@ -1,5 +1,6 @@
 """empty message
 
+<<<<<<< HEAD:migrations/versions/3a2d35315ff5_.py
 <<<<<<<< HEAD:migrations/versions/7379e387a8be_.py
 Revision ID: 7379e387a8be
 Revises: 
@@ -9,6 +10,11 @@ Revision ID: 3a2d35315ff5
 Revises: 
 Create Date: 2024-09-22 16:49:25.662846
 >>>>>>>> cfc46cefe0628193f70a7830e0c7b3b90f75356c:migrations/versions/3a2d35315ff5_.py
+=======
+Revision ID: afdc3c5c6a90
+Revises: 
+Create Date: 2024-09-22 21:10:36.035303
+>>>>>>> 9ae314259fb94acb5fb3e0f6777c7b84d9ef92fc:migrations/versions/afdc3c5c6a90_.py
 
 """
 from alembic import op
@@ -16,11 +22,15 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+<<<<<<< HEAD:migrations/versions/3a2d35315ff5_.py
 <<<<<<<< HEAD:migrations/versions/7379e387a8be_.py
 revision = '7379e387a8be'
 ========
 revision = '3a2d35315ff5'
 >>>>>>>> cfc46cefe0628193f70a7830e0c7b3b90f75356c:migrations/versions/3a2d35315ff5_.py
+=======
+revision = 'afdc3c5c6a90'
+>>>>>>> 9ae314259fb94acb5fb3e0f6777c7b84d9ef92fc:migrations/versions/afdc3c5c6a90_.py
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -66,8 +76,13 @@ def upgrade():
     sa.Column('service_timetable', sa.String(length=250), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('post_img', sa.String(length=400), nullable=True),
+<<<<<<< HEAD:migrations/versions/3a2d35315ff5_.py
     sa.Column('location', sa.String(length=100), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+=======
+    sa.Column('localtion', sa.String(length=100), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+>>>>>>> 9ae314259fb94acb5fb3e0f6777c7b84d9ef92fc:migrations/versions/afdc3c5c6a90_.py
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('reviews',

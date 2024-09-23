@@ -98,10 +98,9 @@ export const UserPersonalData = () => {
                 return;
             }
 
-            const users = await actions.getUsers();
-            const user = users.find(user => user.id === parseInt(user_id));
-
-            if (user) {
+            const response = await actions.getUserInfoById(user_id);
+            if (response.success) {
+                const user = response.data;
                 formik.setValues({
                     first_name: user.username || "",
                     last_name: user.lastname || "",

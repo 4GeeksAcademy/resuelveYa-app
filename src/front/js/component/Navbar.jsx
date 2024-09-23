@@ -52,6 +52,14 @@ export const Navbar = () => {
 
 	}, [store.username])
 
+	// Verificar si el rol es admin, cliente o proveedor para redirigir a la página correcta
+	const getProfileLink = () => {
+		if (store.role === 'admin') {
+			return '/adminprofile';
+		}
+		return '/userprofile';
+	};
+
 	// useEffect(() => {
 	// 	actions.setListServices(filterByCategory)
 
@@ -82,10 +90,10 @@ export const Navbar = () => {
 					{
 						visible ? (
 							<div className="d-flex gap-2 justify-content-center align-items-center">
-								<Link to='/userprofile'>
+								<Link to={getProfileLink()}>
 									<h2 className="fs-4 p-0 m-0 fw-semibold text-white">{store.username && store.username}</h2>
 								</Link>
-								<button onClick={() => { actions.logout(), navigate('/')}} className="btn p-0 bg-transparent text-white fw-semibold fs-4">Cerrar Sesión</button>
+								<button onClick={() => { actions.logout(), navigate('/') }} className="btn p-0 bg-transparent text-white fw-semibold fs-4">Cerrar Sesión</button>
 							</div>
 						) : (
 							<ul className='d-flex gap-3 my-auto fs-4 fw-semibold'>
@@ -119,7 +127,7 @@ export const Navbar = () => {
 				{
 					visible ? (
 						<div className="d-flex flex-column gap-2 justify-content-center align-items-center">
-							<Link to='/userprofile'>
+							<Link to={getProfileLink()}>
 								<h2 className="username fs-2 p-0 m-0 fw-semibold text-white li-ham">{store.username && store.username}</h2>
 							</Link>
 							<button onClick={() => { actions.logout(), navigate('/') }} className="btn btn-ham p-0 bg-transparent text-white fw-semibold fs-2 li-ham">Cerrar Sesión</button>

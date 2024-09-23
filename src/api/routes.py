@@ -282,7 +282,7 @@ def login():
             return jsonify({
                 "token": access_token,
                 "username": admin.username,
-                "id": admin.id,
+                "user_id": admin.id,
                 "role": "admin",
                 "message": "Inicio de sesión exitoso como administrador"
             }), 200
@@ -363,6 +363,7 @@ def register():
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
 
 @api.route('/users', methods=['GET'])
+@jwt_required()  
 def get_users():
     try:
         # Obtener el rol 
@@ -376,9 +377,6 @@ def get_users():
         else:
             users = User.query.all()
 
-        if not users:
-            return jsonify({"message": "No se encontraron usuarios"}), 404
-
         # Convertir los objetos User en diccionarios JSON
         users_list = [user.serialize() for user in users]
 
@@ -387,15 +385,43 @@ def get_users():
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500
     
+@api.route('/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()  
+def delete_user(user_id):
+    try:
+        # Obtener la identidad del usuario autenticado
+        current_user = get_jwt_identity()
+
+        # Buscar el usuario por ID
+        user = User.query.get(user_id)
+        print("user", user)
+
+        if not user:
+            return jsonify({"message": "Usuario no encontrado"}), 404
+
+        # Verificar si el usuario autenticado tiene permiso para eliminar(solo admin)
+        if current_user['role'] != 'admin':
+            return jsonify({"message": "No tienes permiso para realizar esta acción"}), 403
+
+        # Eliminar el usuario
+        db.session.delete(user)
+        db.session.commit()
+
+        return jsonify({"message": f"Usuario {user.username} eliminado exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"message": "Ocurrió un error al eliminar el usuario", "error": str(e)}), 500
+
 @api.route('/user/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_by_id(user_id):
+    
     try:
         # Obtener el id del usuario autenticado
-        current_user_id = get_jwt_identity()
+        current_user = get_jwt_identity()
 
         # Verificar si el usuario autenticado es el mismo que el solicitado
-        if current_user_id != user_id:
+        if current_user["id"] != user_id:
             return jsonify({"message": "No tienes permiso para ver esta información"}), 403
 
         # Buscar al usuario por id en la base de datos
@@ -586,39 +612,15 @@ def get_posts():
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error al obtener los posts", "error": str(e)}), 500
-
-
-@api.route('/client_information', methods=['GET'])
-@jwt_required()
-def client_information():
-    try:
-        current_user_id = get_jwt_identity()
-        # Buscar al usuario en la base de datos
-        client = User.query.filter_by(id=current_user_id, role='client').first()
-
-        if not client:
-            return jsonify({"msg": "Client not found"}), 404
-
-        # Obtener el historial de servicios solicitados por el cliente
-        service_history = ServiceHistory.query.filter_by(client_id=client.id).all()
-        service_data = [history.serialize() for history in service_history]
-
-        return jsonify({
-            "client_info": client.serialize(),
-            "service_history": service_data
-        }), 200
-    
-    except Exception as e:
-        return jsonify({"msg": "An error occurred", "error": str(e)}), 500
     
     
 @api.route('/provider_information', methods=['GET'])
 @jwt_required() 
 def provider_information():
     try:
-        current_user_id = get_jwt_identity()
+        current_user = get_jwt_identity()
 
-        provider = User.query.filter_by(id=current_user_id, role='provider').first()
+        provider = User.query.filter_by(id=current_user["id"], role='provider').first()
 
         if not provider:
             return jsonify({"msg": "Provider not found"}), 404
@@ -646,11 +648,11 @@ def provider_information():
 @api.route('/edit_post/<int:post_id>', methods=['PUT'])
 @jwt_required()
 def edit_post(post_id):
-    current_user_id = get_jwt_identity()
+    current_user = get_jwt_identity()
     try:
         body = request.get_json()
         
-        data_post_edit = ServicePost.query.filter_by(id=post_id, user_id=current_user_id).first()
+        data_post_edit = ServicePost.query.filter_by(id=post_id, user_id=current_user["id"]).first()
 
         if not data_post_edit:
             return jsonify({'msg': 'Post not found or unauthorized'}), 404
@@ -669,7 +671,7 @@ def edit_post(post_id):
         db.session.commit()
 
         return jsonify({
-            'user_id': current_user_id,
+            'user_id': current_user["id"],
             'new_data_post': {
                 'title': data_post_edit.title,
                 'description': data_post_edit.description,
@@ -686,18 +688,17 @@ def edit_post(post_id):
 @api.route('/edit_profile', methods=['PUT'])
 @jwt_required()
 def edit_profile_user():
-    current_user_id = get_jwt_identity()
+    current_user = get_jwt_identity()
     try:
         body = request.get_json()
-        print("Datos recibidos:", body)
 
-        current_password = body.get('password') 
+        current_password = body.get('password')
         new_first_name = body.get('first_name')
         new_last_name = body.get('last_name')
         new_phone_number = body.get('phone')
         new_password = body.get('new_password')  
 
-        data_user = User.query.filter_by(id=current_user_id).first()
+        data_user = User.query.filter_by(id=current_user["id"]).first()
 
         if not data_user:
             return jsonify({'msg': 'User no encontrado'}), 404
@@ -714,7 +715,6 @@ def edit_profile_user():
             data_user.lastname = new_last_name
         if new_phone_number:
             data_user.phone = new_phone_number
-
         
         print("Datos antes del commit:", data_user.serialize())
 
