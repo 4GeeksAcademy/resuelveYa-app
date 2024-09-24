@@ -72,7 +72,7 @@ class ServicePost(db.Model):
     description = db.Column(db.String(500), nullable=False)
     service_type = db.Column(db.String(100), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     post_img = db.Column(db.String(400), nullable=True)
@@ -98,9 +98,9 @@ class ServicePost(db.Model):
 class ServiceHistory(db.Model):
     __tablename__ = 'service_history'
     id = db.Column(db.Integer, primary_key=True)
-    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
-    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
+    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id', ondelete='SET NULL'), nullable=False)
 
     payment_method = db.Column(db.String(255), nullable=True)  # 'Tarjeta de crédito', 'Tarjeta de débito'
     payment_id = db.Column(db.String(100), nullable=True)  # ID de la transacción desde la pasarela de pagos
@@ -150,15 +150,15 @@ class Review(db.Model):
     __tablename__ = 'reviews'
     id = db.Column(db.Integer, primary_key=True)
 
-    post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id', ondelete='SET NULL'), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
-    rating = db.Column(db.Integer, nullable=True)  # Calificación del 1 al 5
-    comment = db.Column(db.String(500), nullable=True)  # Comentarios
+    rating = db.Column(db.Integer, nullable=True)  
+    comment = db.Column(db.String(500), nullable=True)  
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    post = db.relationship('ServicePost', backref='reviews', lazy=True)
+    post = db.relationship('ServicePost', backref=db.backref('reviews', cascade="all, delete", lazy=True))
     user = db.relationship('User', backref='user_reviews', lazy=True)
 
     def serialize(self):
@@ -168,9 +168,9 @@ class Review(db.Model):
             "user_id": self.user_id,
             "rating": self.rating,
             "comment": self.comment,
-            "user_name": self.user.username,
-            "last_name": self.user.lastname,
-            "profile_img": self.user.profile_image,
+            "user_name": self.user.username if self.user else "Usuario eliminado",
+            "last_name": self.user.lastname if self.user else "",
+            "profile_img": self.user.profile_image if self.user else "",
             "created_at": self.created_at.strftime('%d/%m/%Y %H:%M')
         }
 
