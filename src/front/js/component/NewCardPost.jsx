@@ -18,10 +18,10 @@ export const NewCardPost = ({ item, index }) => {
 
     const handlerRating = async (index, postId) => {
         const newRanking = index + 1
-        setRankings(prev => ({ ...prev, [postId]: newRanking }))
+        setRankings(prev => ({ ...prev, [item.post.id]: newRanking }))
         console.log(newRanking)
         const data = {
-            post_id: item,
+            post_id: item.post.id,
             rating: newRanking,
         }
         await actions.newReview(data)
