@@ -143,7 +143,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			getUsers: async (role) => {
 				try {
-					// La URL siempre incluye el rol para filtrar usuarios
+
 					const url = `${process.env.BACKEND_URL}/api/users?role=${role}`;
 
 					const response = await fetch(url, {
@@ -156,7 +156,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 
 					if (response.ok) {
-						return data; // Devuelve la lista de usuarios con ese rol
+						return data;
 					} else {
 						console.error(`Error obteniendo usuarios con rol ${role}:`, data.message);
 						return [];
@@ -350,7 +350,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error(err)
 				}
 			},
-			//Obtener todos los mensajes
+
 			getAllMessages: async () => {
 				let token = localStorage.getItem('token')
 				try {
@@ -376,7 +376,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, message: "Error al obtener mensajes" };
 				}
 			},
-			//Crear un nuevo mensaje
+
 			createNewMessage: async (userMessage) => {
 				const userId = localStorage.getItem("user_id");
 
