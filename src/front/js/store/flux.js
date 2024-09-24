@@ -10,7 +10,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			dataUserLogin: {},
 			user: null,
 			dataNewPost: {},
-			reviews: []
+			reviews: [],
+			messages: [] 
 		},
 		actions: {
 			register: async (values) => {
@@ -348,6 +349,65 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error(err)
 				}
 			},
+			//Obtener todos los mensajes
+			getAllMessages: async () => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/messages", {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+			
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ messages: data });  
+						return { success: true, data: data };
+					} else {
+						const errorData = await response.json();
+						console.error("Error obteniendo mensajes:", errorData.message);
+						return { success: false, message: errorData.message };
+					}
+				} catch (error) {
+					console.error("Error en getAllMessages:", error);
+					return { success: false, message: "Error al obtener mensajes" };
+				}
+			},
+			//Crear un nuevo mensaje
+			createNewMessage: async (userMessage) => {
+				const userId = localStorage.getItem("user_id");
+			
+				if (!userId || !userMessage) {
+					console.error("Faltan el ID del usuario o el mensaje.");
+					return { success: false, message: "User ID y mensaje son requeridos." };
+				}
+			
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/messages", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							user_id: userId,
+							message: userMessage
+						})
+					});
+			
+					const data = await response.json();
+					if (response.ok) {
+						const store = getStore();
+						setStore({ messages: [...store.messages, data] });  
+						return { success: true, data: data };
+					} else {
+						console.error("Error creando mensaje:", data.message);
+						return { success: false, message: data.message };
+					}
+				} catch (error) {
+					console.error("Error en createNewMessage:", error);
+					return { success: false, message: "Error al crear mensaje." };
+				}
+			},			
 			getReviews: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/review_posts')
