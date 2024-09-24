@@ -905,13 +905,18 @@ def get_reviews_post():
             #Promedio de calificaciones enteros
             average_rating = int(total_rating/len(valid_ratings) if valid_ratings else 0)
 
-            valid_commets = [review.comment for review in reviews if review.comment is not None]
+            valid_comments = [{
+                "comment": review.comment,
+                "user_name": review.user.username,
+                "last_name": review.user.lastname,
+                **({"profile_img": review.user.profile_image} if review.user.profile_image else {})
+            } for review in reviews if review.comment is not None]
 
             obj = {
                 "post": post.serialize(),
                 "average_rating": average_rating,
                 "total_rating": len(valid_ratings),
-                "comment": valid_commets
+                "comments": valid_comments  # Lista con comentarios y nombres de usuarios
             }
             serialized_post.append(obj)
         return jsonify(serialized_post), 200
