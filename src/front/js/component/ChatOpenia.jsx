@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import './styles/chatopenia.css'
 
 // Componente principal ChatOpenia
 export const ChatOpenia = () => {
@@ -22,11 +23,11 @@ export const ChatOpenia = () => {
     };
 
     return (
-        <div className="fixed-bottom right-4 p-3">
+        <div className="assistant-button p-3">
             {/* Botón para abrir/cerrar el chat solo si el chat está cerrado */}
             {!open && (
                 <button onClick={() => setOpen(true)} className="btn btn-primary mb-2">
-                    Asistente
+                    ¿Cómo te puedo ayudar?
                 </button>
             )}
 
