@@ -44,6 +44,10 @@ la respuesta debe ser en formato JSON,
         }
     ]
 }
+si no hubiesen contactos que recomendar, dame una respuesta general sobre el servicio, y el formato de respuesta debería ser el siguiente:
+{
+    "text": "mensaje del modelo",
+}
 """
 system_role_4 = """
 Si el mensaje del usuario no contiene información relacionada con los servicios antes mencionados, 
@@ -917,8 +921,10 @@ def get_reviews_post():
 
 
 @api.get("/messages")
+@jwt_required()
 def find_all_messages():
-    messages = Message.query.all()
+    current_user = get_jwt_identity()
+    messages = Message.query.filter_by(user_id=current_user["id"]).all()
     return jsonify([message.serialize() for message in messages]), 200
 
 @api.post("/messages")
@@ -929,7 +935,7 @@ def create_one_message():
     if not user_id or not user_message:
         return jsonify({"message": "User ID and message are required"}), 400
 
-    new_message = Message(user_id=user_id, role='user', content=user_message)
+    new_message = Message(user_id=user_id, role='user', content=json.dumps({"text": user_message}))
     db.session.add(new_message)
 
     try:

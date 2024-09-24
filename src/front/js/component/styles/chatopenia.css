@@ -1,0 +1,73 @@
+
+.assistant-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+}
+
+.card.chat-container {
+    width: 100%;
+    width: 400px;
+    height: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .card.chat-container {
+        width: 90vw;
+        height: 60vh;
+    }
+
+    .assistant-button {
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .card-header h5 {
+        font-size: 16px;
+    }
+
+    .btn {
+        font-size: 14px;
+    }
+
+    input.form-control {
+        font-size: 14px;
+    }
+
+    .card-body .p-2 {
+        font-size: 14px; 
+    }
+}
+
+@media (max-width: 576px) {
+    .card.chat-container {
+        width: 85vw; 
+        height: 45vh;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .card-header h5 {
+        font-size: 14px;
+
+    .btn {
+        font-size: 14px;
+    }
+
+    input.form-control {
+        font-size: 14px; 
+    }
+
+    .card-body .p-2 {
+        font-size: 14px; 
+    }
+
+    .d-flex.flex-column.gap-2 {
+        gap: 1rem; 
+    }
+}
+}
