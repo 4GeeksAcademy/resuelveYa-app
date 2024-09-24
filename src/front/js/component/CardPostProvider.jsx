@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import "./styles/cardPostProvider.css"
 import { SearchFilter } from "./SearchFilter.jsx";
 // import './styles/jumbotron.css'
@@ -9,6 +11,8 @@ export const CardPostProvider = () => {
     const { store, actions } = useContext(Context)
     const token = localStorage.getItem("token")
     const name = localStorage.getItem("name")
+    const role = localStorage.getItem("role")
+    const [post_id, setPost_id] = useState()
     console.log(store.reviews)
     const [rankings, setRankings] = useState({})
 
@@ -24,6 +28,37 @@ export const CardPostProvider = () => {
         console.log(data)
 
     }
+
+    const handlerId = (item) => {
+        setPost_id(item)
+        console.log(item)
+    }
+
+    const formik = useFormik({
+        initialValues: {
+            comment: ''
+        },
+        validationSchema: Yup.object({
+            comment: Yup.string()
+                .min(8, "El comentario debe tener mínimo caracteres")
+                .required("No puedes enviar un comentario vacío"),
+        }),
+        onSubmit: async (values, { resetForm }) => {
+            console.log('Formulario enviado con valores:', JSON.stringify(values, null, 2));
+            const data_comment = {
+                post_id: post_id,
+                comment: values.comment
+            }
+            // console.log(data_comment)
+            try {
+                await actions.newReview(data_comment)
+                resetForm();
+
+            } catch (e) {
+                console.error(e)
+            }
+        },
+    });
 
     useEffect(() => {
         actions.getReviews()
@@ -110,9 +145,9 @@ export const CardPostProvider = () => {
                         {/* Boton comentar y calificar */}
                         <div className="card-body px-4 p-2">
                             <div className="row text-center">
-                                {token ?
+                                {role=="user" ?
                                     <div className="col-12 col-md-6">
-                                        <button type="button" className="btn btn-light">
+                                        <button type="button" className="btn btn-light" onClick={()=>handlerId(item.post.id)}>
                                             <div className="row">
                                                 <div className="col-3">
                                                     <i className='bx bx-comment-detail fa-lg pt-1 text-primary'></i>
@@ -139,7 +174,7 @@ export const CardPostProvider = () => {
                                     </div>
                                 }
                                 {/* calificar */}
-                                {token ?
+                                {role=="user" ?
                                     <div className="col-12 col-md-6 pt-2"> Calificar
                                         {
                                             [... new Array(5)].map((_, indx) => {
@@ -156,6 +191,8 @@ export const CardPostProvider = () => {
                                             })
                                         }
                                     </div> :
+                                    // data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover"
+                                    // class="d-inline-block" tabIndex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Disabled popover"
                                     <div className="col-12 col-md-6 pt-2">
                                         <Link to="/login" className="text-black mb-2">
                                             <div>
@@ -173,22 +210,28 @@ export const CardPostProvider = () => {
                         </div>
                         <hr className="m-0"></hr>
                         {/* Box para agregar comentarios */}
-                        <div className="card-body row px-4">
+                        <form className="card-body row px-4" onSubmit={formik.handleSubmit}>
                             <div className="col-md-2">
                                 <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
                             </div>
-                            {/* <div className="col-md-8">
-                                <p className="m-0">{name}</p>
-                                <input className="form-control w-100" type="text" placeholder="Escribe un comentario" aria-label="default input example" />
-                            </div> */}
                             <div className="col-md-10 form-floating mb-3 border rounded-2">
-                                <input type="text" className="form-control-plaintext" id="floatingPlaintextInput" />
+                                <input type="text" 
+                                    className="form-control-plaintext"
+                                    id="comment"
+                                    name="comment"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.comment}
+                                />
+                                {formik.touched.comment && formik.errors.comment ? (
+                                    <div className="text-danger">{formik.errors.comment}</div>
+                                ) : null}
                                 <label htmlFor="floatingPlaintextInput">{name}</label>
                                 <div className="text-end pb-3">
-                                    <span className="btn-link text-black" type="submit" id="basic-addon2">Enviar</span>
+                                    <button className="btn" type="submit" id="comments">Enviar</button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                         <hr className="m-0 pb-3"></hr>
                         {/* Comentarios del post */}
                         {
@@ -204,7 +247,6 @@ export const CardPostProvider = () => {
                                 </div>
                             ))
                         }
-                        
                     </div>
                 ))
             }
