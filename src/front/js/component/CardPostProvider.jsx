@@ -182,28 +182,29 @@ export const CardPostProvider = () => {
                                 <input className="form-control w-100" type="text" placeholder="Escribe un comentario" aria-label="default input example" />
                             </div> */}
                             <div className="col-md-10 form-floating mb-3 border rounded-2">
-                                <div className="row">
-                                    <div className="col-md-10">
-                                        <input type="text" className="form-control-plaintext" id="floatingPlaintextInput" />
-                                        <label htmlFor="floatingPlaintextInput">{name}</label>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <span className="btn input-group-text" type="submit" id="basic-addon2">Enviar</span>
-                                    </div>
+                                <input type="text" className="form-control-plaintext" id="floatingPlaintextInput" />
+                                <label htmlFor="floatingPlaintextInput">{name}</label>
+                                <div className="text-end pb-3">
+                                    <span className="btn-link text-black" type="submit" id="basic-addon2">Enviar</span>
                                 </div>
                             </div>
                         </div>
-                        <hr className="m-0"></hr>
+                        <hr className="m-0 pb-3"></hr>
                         {/* Comentarios del post */}
-                        <div className="card-body row px-4">
-                            {/* <div className="col-md-1">
+                        {
+                            item.comment.map((comment, index) => (
+                                <div className="card-body row px-4 py-0" key={index}>
+                                    {/* <div className="col-md-1">
                                     <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
-                                </div> */}
-                            <div className="col-md-12 form-floating mb-3 border rounded">
-                                <input value={"Muy buen trabajo"} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
-                                <label htmlFor="floatingPlaintextInput">Nombre de quien hizo el comentario</label>
-                            </div>
-                        </div>
+                                    </div> */}
+                                    <div className="col-md-12 form-floating mb-3 border rounded">
+                                        <input value={comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
+                                        <label htmlFor="floatingPlaintextInput">Nombre de quien hizo el comentario</label>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                        
                     </div>
                 ))
             }
