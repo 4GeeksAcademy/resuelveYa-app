@@ -13,7 +13,7 @@ export const SearchFilter = ({title, subTitle}) => {
 
     const getPosts = async () => {
         const posts = await actions.getReviews()
-        console.log(posts)
+        // console.log(posts)
         setPostData(posts)
     }
     
