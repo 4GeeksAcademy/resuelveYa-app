@@ -10,14 +10,16 @@ export const ChatOpenia = () => {
 
     // Cargar los mensajes cuando el componente se monta
     useEffect(() => {
-        // actions.fetchMessages(); // Obtener mensajes desde el backend
-    }, [actions]);
+        if (open) {
+            actions.getAllMessages(); // Obtener mensajes desde el backend
+        }
+    }, [open]);
 
     // Manejar el envío de mensajes
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (message.trim()) {
-            // await actions.createMessage(message); // Enviar el mensaje al backend
+            const result = await actions.createNewMessage(message);// Enviar el mensaje al backend
             setMessage(""); // Limpiar el input
         }
     };
@@ -56,7 +58,7 @@ export const ChatOpenia = () => {
                                     >
                                         {/* Si el mensaje es del usuario */}
                                         {msg.role === "user" ? (
-                                            msg.content
+                                            JSON.parse(msg.content).text // Mostrar el mensaje del usuario
                                         ) : (
                                             <>
                                                 {/* Manejar si es JSON válido */}
@@ -66,7 +68,7 @@ export const ChatOpenia = () => {
                                                     <div className="d-flex flex-column gap-2">
                                                         {JSON.parse(msg.content).contacts.map((contact, idx) => (
                                                             <div key={idx} className="bg-light p-2 rounded">
-                                                                <a className="d-flex gap-2" href={`/users/${contact.id}`}>
+                                                                <a className="d-flex gap-2" href="#">
                                                                     <span role="img" aria-label="phone">📞</span>
                                                                     {contact.name} - {contact.phone}
                                                                 </a>

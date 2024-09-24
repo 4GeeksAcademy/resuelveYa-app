@@ -11,7 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: null,
 			dataNewPost: {},
 			reviews: [],
-			messages: [] 
+			messages: []
 		},
 		actions: {
 			register: async (values) => {
@@ -65,7 +65,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					username: "",
 					user: null,
 					clientInfo: null,
-					providerInfo: null
+					providerInfo: null,
+					messages: []
 				});
 				console.log("Logged out successfully!");
 			},
@@ -351,17 +352,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			//Obtener todos los mensajes
 			getAllMessages: async () => {
+				let token = localStorage.getItem('token')
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/messages", {
 						method: "GET",
 						headers: {
+							'Authorization': `Bearer ${token}`,
 							"Content-Type": "application/json"
 						}
 					});
-			
+
 					if (response.ok) {
 						const data = await response.json();
-						setStore({ messages: data });  
+						setStore({ messages: data });
 						return { success: true, data: data };
 					} else {
 						const errorData = await response.json();
@@ -376,12 +379,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 			//Crear un nuevo mensaje
 			createNewMessage: async (userMessage) => {
 				const userId = localStorage.getItem("user_id");
-			
+
 				if (!userId || !userMessage) {
 					console.error("Faltan el ID del usuario o el mensaje.");
 					return { success: false, message: "User ID y mensaje son requeridos." };
 				}
-			
+				const store = getStore();
+				setStore({
+					messages: [...store.messages, {
+						id: new Date().getTime(),
+						role: "user",
+						content: JSON.stringify({
+							text: userMessage
+						})
+					}]
+				});
+
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/messages", {
 						method: "POST",
@@ -393,11 +406,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 							message: userMessage
 						})
 					});
-			
+
 					const data = await response.json();
 					if (response.ok) {
 						const store = getStore();
-						setStore({ messages: [...store.messages, data] });  
+						setStore({ messages: [...store.messages, data] });
 						return { success: true, data: data };
 					} else {
 						console.error("Error creando mensaje:", data.message);
@@ -407,7 +420,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en createNewMessage:", error);
 					return { success: false, message: "Error al crear mensaje." };
 				}
-			},			
+			},
 			getReviews: async () => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + '/api/review_posts')
@@ -420,7 +433,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			setReviews: (newList) => {
-				setStore({reviews: newList})
+				setStore({ reviews: newList })
 			}
 
 		}
