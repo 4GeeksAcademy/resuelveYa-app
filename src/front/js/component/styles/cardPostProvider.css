@@ -1,8 +1,13 @@
 .card{
-    width: 600px;
+    max-width: 600px;
 }
 .photo{
-    width: 75px;
-    height: 75px;
+    width: 95px;
+    height: 95px;
+    object-fit: cover;
+}
+.profile-image-client{
+    width: 60px;
+    height: 60px;
     object-fit: cover;
 }
