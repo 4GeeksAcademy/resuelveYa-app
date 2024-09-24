@@ -61,6 +61,26 @@
     
 }
 
+.footer-input {
+    background: rgba(255, 255, 255, 0.137);
+    transition: 0.5s ease-out;
+    border: none;
+}
+
+.footer-inputs {
+    flex-direction: column;
+}
+
+#footer-textarea {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    resize: none;
+    width: 100%;
+    height: 100px;
+    outline: none;
+}
+
 .div-contact {
     grid-area: contact;
     backdrop-filter: blur(10px);
@@ -73,6 +93,7 @@
     background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(34,102,138,1) 0%, rgb(111, 69, 224) 80.6% );
     backdrop-filter: blur(10px);
     padding: 20px;
+    /* overflow-y: scroll; */
 }
 
 .div-team {
@@ -80,6 +101,7 @@
     /* background-color: #7c3ab3; */
     background-image: linear-gradient( 85.2deg,  rgba(33,3,40,1) 7.5%, rgba(65,5,72,1) 88.7% );
     backdrop-filter: blur(10px);
+    overflow: hidden;
 }
 
 .div-caro {
@@ -113,6 +135,30 @@
 
 .caro-item {
     height: 100%;
+}
+
+.title-team {
+    position: absolute;
+    z-index: 10;
+}
+
+.bg-profiles {
+    background-position: bottom;
+    background-size: cover;
+    height: 350px;
+    position: relative;
+}
+
+
+
+.profile-details {
+    position: absolute;
+    bottom: 0; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    padding: 5px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.363);
 }
 
 @media (min-width: 1024px) {
