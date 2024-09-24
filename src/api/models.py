@@ -98,9 +98,9 @@ class ServicePost(db.Model):
 class ServiceHistory(db.Model):
     __tablename__ = 'service_history'
     id = db.Column(db.Integer, primary_key=True)
-    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
-    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
+    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id', ondelete='SET NULL'), nullable=True)
 
     payment_method = db.Column(db.String(255), nullable=True)  # 'Tarjeta de crédito', 'Tarjeta de débito'
     payment_id = db.Column(db.String(100), nullable=True)  # ID de la transacción desde la pasarela de pagos
