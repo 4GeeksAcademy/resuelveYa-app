@@ -44,6 +44,10 @@ la respuesta debe ser en formato JSON,
         }
     ]
 }
+si no hubiesen contactos que recomendar, dame una respuesta general sobre el servicio, y el formato de respuesta debería ser el siguiente:
+{
+    "text": "mensaje del modelo",
+}
 """
 system_role_4 = """
 Si el mensaje del usuario no contiene información relacionada con los servicios antes mencionados, 
@@ -901,13 +905,18 @@ def get_reviews_post():
             #Promedio de calificaciones enteros
             average_rating = int(total_rating/len(valid_ratings) if valid_ratings else 0)
 
-            valid_commets = [review.comment for review in reviews if review.comment is not None]
+            valid_comments = [{
+                "comment": review.comment,
+                "user_name": review.user.username,
+                "last_name": review.user.lastname,
+                **({"profile_img": review.user.profile_image} if review.user.profile_image else {})
+            } for review in reviews if review.comment is not None]
 
             obj = {
                 "post": post.serialize(),
                 "average_rating": average_rating,
                 "total_rating": len(valid_ratings),
-                "comment": valid_commets
+                "comments": valid_comments  # Lista con comentarios y nombres de usuarios
             }
             serialized_post.append(obj)
         return jsonify(serialized_post), 200
@@ -917,8 +926,10 @@ def get_reviews_post():
 
 
 @api.get("/messages")
+@jwt_required()
 def find_all_messages():
-    messages = Message.query.all()
+    current_user = get_jwt_identity()
+    messages = Message.query.filter_by(user_id=current_user["id"]).all()
     return jsonify([message.serialize() for message in messages]), 200
 
 @api.post("/messages")
@@ -929,7 +940,7 @@ def create_one_message():
     if not user_id or not user_message:
         return jsonify({"message": "User ID and message are required"}), 400
 
-    new_message = Message(user_id=user_id, role='user', content=user_message)
+    new_message = Message(user_id=user_id, role='user', content=json.dumps({"text": user_message}))
     db.session.add(new_message)
 
     try:

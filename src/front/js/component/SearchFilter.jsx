@@ -56,11 +56,11 @@ export const SearchFilter = ({title, subTitle}) => {
             <div className='container-jumbotron bg-white rounded p-2 container d-flex gap-2'>
                 <div className='d-flex align-items-center input-1'>
                     <i className="fa-solid fs-3 fa-magnifying-glass"></i>
-                    <input className='' id='titleOrName' type="text" placeholder='Que estas buscando...?' onChange={handleChangeTitleAndName} autoComplete='off'/>
+                    <input className='' id='titleOrName' type="text" placeholder='¿Qué estás buscando?' onChange={handleChangeTitleAndName} autoComplete='off'/>
                 </div>
                 <div className='d-flex align-items-center input-2'>
                     <i className="fa-solid fs-3 fa-location-dot bg-white"></i>
-                    <input type="text" id='location' placeholder='Donde...?' onChange={(e) => setLocation(e.target.value)} maxLength={20} autoComplete='off'/>
+                    <input type="text" id='location' placeholder='¿Dónde?' onChange={(e) => setLocation(e.target.value)} maxLength={20} autoComplete='off'/>
                 </div>
             </div>
             <div className='d-flex justify-content-center align-items-center'>

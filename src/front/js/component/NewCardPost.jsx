@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext.js";
 import { Link } from "react-router-dom";
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+
 import "./styles/cardPostProvider.css"
-import { SearchFilter } from "./SearchFilter.jsx";
+// import { SearchFilter } from "./SearchFilter.jsx";
 // import './styles/jumbotron.css'
 
 export const NewCardPost = ({ item, index }) => {
@@ -14,7 +13,7 @@ export const NewCardPost = ({ item, index }) => {
     const role = localStorage.getItem("role")
     const [post_id, setPost_id] = useState()
     // console.log(store.reviews)
-    // console.log(item)
+    console.log(item)
     const [rankings, setRankings] = useState({})
 
     const handlerRating = async (index, postId) => {
@@ -165,7 +164,7 @@ export const NewCardPost = ({ item, index }) => {
                 <div className="row text-center">
                     {role == "user" ?
                         <div className="col-12 col-md-6">
-                            <button type="button" className="btn btn-light" onClick={() => handlerId(item.post.id)}>
+                            <button type="button" className="btn btn-light">
                                 <div className="row">
                                     <div className="col-3">
                                         <i className='bx bx-comment-detail fa-lg pt-1 text-primary'></i>
@@ -225,21 +224,21 @@ export const NewCardPost = ({ item, index }) => {
                 </div>
             </div>
             <hr className="m-0"></hr>
-            {/* Box para agregar comentarios */}
             {/* Comentarios del post */}
             {
-                item.comment.map((comment, index) => (
-                    <div className="card-body row px-4 py-0" key={index}>
-                        {/* <div className="col-md-1">
-                                    <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
-                                    </div> */}
-                        <div className="col-md-12 form-floating mb-3 border rounded">
-                            <input value={comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
-                            <label htmlFor="floatingPlaintextInput">Nombre de quien hizo el comentario</label>
+                item.comments.map((comment, index) => (
+                        <div className="card-body row px-4 py-0" key={index}>
+                            {/* <div className="col-md-1">
+                                        <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
+                                        </div> */}
+                            <div className="col-md-12 form-floating mb-3 border rounded">
+                                <input value={comment.comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
+                                <label htmlFor="floatingPlaintextInput">{comment.user_name}</label>
+                            </div>
                         </div>
-                    </div>
-                ))
+                    ))
             }
+            {/* Box para agregar comentarios */}
             <form className="card-body row px-4" onSubmit={handleSubmit} >
                 <div className="col-md-2">
                     <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
