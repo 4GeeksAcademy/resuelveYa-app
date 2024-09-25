@@ -89,10 +89,10 @@ export const Footer = () => {
 									<div className='d-flex gap-4 justify-content-center align-items-center '>
 									<a className='a-footer' href="https://github.com/Kevin962022" target="_blank" rel="noopener noreferrer">
   									  <i className="fa-brands fa-github i-footer i-github"></i>
-										</a>
+									</a>
 									<a className='a-footer' href="https://www.linkedin.com/in/kevin-césar-villafuerte-montero-712520283" target="_blank" rel="noopener noreferrer">
    									  <i className="fa-brands fa-linkedin i-footer i-link"></i>
-										</a>
+									</a>
 									</div>
 								</div>
 							</div>

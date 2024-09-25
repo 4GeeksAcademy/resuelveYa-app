@@ -75,7 +75,7 @@ export const CardPostProvider = () => {
 
             {
                 store.reviews?.map((item, index) => (
-                    <NewCardPost item={item} index={index}/>
+                    <NewCardPost item={item} index={index} key={item.post.id}/>
                 ))
             }
         </div>
