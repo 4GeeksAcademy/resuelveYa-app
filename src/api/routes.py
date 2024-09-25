@@ -89,28 +89,28 @@ def create_test_users():
 
             # Crear usuarios con imágenes de perfil
             user1 = User(
-                username='Ericka', lastname='lastname1', dni='12345678', phone='12341234', role='provider', service_type='electricista', 
-                email='user1@example.com', password=generate_password_hash('password1'),
+                username='Ericka', lastname='Castillo', dni='42082762', phone='920728282', role='provider', service_type='electricista', 
+                email='ericka@resuelveya.com', password=generate_password_hash('password1'),
                 profile_image=profile_images[0]
             )
             user2 = User(
-                username='Max', lastname='lastname2', dni='23456789',  role='provider', phone='12341234', service_type='jardinero',
-                email='user2@example.com', password=generate_password_hash('password2'),
+                username='Max', lastname='Caballero', dni='43456789',  role='provider', phone='950728282', service_type='jardinero',
+                email='max@resuelveya.com', password=generate_password_hash('password2'),
                 profile_image=profile_images[1]
             )
             user3 = User(
-                username='Maguila', lastname='lastname3', dni='34567890', phone='12341234', role='provider', service_type='pintor',
-                email='user3@example.com', password=generate_password_hash('password3'),
+                username='Maguila', lastname='Sanchez', dni='44567890', phone='935728282', role='provider', service_type='pintor',
+                email='maguila@resuelveya.com', password=generate_password_hash('password3'),
                 profile_image=profile_images[2]
             )
             user4 = User(
-                username='Milton', lastname='lastname4', dni='45678901', role='provider',  phone='12341234', service_type='gasfitero',
-                email='user4@example.com', password=generate_password_hash('password4'),
+                username='Milton', lastname='Ytusaca', dni='45678901', role='provider',  phone='925728282', service_type='gasfitero',
+                email='milton@resuelveya.com', password=generate_password_hash('password4'),
                 profile_image=profile_images[3]
             )
             user5 = User(
-                username='Kevin', lastname='lastname5', dni='56789012', phone='12341234', role='provider', service_type='plomero',
-                email='user5@example.com', password=generate_password_hash('password5'),
+                username='Kevin', lastname='Villafuerte', dni='46789012', phone='978728282', role='provider', service_type='plomero',
+                email='kevin@resuelveya.com', password=generate_password_hash('password5'),
                 profile_image=profile_images[4]
             )
 
@@ -953,7 +953,9 @@ Si no hubiesen proveedores que recomendar, proporciona una respuesta general sob
 """
 
 system_role_4 = """
-Aquí tienes los proveedores disponibles para cada servicio:
+Si el mensaje del usuario no contiene información relacionada con los tipos de servicios antes mencionados, debes responder con un mensaje genérico: Primero saludas o respondes educamente;
+y le dices que no puedes ayudarlo con eso, y si hay otra cosa en lo que puedas ayudarlo.
+
 """
 
 @api.get("/messages")
@@ -1000,7 +1002,7 @@ def create_one_message():
                 {"role": "system", "content": system_role_4},
                 {"role": "user", "content": user_message},
             ],
-            max_tokens=200,
+            max_tokens=400,
             temperature=0.6
         )
 

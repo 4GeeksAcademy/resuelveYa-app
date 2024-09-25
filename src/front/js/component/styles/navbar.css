@@ -1,88 +1,94 @@
 nav {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    height: 50px;
-    z-index: 100;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  height: 50px;
+  z-index: 100;
 }
 
 .blur {
-  background-color: rgba(0, 0, 0, 0.822);
+  background-color: #F5F5F5;
   backdrop-filter: blur(10px);
-  height: 50px;
+  height: 60px;
 }
 
-.nav-sec-1{
-    z-index: 100;
+.nav-sec-1 {
+  z-index: 100;
 }
 
 a {
-    /* border-bottom: none; */
-    text-decoration: none;
+  /* border-bottom: none; */
+  text-decoration: none;
 }
 
 input {
-    outline: none;
-    /* min-width: 300px; */
+  outline: none;
+  /* min-width: 300px; */
 }
 
 
 .btnNav {
-    width: 30px;
-    height: 20px;
-    #lanzador {
-      position: absolute;
-      left: -9999px;
+  width: 30px;
+  height: 20px;
+
+  #lanzador {
+    position: absolute;
+    left: -9999px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .btnNav-linea {
+    height: 3px;
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+    transition: all 0.3s;
+  }
+
+  #lanzador:checked~label .btnNav-linea {
+    &:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
     }
-    label {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;  
-      cursor: pointer;
+
+    &:nth-child(2) {
+      opacity: 0;
     }
-    .btnNav-linea {
-      height: 3px;
-      opacity: 1;
-      transform: translateY(0) rotate(0);
-      transition: all 0.3s;
-    }
-    #lanzador:checked ~ label .btnNav-linea {
-      &:nth-child(1) {
-        transform: translateY(9px) rotate(45deg);
-      }
-      &:nth-child(2) {
-        opacity: 0;
-      }
-      &:nth-child(3) {
-        transform: translateY(-9px)rotate(-45deg);
-      }
+
+    &:nth-child(3) {
+      transform: translateY(-9px)rotate(-45deg);
     }
   }
+}
 
 
 .menu {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    height: 30vh;
-    background-color: rgba(0, 0, 0, 0.527);
-    width: 100%;
-    display: grid;
-    place-content: center;
-    backdrop-filter: blur(10px);
-    z-index: -10;
-    transition: all 0.5s ease-in-out;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  height: 30vh;
+  background-color: rgba(0, 0, 0, 0.527);
+  width: 100%;
+  display: grid;
+  place-content: center;
+  backdrop-filter: blur(10px);
+  z-index: -10;
+  transition: all 0.5s ease-in-out;
 }
 
 .li-ham {
-    transition: 0.2s ease-in;
+  transition: 0.2s ease-in;
 }
 
 .li-ham:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .menu-off {
-    top: -2000%;
+  top: -2000%;
 }
