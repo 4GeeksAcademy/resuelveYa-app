@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: b916afa6a82c
+Revision ID: 65977c8a1ef9
 Revises: 
-Create Date: 2024-09-24 20:15:29.477213
+Create Date: 2024-09-25 03:02:20.279750
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b916afa6a82c'
+revision = '65977c8a1ef9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -63,31 +63,31 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('post_img', sa.String(length=400), nullable=True),
     sa.Column('location', sa.String(length=100), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('post_id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('rating', sa.Integer(), nullable=True),
     sa.Column('comment', sa.String(length=500), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['post_id'], ['service_posts.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['post_id'], ['service_posts.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('service_history',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('provider_id', sa.Integer(), nullable=False),
+    sa.Column('provider_id', sa.Integer(), nullable=True),
     sa.Column('service_post_id', sa.Integer(), nullable=False),
     sa.Column('payment_method', sa.String(length=255), nullable=True),
     sa.Column('payment_id', sa.String(length=100), nullable=True),
     sa.Column('amount_paid', sa.Float(), nullable=True),
     sa.Column('transaction_date', sa.DateTime(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['provider_id'], ['users.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['service_post_id'], ['service_posts.id'], ),
+    sa.ForeignKeyConstraint(['provider_id'], ['users.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['service_post_id'], ['service_posts.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('payments',

@@ -21,11 +21,13 @@ export const UserProfile = () => {
         navigate("/")
     }
     return (
-        <div className="container p-5 bg-light" style={{ marginTop: "100px" }}>
-            <UserPersonalData />
-            {store.user?.role === "provider" && <ProviderPostHistory />}
-            {store.user?.role === 'provider' && <PayHistorys />}
-            <button className="btn btn-dark fw-bold text-white mx-auto d-block mt-5" type="submit" onClick={handleOut}>Cerrar sesión</button>
+        <div className="d-flex justify-content-center align-items-center">
+            <div className="d-flex flex-column align-items-center" style={{ width: "100%", marginTop: "100px" }}>
+                <UserPersonalData />
+                {store.user?.role === "provider" && <ProviderPostHistory />}
+                {store.user?.role === 'provider' && <PayHistorys />}
+                <button className="btn btn-dark fw-bold text-white mx-auto d-block my-5 " type="submit" onClick={handleOut}>Cerrar sesión</button>
+            </div>
         </div>
     );
 };

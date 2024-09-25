@@ -14,7 +14,7 @@ export const AdminProfile = () => {
     }
 
     return (
-        <div className="container admin-profile p-5 bg-light" >
+        <div className="container admin-profile p-5 bg-light rounded-3" >
             <AdminPanel />
             <button className="btn btn-dark fw-bold text-white mx-auto d-block mt-5" type="submit" onClick={handleOut}>Cerrar sesión</button>
         </div>
