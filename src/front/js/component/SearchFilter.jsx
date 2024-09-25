@@ -3,13 +3,15 @@ import './styles/jumbotron.css'
 import { useState } from 'react'
 import { Context } from '../store/appContext'
 import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
-export const SearchFilter = ({title, subTitle}) => {
-    const {actions} = useContext(Context)
+export const SearchFilter = ({title, subTitle, posts}) => {
+    const {actions, store} = useContext(Context)
     const navigate = useNavigate()
     const [postsData, setPostData] = useState([])
     const [searchTitleOrName, setSearchTitleOrName] = useState('')
-    const [location, setLocation] = useState('')
+    const [locationProv, setLocation] = useState('')
+    const location = useLocation()
 
     const getPosts = async () => {
         const posts = await actions.getReviews()
@@ -31,26 +33,35 @@ export const SearchFilter = ({title, subTitle}) => {
     
     const filterByTitleAndName = postsData.filter((postProvider) => {
         const title = postProvider.post.title ? postProvider.post.title.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
-        const username = postProvider.post.username ? postProvider.post.username.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
+        const username = postProvider.post.user_name ? postProvider.post.user_name.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
         const searchQuery = searchTitleOrName.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     
         return title.includes(searchQuery) || username.includes(searchQuery);
     });
 
-    const filterByLocation = filterByTitleAndName.filter((postProvider => postProvider.post.location.toLowerCase().includes(location.toLowerCase())))
+    const filterByLocation = filterByTitleAndName.filter((postProvider => postProvider.post.location.toLowerCase().includes(locationProv.toLowerCase())))
 
     // const filterByLocation = filterByTitleAndName.filter(postLocation => postLocation.location.toLowerCase().include(location))
     
     useEffect(() => {
         actions.setReviews(filterByLocation)
-    }, [searchTitleOrName, location])
+    }, [searchTitleOrName, locationProv])
     
+    // useEffect(() => {    
+    //     if (location.pathname === "/") {
+    //         console.log("hola desde home")
+
+    //         getPosts()
+    //     }
+      
+    // }, [location.pathname]);
+
     useEffect(() => {
         getPosts()
     }, [])
 
     return (
-        <form onSubmit={handleSubmit} className='form-filters-services w-75 mx-auto p-3 py-5 mb-5' style={{maxWidth: '950px'}}>
+        <form onSubmit={handleSubmit} className='form-filters-services w-75 mx-auto p-3 py-5 mb-5' style={{maxWidth: '700px'}}>
             <h1 className='text-center text-white'>{title}</h1>
             <h3 className='text-center text-white'>{subTitle}</h3>
             <div className='container-jumbotron bg-white rounded p-2 container d-flex gap-2'>

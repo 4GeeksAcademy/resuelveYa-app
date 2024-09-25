@@ -8,7 +8,10 @@ export const CardPostProvider = () => {
     const { store, actions } = useContext(Context)
 
     useEffect(() => {
-        actions.getReviews()
+        console.log(store.reviews)
+        // if(store.reviews.length === 0) {
+        //     actions.getReviews()
+        // }
     }, [])
 
     return (
