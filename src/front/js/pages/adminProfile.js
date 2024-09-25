@@ -1,9 +1,12 @@
-import React from "react";
-import "../../styles/home.css";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AdminPanel } from "../component/AdminPanel.jsx";
-
+import { Context } from "../store/appContext";
+import "./../component/styles/adminProfile.css";
 
 export const AdminProfile = () => {
+    const { actions } = useContext(Context);
+    const navigate = useNavigate()
 
     const handleOut = () => {
         actions.logout()
@@ -11,7 +14,7 @@ export const AdminProfile = () => {
     }
 
     return (
-        <div className="container p-5 bg-light" style={{ marginTop: "100px" }}>
+        <div className="container admin-profile p-5 bg-light rounded-3" >
             <AdminPanel />
             <button className="btn btn-dark fw-bold text-white mx-auto d-block mt-5" type="submit" onClick={handleOut}>Cerrar sesión</button>
         </div>

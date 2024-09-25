@@ -133,7 +133,7 @@ export const UserPersonalData = () => {
     };
 
     return (
-        <div className="">
+        <div className="" style={{ width: "100%", maxWidth: "900px" }}>
             <div className="d-flex justify-content-center">
                 <div className="d-flex align-items-center">
                     <div className="position-relative">
@@ -303,9 +303,9 @@ export const UserPersonalData = () => {
                         </div>
                     )}
 
-                    <form onSubmit={passwordFormik.handleSubmit} className="p-4" style={{ backgroundColor: '#fff', borderRadius: '10px' }}>
+                    <form onSubmit={passwordFormik.handleSubmit} className="p-4 rounded-3" style={{ backgroundColor: '#fff' }} >
                         {/* Formulario para Cambiar Contraseña */}
-                        <div className="form-group mb-3">
+                        < div className="form-group mb-3">
                             <label className="fw-bold">Contraseña Actual</label>
                             <input
                                 type="password"
@@ -353,7 +353,7 @@ export const UserPersonalData = () => {
                         <button type="submit" className="btn btn-dark fw-bold text-white">Guardar Contraseña</button>
                     </form>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };

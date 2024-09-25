@@ -5,7 +5,7 @@ import RegisterForm from "../component/RegisterForm.jsx";
 export const Register = () => {
 	return (
 
-		<div className="d-flex justify-content-center align-items-center py-5 gap-5" style={{marginTop: "100px"}}>
+		<div className="d-flex justify-content-center align-items-center gap-5" style={{ height: "100vh", backgroundColor: "#EEEEEE" }}>
 			<RegisterForm />
 		</div>
 	)
