@@ -598,6 +598,7 @@ def get_posts():
         return jsonify({"message": "Ocurrió un error al obtener los posts", "error": str(e)}), 500
 
 
+
 @api.route('/provider_information', methods=['GET'])
 @jwt_required() 
 def provider_information():
@@ -618,6 +619,28 @@ def provider_information():
         service_data = [history.serialize() for history in service_history]
         post_data = [post.serialize() for post in service_posts]
 
+        post_data = []
+        for post in service_posts:
+            reviews = Review.query.filter_by(post_id=post.id).all() 
+            
+            reviews_data = [review.serialize() for review in reviews]
+
+            # Calcular el promedio de rating
+            if reviews:
+                average_rating = sum([review.rating for review in reviews if review.rating is not None]) / len(reviews)
+                average_rating = int(average_rating)
+            else:
+                average_rating = None  
+
+            post_info = post.serialize()
+            post_info['reviews'] = reviews_data
+            post_info['average_rating'] = average_rating
+
+            post_data.append(post_info)
+
+
+        service_data = [history.serialize() for history in service_history]
+
         # Retornar la información personal del proveedor, los servicios prestados y las publicaciones
         return jsonify({
             "provider_info": provider.serialize(),
@@ -627,7 +650,6 @@ def provider_information():
 
     except Exception as e:
         return jsonify({"msg": "An error occurred", "error": str(e)}), 500
-
 
 @api.route('/edit_post/<int:post_id>', methods=['PUT'])
 @jwt_required()
