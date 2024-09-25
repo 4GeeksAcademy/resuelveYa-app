@@ -5,6 +5,7 @@ import { Jumbotron } from "../component/Jumbotron.jsx";
 import { ListServices } from "../component/ListServices.jsx";
 import { ChatOpenia } from "../component/ChatOpenia.jsx"
 import "../../styles/home.css";
+import { Footer } from "../component/Footer.jsx";
 
 
 
@@ -16,6 +17,7 @@ export const Home = () => {
 			<Jumbotron />
 			<ListServices />
 			<ChatOpenia />
+			<Footer />
 		</div>
 	);
 };

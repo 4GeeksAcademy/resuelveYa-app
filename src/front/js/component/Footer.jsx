@@ -58,12 +58,15 @@ export const Footer = () => {
 								<div className='profile-details w-100'>
 									<h3 className='text-center fs-4 title-car m-0 mb-1'>Maguila</h3>
 									<div className='d-flex gap-4 justify-content-center align-items-center '>
-									<a className='a-footer' href="https://github.com/" target="_blank" rel="noopener noreferrer">
-										<i className="fa-brands fa-github i-footer i-github"></i>
-									</a>
-									<a className='a-footer' href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer">
-										<i className="fa-brands fa-linkedin i-footer i-link"></i>
-									</a>
+										<a className='a-footer'>
+											<i className="fa-brands fa-instagram i-footer i-insta"></i>
+										</a>
+										<a>
+											<i className="fa-brands fa-square-facebook i-footer i-face"></i>
+										</a>
+										<a className='a-footer'>
+											<i className="fa-brands fa-linkedin i-footer i-link"></i>
+										</a>
 									</div>
 								</div>
 							</div>
