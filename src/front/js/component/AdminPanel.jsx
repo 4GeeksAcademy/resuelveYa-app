@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import './styles/adminPanel.css'
 
 export const AdminPanel = () => {
     const { actions } = useContext(Context);
@@ -56,51 +57,50 @@ export const AdminPanel = () => {
         }
     };
 
-
     return (
-        <div className="p-5" style={{ borderRadius: '10px' }}>
-            <h1 className="text-center mb-5">Perfil de Administrador</h1>
+        <div className="p-4 admin-panel">
+            <h1 className="text-center mb-4">Perfil de Administrador</h1>
+
             {/* Mostrar alerta condicionalmente */}
             {alertMessage && (
                 <div className={`alert alert-${alertType}`} role="alert">
                     {alertMessage}
                 </div>
             )}
-            <ul className="nav nav-tabs" style={{ marginTop: "70px" }}>
+
+            <ul className="nav nav-tabs" style={{ marginTop: "30px" }}>
                 <li className="nav-item col-6">
                     <a
                         className={`nav-link text-center ${activeTab === "clientes" ? "active" : ""}`}
                         id="clientes-tab"
-                        data-bs-toggle="tab"
                         href="#clientes"
                         role="tab"
                         aria-controls="clientes"
                         aria-selected={activeTab === "clientes"}
                         style={{
                             backgroundColor: activeTab === "clientes" ? '#fff' : '#e0e0e0',
-                            color: activeTab === "clientes" ? '#000' : '#555'
+                            color: activeTab === "clientes" ? '#000' : '#555',
                         }}
                         onClick={() => changeTab("clientes")}
                     >
-                        Lista de Clientes
+                        Clientes
                     </a>
                 </li>
                 <li className="nav-item col-6">
                     <a
                         className={`nav-link text-center ${activeTab === "proveedores" ? "active" : ""}`}
                         id="proveedores-tab"
-                        data-bs-toggle="tab"
                         href="#proveedores"
                         role="tab"
                         aria-controls="proveedores"
                         aria-selected={activeTab === "proveedores"}
                         style={{
                             backgroundColor: activeTab === "proveedores" ? '#fff' : '#e0e0e0',
-                            color: activeTab === "proveedores" ? '#000' : '#555'
+                            color: activeTab === "proveedores" ? '#000' : '#555',
                         }}
                         onClick={() => changeTab("proveedores")}
                     >
-                        Lista de Proveedores
+                        Proveedores
                     </a>
                 </li>
             </ul>
@@ -108,64 +108,68 @@ export const AdminPanel = () => {
             <div className="tab-content mt-3">
                 {/* Tab 1: Lista de Clientes */}
                 <div className={`tab-pane fade ${activeTab === "clientes" ? "show active" : ""}`} id="clientes" role="tabpanel" aria-labelledby="clientes-tab">
-                    <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nombres y Apellidos</th>
-                                <th>Correo Electrónico</th>
-                                <th>Fecha de Registro</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {clients.map((client) => (
-                                <tr key={client.id}>
-                                    <td>{`${client.username} ${client.lastname}`}</td>
-                                    <td>{client.email}</td>
-                                    <td>{client.created_at}</td>
-                                    <td>
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={() => handleDelete(client.id)}
-                                        >
-                                            Borrar
-                                        </button>
-                                    </td>
+                    <div className="table-responsive">
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <th>Correo</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {clients.map((client) => (
+                                    <tr key={client.id}>
+                                        <td>{`${client.username} ${client.lastname}`}</td>
+                                        <td>{client.email}</td>
+                                        <td>{client.created_at}</td>
+                                        <td>
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDelete(client.id)}
+                                            >
+                                                Borrar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {/* Tab 2: Lista de Proveedores */}
                 <div className={`tab-pane fade ${activeTab === "proveedores" ? "show active" : ""}`} id="proveedores" role="tabpanel" aria-labelledby="proveedores-tab">
-                    <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nombres y Apellidos</th>
-                                <th>Correo Electrónico</th>
-                                <th>Categoría de Servicio</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {providers.map((provider) => (
-                                <tr key={provider.id}>
-                                    <td>{`${provider.username} ${provider.lastname}`}</td>
-                                    <td>{provider.email}</td>
-                                    <td>{provider.service_type}</td>
-                                    <td>
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={() => handleDelete(provider.id)}
-                                        >
-                                            Borrar
-                                        </button>
-                                    </td>
+                    <div className="table-responsive">
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <th>Correo</th>
+                                    <th>Categoría</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {providers.map((provider) => (
+                                    <tr key={provider.id}>
+                                        <td>{`${provider.username} ${provider.lastname}`}</td>
+                                        <td>{provider.email}</td>
+                                        <td>{provider.service_type}</td>
+                                        <td>
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDelete(provider.id)}
+                                            >
+                                                Borrar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

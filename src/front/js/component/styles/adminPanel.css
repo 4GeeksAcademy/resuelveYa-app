@@ -1,0 +1,36 @@
+.admin-panel {
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .admin-panel {
+        padding: 10px;
+    }
+
+    .nav-tabs .nav-item {
+        flex: 1 1 50%;
+    }
+
+    .table-responsive {
+        font-size: 12px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 5px;
+        text-align: center;
+    }
+
+    .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-sm {
+        font-size: 0.75rem;
+    }
+}

@@ -1,0 +1,9 @@
+.admin-profile {
+    margin-top: 100px;
+}
+
+@media (max-width: 768px) {
+    .admin-profile {
+        margin-top: 50px !important;
+    }
+}
