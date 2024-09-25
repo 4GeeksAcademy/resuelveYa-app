@@ -17,17 +17,17 @@ class User(db.Model):
     username = db.Column(db.String(250), nullable=False)
     lastname = db.Column(db.String(250), nullable=False)
     dni = db.Column(db.String(50), unique=True, nullable=False)
-    role = db.Column(db.String(50), nullable=False)  # 'proveedor o cliente'
+    role = db.Column(db.String(50), nullable=False)  
     service_type = db.Column(db.String(100), nullable=True)
     phone = db.Column(db.String(150), nullable= True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
-    profile_image = db.Column(db.String(255), nullable=True) # almacenar las imagenes
+    profile_image = db.Column(db.String(255), nullable=True) 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    reset_code = db.Column(db.String(6), nullable=True)  # Código de restablecimiento agregado
-    reset_code_expiration = db.Column(db.DateTime, nullable=True)  # Fecha de expiración agregado
+    reset_code = db.Column(db.String(6), nullable=True)  
+    reset_code_expiration = db.Column(db.DateTime, nullable=True)  
 
-    # Relación con ServicePost
+ 
     service_posts = db.relationship('ServicePost', back_populates='user', cascade="all, delete", lazy=True)
 
     def __repr__(self):
@@ -72,7 +72,7 @@ class ServicePost(db.Model):
     description = db.Column(db.String(500), nullable=False)
     service_type = db.Column(db.String(100), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     post_img = db.Column(db.String(400), nullable=True)
@@ -83,29 +83,30 @@ class ServicePost(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "title": self.title, #recibido desde el front --title
-            "description": self.description, # recibido desde el front --description
-            "service_type": self.service_type, # recibido desde el front --service_type
+            "title": self.title, 
+            "description": self.description,
+            "service_type": self.service_type, 
             "user_id": self.user_id,
             "user_name": self.user.username,
             "user_lastname": self.user.lastname,
             "user_phone": self.user.phone,
+            "user_profile":self.user.profile_image,
             "created_at": self.created_at.strftime('%d/%m/%Y %H:%M'),
-            "post_img": self.post_img, # recibido desde el front --post_img
-            "location": self.location # recibido desde el front  --location
+            "post_img": self.post_img, 
+            "location": self.location 
         }
    
 class ServiceHistory(db.Model):
     __tablename__ = 'service_history'
     id = db.Column(db.Integer, primary_key=True)
-    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
-    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
+    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id', ondelete='SET NULL'), nullable=False)
 
-    payment_method = db.Column(db.String(255), nullable=True)  # 'Tarjeta de crédito', 'Tarjeta de débito'
-    payment_id = db.Column(db.String(100), nullable=True)  # ID de la transacción desde la pasarela de pagos
-    amount_paid = db.Column(db.Float, nullable=True)  # Monto pagado
-    transaction_date = db.Column(db.DateTime, default=datetime.utcnow)  # Fecha de la transacción
+    payment_method = db.Column(db.String(255), nullable=True)  
+    payment_id = db.Column(db.String(100), nullable=True)  
+    amount_paid = db.Column(db.Float, nullable=True) 
+    transaction_date = db.Column(db.DateTime, default=datetime.utcnow) 
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -128,12 +129,11 @@ class Payment(db.Model):
     __tablename__ = 'payments'
     id = db.Column(db.Integer, primary_key=True)
     service_history_id = db.Column(db.Integer, db.ForeignKey('service_history.id', ondelete='CASCADE'), nullable=False)
-    payment_method = db.Column(db.String(255), nullable=False)  # Tarjeta de crédito, débito, etc.
-    payment_id = db.Column(db.String(100), unique=True, nullable=False)  # ID de la transacción del procesador de pagos
-    amount_paid = db.Column(db.Float, nullable=False)  # Monto pagado
+    payment_method = db.Column(db.String(255), nullable=False) 
+    payment_id = db.Column(db.String(100), unique=True, nullable=False)  
+    amount_paid = db.Column(db.Float, nullable=False) 
     payment_date = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Relación con ServiceHistory
     service_history = db.relationship('ServiceHistory', backref='payments', lazy=True)
 
     def serialize(self):
@@ -150,15 +150,15 @@ class Review(db.Model):
     __tablename__ = 'reviews'
     id = db.Column(db.Integer, primary_key=True)
 
-    post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id', ondelete='SET NULL'), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
-    rating = db.Column(db.Integer, nullable=True)  # Calificación del 1 al 5
-    comment = db.Column(db.String(500), nullable=True)  # Comentarios
+    rating = db.Column(db.Integer, nullable=True)  
+    comment = db.Column(db.String(500), nullable=True)  
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    post = db.relationship('ServicePost', backref='reviews', lazy=True)
+    post = db.relationship('ServicePost', backref=db.backref('reviews', cascade="all, delete", lazy=True))
     user = db.relationship('User', backref='user_reviews', lazy=True)
 
     def serialize(self):
@@ -168,9 +168,9 @@ class Review(db.Model):
             "user_id": self.user_id,
             "rating": self.rating,
             "comment": self.comment,
-            "user_name": self.user.username,
-            "last_name": self.user.lastname,
-            "profile_img": self.user.profile_image,
+            "user_name": self.user.username if self.user else "Usuario eliminado",
+            "last_name": self.user.lastname if self.user else "",
+            "profile_img": self.user.profile_image if self.user else "",
             "created_at": self.created_at.strftime('%d/%m/%Y %H:%M')
         }
 
@@ -178,7 +178,7 @@ class Message(db.Model):
     __tablename__ = 'messages'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    role = db.Column(db.String(50), nullable=False)  # 'user' o 'system' 
+    role = db.Column(db.String(50), nullable=False)  
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

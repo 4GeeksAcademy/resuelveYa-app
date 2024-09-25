@@ -3,6 +3,11 @@ import './styles/footer.css'
 import bg from "../../img/bg-footer.png"
 import ubi from "../../img/ubi.png"
 import milton from "../../img/perfil-milton.jpg"
+import kevin from "../../img/kevin_img.jpg"
+import ericka from "../../img/perfil-ericka.jpg"
+// import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
+
+
 // import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
 
 
@@ -66,33 +71,27 @@ export const Footer = () => {
 									</div>
 								</div>
 							</div>
-							<div className="carousel-item bg-profiles">
+							<div className="carousel-item bg-profiles" style={{ backgroundImage: `url(${ericka})` }}>
 								<div className='profile-details w-100'>
 									<h3 className='text-center fs-4 title-car m-0 mb-1'>Ericka</h3>
 									<div className='d-flex gap-4 justify-content-center align-items-center '>
-										<a className='a-footer'>
-											<i className="fa-brands fa-instagram i-footer i-insta"></i>
+										<a className='a-footer' href="https://github.com/" target="_blank" rel="noopener noreferrer">
+											<i className="fa-brands fa-github i-footer i-github"></i>
 										</a>
-										<a>
-											<i className="fa-brands fa-square-facebook i-footer i-face"></i>
-										</a>
-										<a className='a-footer'>
+										<a className='a-footer' href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer">
 											<i className="fa-brands fa-linkedin i-footer i-link"></i>
 										</a>
 									</div>
 								</div>
 							</div>
-							<div className="carousel-item bg-profiles">
+							<div className="carousel-item bg-profiles" style={{ backgroundImage: `url(${kevin})` }}>
 								<div className='profile-details w-100'>
 									<h3 className='text-center fs-4 title-car m-0 mb-1'>Kevin</h3>
 									<div className='d-flex gap-4 justify-content-center align-items-center '>
-										<a className='a-footer'>
-											<i className="fa-brands fa-instagram i-footer i-insta"></i>
+										<a className='a-footer' href="https://github.com/Kevin962022" target="_blank" rel="noopener noreferrer">
+											<i className="fa-brands fa-github i-footer i-github"></i>
 										</a>
-										<a>
-											<i className="fa-brands fa-square-facebook i-footer i-face"></i>
-										</a>
-										<a className='a-footer'>
+										<a className='a-footer' href="https://www.linkedin.com/in/kevin-césar-villafuerte-montero-712520283" target="_blank" rel="noopener noreferrer">
 											<i className="fa-brands fa-linkedin i-footer i-link"></i>
 										</a>
 									</div>
@@ -102,15 +101,13 @@ export const Footer = () => {
 								<div className='profile-details w-100'>
 									<h3 className='text-center fs-4 title-car m-0 mb-1'>Max</h3>
 									<div className='d-flex gap-4 justify-content-center align-items-center '>
-										<a className='a-footer'>
-											<i className="fa-brands fa-instagram i-footer i-insta"></i>
+										<a className='a-footer' href="https://github.com/" target="_blank" rel="noopener noreferrer">
+											<i className="fa-brands fa-github i-footer i-github"></i>
 										</a>
-										<a>
-											<i className="fa-brands fa-square-facebook i-footer i-face"></i>
-										</a>
-										<a className='a-footer'>
+										<a className='a-footer' href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer">
 											<i className="fa-brands fa-linkedin i-footer i-link"></i>
 										</a>
+
 									</div>
 								</div>
 							</div>
@@ -118,13 +115,10 @@ export const Footer = () => {
 								<div className='profile-details w-100'>
 									<h3 className='text-center fs-4 title-car m-0 mb-1'>Milton Omar Y.</h3>
 									<div className='d-flex gap-4 justify-content-center align-items-center '>
-										<a className='a-footer'>
-											<i className="fa-brands fa-instagram i-footer i-insta"></i>
+										<a className='a-footer' href="https://github.com/" target="_blank" rel="noopener noreferrer">
+											<i className="fa-brands fa-github i-footer i-github"></i>
 										</a>
-										<a>
-											<i className="fa-brands fa-square-facebook i-footer i-face"></i>
-										</a>
-										<a className='a-footer'>
+										<a className='a-footer' href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer">
 											<i className="fa-brands fa-linkedin i-footer i-link"></i>
 										</a>
 									</div>

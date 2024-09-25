@@ -44,7 +44,7 @@ const Layout = () => {
                     <Route element={<CardPostsList />} path="/cardPostsList" />
 
                 </Routes>
-                <Footer />
+                {/* <Footer /> */}
             </BrowserRouter>
         </div>
     );
