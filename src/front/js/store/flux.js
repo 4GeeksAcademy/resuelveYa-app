@@ -11,7 +11,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: null,
 			dataNewPost: {},
 			reviews: [],
-			messages: []
+			messages: [],
+			colors: {
+				azul: "#8698C4",
+				celeste: "#E1E5F0",
+				gris: "#F5F5F5",
+				plomo: "#EEEEEE",
+				negro: "#88898D",
+				negro2: "#393C3F",
+				blanco: "#F5F5F5"
+			}
 		},
 		actions: {
 			register: async (values) => {

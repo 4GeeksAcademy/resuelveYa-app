@@ -8,7 +8,7 @@ export const Jumbotron = () => {
     const [searchLocation, setSearchLocation] = useState('')
 
     return (
-        <header className="header text-white d-flex flex-column justify-content-center align-items-center" style={{ backgroundImage: `url(${bgImage})` }}>
+        <header className="header text-white d-flex flex-column justify-content-center align-items-center">
             {/* <form className=''>
                 <div className='d-flex'>
                     <div className='bg-white w-100 mx-auto p-5 rounded container-form'>
@@ -33,7 +33,7 @@ export const Jumbotron = () => {
                 </div>
 
             </form> */}
-            <SearchFilter title={'Bienvenido a ResuelveYa'} subTitle={'¡Encuentra tu solución aquí!'}/>
+            <SearchFilter title={'Bienvenido a ResuelveYa'} subTitle={'¡Encuentra tu solución aquí!'} />
         </header>
     )
 }

@@ -84,7 +84,7 @@ export const ChatOpenia = () => {
                                                         parsedContent.text || parsedContent
                                                     ) : (
                                                         <>
-                                                            {parsedContent.text}
+                                                            {parsedContent.text || parsedContent}
                                                             {parsedContent.contacts && (
                                                                 <div className="d-flex flex-column gap-2">
                                                                     {parsedContent.contacts.map((contact, idx) => (
