@@ -16,10 +16,20 @@ import stripe
 from openai import OpenAI
 import json
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 api = Blueprint('api', __name__)
-# Allow CORS requests to this API
 CORS(api)
+
+
+## VARIABLES DE ENTORNO PARA CLAVES DE APIS
+####################################################################################################################
+stripe.api_key = os.getenv("STRIPE_API_KEY")
+resend.api_key = os.getenv("RESEND_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
+# MENSAJES DEFINIDOS PARA OPENAI
+####################################################################################################################
 messages = []
 
 system_role_1 = """
@@ -54,10 +64,7 @@ Si el mensaje del usuario no contiene información relacionada con los servicios
 debes responder con un mensaje genérico.
 Ej: "Lo siento, no puedo ayudarte con eso. ¿En qué más puedo ayudarte?"
 """
-# clave de stripe
-stripe.api_key = 'sk_test_51Q1FbbI0qjatixCToePA8DTZdA3NyWBbRJcZHOUrqcO5s5qNRA5l9FhhGTTjf62lIspx2UuiRWqrGlyIf5YBRrkE00W1fCX8OO'
-# Configura la API Key de Resend desde el entorno
-resend.api_key = os.getenv("RESEND_API_KEY")
+####################################################################################################################
 
 def process_payment(provider_id, service_post_id, amount, payment_method):
     # 1. Crear entrada en ServiceHistory
@@ -97,6 +104,7 @@ def process_payment(provider_id, service_post_id, amount, payment_method):
         "message": "Pago procesado con éxito"
     }
 
+####################################################################################################################
 users_created = False
 admin_created = False
 @api.before_app_request
@@ -221,7 +229,7 @@ def create_default_posts():
             db.session.add(post)
 
         db.session.commit()
-
+####################################################################################################################
 @api.before_app_request
 def initialize_admin():
         global admin_created
@@ -239,7 +247,7 @@ def initialize_admin():
             admin_created = True
         else:
             print("Administrador ya existe.")
-
+####################################################################################################################
 
 @api.route('/create_admin', methods=['POST'])
 def create_admin():
