@@ -6,12 +6,9 @@ import milton from "../../img/perfil-milton.jpg"
 // import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
 
 
-<<<<<<< HEAD
-=======
 // import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
 
 
->>>>>>> e23e49de7b6286169c9ac535b33a4f8ce66c1498
 // import foto1 from "../../img/electra.jpg";
 // import foto2 from "../../img/gasfitero.jpg";
 // import foto3 from "../../img/enfermera.jpg";

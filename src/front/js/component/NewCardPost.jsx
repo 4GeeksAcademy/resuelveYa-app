@@ -11,12 +11,10 @@ export const NewCardPost = ({ item, index }) => {
     const token = localStorage.getItem("token")
     const name = localStorage.getItem("name")
     const role = localStorage.getItem("role")
-    const [post_id, setPost_id] = useState()
-    // console.log(store.reviews)
-    console.log(item)
+    // console.log(item)
     const [rankings, setRankings] = useState({})
 
-    const handlerRating = async (index, postId) => {
+    const handlerRating = async (index) => {
         const newRanking = index + 1
         setRankings(prev => ({ ...prev, [item.post.id]: newRanking }))
         console.log(newRanking)
@@ -27,11 +25,6 @@ export const NewCardPost = ({ item, index }) => {
         await actions.newReview(data)
         console.log(data)
 
-    }
-
-    const handlerId = (item) => {
-        setPost_id(item)
-        console.log(item)
     }
 
     const handleSubmit = async (e) => {
@@ -45,50 +38,16 @@ export const NewCardPost = ({ item, index }) => {
         console.log({ 'datos enviados': newComment })
 
         try {
-
             const response = await actions.newReview(newComment)
 
             const data = await response.json()
-            e.target.comment.value = ""
-            console.log({"datos Recibidos": data})
+            e.target.comment.value = "";
+            // console.log({"datos Recibidos": data})
 
         } catch (err) {
             console.log(err)
         }
     }
-
-    // const formik = useFormik({
-    //     initialValues: {
-    //         comment: ''
-    //     },
-    //     validationSchema: Yup.object({
-    //         comment: Yup.string()
-    //             .min(8, "El comentario debe tener mínimo caracteres")
-    //             .required("No puedes enviar un comentario vacío"),
-    //     }),
-    //     onSubmit: async (values, { resetForm }) => {
-    //         console.log('Formulario enviado con valores:', JSON.stringify(values, null, 2));
-    //         const data_comment = {
-    //             post_id: post_id,
-    //             comment: values.comment
-    //         }
-    //         // console.log(data_comment)
-    //         try {
-    //             await actions.newReview(data_comment)
-    //             resetForm();
-
-    //         } catch (e) {
-    //             console.error(e)
-    //         }
-    //     },
-    // });
-
-    // useEffect(() => {
-    //     actions.getReviews()
-    //     // if( store.listServices.length === 0){
-    //     //     actions.getPostsProviders()
-    //     // }
-    // }, [])
 
     return (
         <div key={index} className="card mt-3">
@@ -223,7 +182,7 @@ export const NewCardPost = ({ item, index }) => {
                     }
                 </div>
             </div>
-            <hr className="m-0"></hr>
+            <hr className="m-0 pb-2"></hr>
             {/* Comentarios del post */}
             {
                 item.comments.map((comment, index) => (
@@ -231,31 +190,31 @@ export const NewCardPost = ({ item, index }) => {
                             {/* <div className="col-md-1">
                                         <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
                                         </div> */}
-                            <div className="col-md-12 form-floating mb-3 border rounded">
-                                <input value={comment.comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
-                                <label htmlFor="floatingPlaintextInput">{comment.user_name}</label>
+                            <div className="col-md-12 form-floating mb-2 border rounded">
+                                <textarea value={comment.comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
+                                <label htmlFor="floatingPlaintextInput">{comment.user_name} {comment.last_name}</label>
                             </div>
                         </div>
                     ))
             }
+            <hr className="m-0"></hr>
             {/* Box para agregar comentarios */}
             <form className="card-body row px-4" onSubmit={handleSubmit} >
-                <div className="col-md-2">
-                    <img src={item.post.post_img} alt="" className="profile-image-client rounded-circle" />
-                </div>
-                <div className="col-md-10 form-floating mb-1 border rounded-2">
-                    <input type="text"
-                        className="form-control-plaintext"
+                {/* <div className="col-md-2">
+                    <img src={item.post.profile_img} alt="" className="profile-image-client rounded-circle" />
+                </div> */}
+                <div className="col-md-10 form-floating mb-1 border rounded-2 pt-4">
+                    <textarea type="text"
+                        className="form-control-plaintext py-1"
                         id="comment"
                         name="comment"
                     />
-                    <label htmlFor="floatingPlaintextInput">{}</label>
-                    <div className="text-end pb-3">
+                    <label htmlFor="floatingPlaintextInput">{name}</label>
+                    <div className="text-end">
                         <button className="btn" type="submit" id="comments">Enviar</button>
                     </div>
                 </div>
             </form>
-            <hr className="m-0"></hr>
         </div>
     );
 };
