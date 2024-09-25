@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { useFormik } from 'formik';
@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import "./styles/loginForm.css"
 
 export const LoginForm = () => {
-    const{actions} = useContext(Context)
+    const { actions } = useContext(Context)
     const navigate = useNavigate()
     const [showAlert, setShowAlert] = useState({ visible: false, message: "", type: "" })
     const formik = useFormik({
@@ -23,8 +23,8 @@ export const LoginForm = () => {
                 .required("La contraseña es requerida"),
         }),
         onSubmit: async (values, { resetForm }) => {
-            console.log('Formulario enviado con valores:', JSON.stringify(values, null, 2));
-            try { 
+
+            try {
                 let result = await actions.login(values)
                 if (result.token) {
                     resetForm();
@@ -48,8 +48,8 @@ export const LoginForm = () => {
             }
         },
     });
-	return (
-        <div className="login text-center bg-white rounded-3 p-4 border border-dark-subtle">
+    return (
+        <div className="login text-center bg-white p-5 border rounded-3">
             {showAlert.visible && (
                 <div className={`alert alert-${showAlert.type} p-2`} role="alert">
                     {showAlert.message}
@@ -85,18 +85,18 @@ export const LoginForm = () => {
                         <div className="text-danger">{formik.errors.password}</div>
                     ) : null}
                 </div>
-                <div className="text-end m-0">
+                <div className="text-end mt-2">
                     <Link to="/SendVerificationCode" className="fw-semibold text-black p-0">
                         Olvidé mi contraseña
                     </Link>
                 </div>
                 <div className="col-md-12">
-                    <button className="btn btn-light w-100 mt-2 fw-semibold border border-black fw-bold" type="submit">Ingresar</button>
+                    <button className="btn btn-dark w-100 mt-2 text-uppercase rounded-pill" type="submit">Ingresar</button>
                 </div>
             </form>
-            <div className="mt-4 p-0">
+            <div className="mt-4">
                 <p className="m-0">¿Aun no tienes cuenta? <Link to="/register" className="text-black fw-semibold">Regístrate</Link></p>
             </div>
         </div>
-	);
+    );
 };

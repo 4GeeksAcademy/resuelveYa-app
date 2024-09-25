@@ -94,7 +94,7 @@ function RegisterForm() {
     };
 
     return (
-        <div className='rounded-3 border text-black p-5' style={{ maxWidth: "900px" }}>
+        <div className='border rounded-3 text-black bg-white p-5' style={{ maxWidth: "900px" }}>
             {showAlert && (
                 <div className="alert alert-success" role="alert">
                     Usuario creado exitosamente
@@ -279,7 +279,7 @@ function RegisterForm() {
                 <div className='d-flex justify-content-center'>
                     <button
                         type="submit"
-                        className="w-100 btn btn-light text-uppercase rounded-pill mt-2"
+                        className="w-100 btn btn-dark text-uppercase rounded-pill mt-2"
                     >
                         Registrarme
                     </button>
