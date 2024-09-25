@@ -7,8 +7,8 @@ export const CardService = ({ user }) => {
             <div className='img d-flex justify-content-center align-items-center img-container' >
                 <img src={user.post.post_img}/>
             </div>
+            <h5 className='m-0'>{user.post.title}</h5>
             <div className='p-2'>
-                <h5 className='m-0'>{user.post.title}</h5>
                 <p className='text-center m-0 fs-5 fw-semibold text-secondary'>{user.post.username}</p>
                 <div className='border rounded p-2'>
                     <p className='text-start m-0'><span className='fw-bold'>Descripcion: </span>{user.post.description}</p>
