@@ -150,7 +150,7 @@ export const NewCardPost = ({ item, index }) => {
                         </div>
                     } */}
                     {/* calificar */}
-                    {role === 'user' ?
+                    {store.role.user === 'client' ?
                         <div className="col-12 col-md-12 pt-2"> Calificar
                             {
                                 [... new Array(5)].map((_, indx) => {
@@ -167,7 +167,7 @@ export const NewCardPost = ({ item, index }) => {
                                 })
                             }
                         </div> :
-                        <div className="col-12 col-md-6 pt-2">
+                        <div className="col-12 col-md-12 pt-2">
                             <Link to="/login" className="text-black mb-2">
                                 <div>
                                     <i className='bx bx-star fa-lg'></i>
@@ -199,7 +199,7 @@ export const NewCardPost = ({ item, index }) => {
             }
             <hr className="m-0"></hr>
             {/* Box para agregar comentarios */}
-            {role === 'user' &&
+            {store.role.user === 'client' &&
                 <form className="card-body row px-4 pt-2 pb-3" onSubmit={handleSubmit} >
                     {/* <div className="col-md-2">
                     <img src={item.post.profile_img} alt="" className="profile-image-client rounded-circle" />
