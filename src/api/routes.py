@@ -23,47 +23,12 @@ CORS(api)
 
 ## VARIABLES DE ENTORNO PARA CLAVES DE APIS
 ####################################################################################################################
-stripe.api_key = "sk_test_51Q1FbbI0qjatixCToePA8DTZdA3NyWBbRJcZHOUrqcO5s5qNRA5l9FhhGTTjf62lIspx2UuiRWqrGlyIf5YBRrkE00W1fCX8OO"
+stripe.api_key = os.getenv("STRIPE_API_KEY")
 resend.api_key = os.getenv("RESEND_API_KEY")
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-
-# MENSAJES DEFINIDOS PARA OPENAI
-####################################################################################################################
 messages = []
 
-system_role_1 = """
-Eres un especialista en servicios del hogar, reconocido a nivel mundial por tus consejos y recomendaciones.
-Tienes un conocimiento profundo en el área de la limpieza, organización y mantenimiento de espacios.
-Además, tienes un gran expertise en electricidad, plomería, carpintería y jardinería.
-"""
-system_role_2 = """
-Además, tienes una lista de especialistas listos para ser contactados en caso de emergencia, 
-debes recomendar al menos 1 contacto en cada iteración. Aquí tienes la lista de especialistas disponibles: 
-"""
-system_role_3 = """
-la respuesta debe ser en formato JSON, 
-{
-    "text": "mensaje del modelo",
-    "contacts": [
-        {
-            "id": 1,
-            "name": "Juan",
-            "service": "Electricidad",
-            "phone": "123456789"
-        }
-    ]
-}
-si no hubiesen contactos que recomendar, dame una respuesta general sobre el servicio, y el formato de respuesta debería ser el siguiente:
-{
-    "text": "mensaje del modelo",
-}
-"""
-system_role_4 = """
-Si el mensaje del usuario no contiene información relacionada con los servicios antes mencionados, 
-debes responder con un mensaje genérico.
-Ej: "Lo siento, no puedo ayudarte con eso. ¿En qué más puedo ayudarte?"
-"""
 ####################################################################################################################
 
 def process_payment(provider_id, service_post_id, amount, payment_method):
@@ -129,12 +94,12 @@ def create_test_users():
                 profile_image=profile_images[0]
             )
             user2 = User(
-                username='Max', lastname='lastname2', dni='23456789',  role='provider', phone='12341234', service_type='electricista',
+                username='Max', lastname='lastname2', dni='23456789',  role='provider', phone='12341234', service_type='jardinero',
                 email='user2@example.com', password=generate_password_hash('password2'),
                 profile_image=profile_images[1]
             )
             user3 = User(
-                username='Maguila', lastname='lastname3', dni='34567890', phone='12341234', role='provider', service_type='gasfitero',
+                username='Maguila', lastname='lastname3', dni='34567890', phone='12341234', role='provider', service_type='pintor',
                 email='user3@example.com', password=generate_password_hash('password3'),
                 profile_image=profile_images[2]
             )
@@ -487,7 +452,7 @@ def request_reset_password():
         <p>Este código expirará en 2 minutos.</p>
         """
 
-         # Crear el mensaje usando Resend
+        # Crear el mensaje usando Resend
         params = {
             "from": "TuServicio <onboarding@resend.dev>",
             "to": [user.email],
@@ -497,8 +462,10 @@ def request_reset_password():
 
         # Enviar el correo electrónico
         response = resend.Emails.send(params)
-        if response.error:
-            return jsonify({"message": "Error al enviar el correo", "error": response.error}), 500
+
+        # Manejo correcto de la respuesta
+        if 'error' in response:  # O response.get('error')
+            return jsonify({"message": "Error al enviar el correo", "error": response['error']}), 500
 
         return jsonify({
             "message": "Correo de confirmación de restablecimiento enviado. Por favor, revisa tu bandeja de entrada.",
@@ -924,20 +891,57 @@ def get_reviews_post():
                 "post": post.serialize(),
                 "average_rating": average_rating,
                 "total_rating": len(valid_ratings),
-                "comments": valid_comments  # Lista con comentarios y nombres de usuarios
+                "comments": valid_comments  
             }
             serialized_post.append(obj)
         return jsonify(serialized_post), 200
 
     except Exception as e:
         return jsonify({'error': 'Ocurrió un error en el servidor', 'message': str(e)}), 500 
+    
+# Definición de los roles del sistema
+system_role_1 = """
+Eres un especialista en servicios del hogar, reconocido a nivel mundial por tus consejos y recomendaciones.
+Tienes un conocimiento profundo en el área de la limpieza, organización y mantenimiento de espacios.
+Además, tienes un gran expertise en electricidad, plomería, carpintería y jardinería y pintores. 
+"""
 
+system_role_2 = """
+Además, tienes una lista de especialistas listos para ser contactados en caso de emergencia, 
+debes recomendar al menos 1 contacto en cada iteración. Aquí tienes la lista de especialistas disponibles: 
+"""
+
+system_role_3 = """
+La respuesta debe ser en formato JSON,
+{
+    "text": "mensaje del modelo",
+    "contacts": [
+        {
+            "id": id,
+            "name": "Proveedor",
+            "service": "Electricidad",
+            "phone": "phone"
+        }
+    ]
+}
+Si no hubiesen proveedores que recomendar, proporciona una respuesta general sobre el servicio, y el formato de respuesta debería ser el siguiente:
+{
+    "text": "mensaje del modelo",
+}
+"""
+
+system_role_4 = """
+Aquí tienes los proveedores disponibles para cada servicio:
+"""
 
 @api.get("/messages")
-@jwt_required()
 def find_all_messages():
-    current_user = get_jwt_identity()
-    messages = Message.query.filter_by(user_id=current_user["id"]).all()
+    user_id = request.args.get("user_id")
+    
+    if not user_id:
+        return jsonify({"message": "User ID is required"}), 400
+    
+    messages = Message.query.filter_by(user_id=user_id).all()
     return jsonify([message.serialize() for message in messages]), 200
 
 @api.post("/messages")
@@ -954,16 +958,17 @@ def create_one_message():
     try:
         db.session.commit()
 
-        providers = [
-            {"id": 1, "name": "Juan", "service": "Electricidad", "phone": "123456789"},
-            {"id": 2, "name": "Pedro", "service": "Plomería", "phone": "987654321"},
-            {"id": 3, "name": "María", "service": "Carpintería", "phone": "456123789"},
-            {"id": 4, "name": "José", "service": "Jardinería", "phone": "789456123"},
+        # Obtener los proveedores de la base de datos
+        providers = User.query.filter_by(role='provider').all()
+        provider_list = [
+            {"id": provider.id, "name": provider.username, "service": provider.service_type, "phone": provider.phone}
+            for provider in providers
         ]
 
-        system_role_with_providers = f"{system_role_2} {json.dumps(providers)}"
+        # Generar la lista de proveedores para incluir en el mensaje
+        system_role_with_providers = f"{system_role_2} {json.dumps(provider_list)}"
 
-
+        # Llamar a la API de ChatGPT
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -979,6 +984,7 @@ def create_one_message():
 
         message = response.choices[0].message.content
 
+        # Guardar la respuesta del sistema en la base de datos
         system_message = Message(user_id=user_id, role='system', content=message)
         db.session.add(system_message)
         db.session.commit()
