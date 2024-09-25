@@ -10,7 +10,6 @@ export const NewCardPost = ({ item, index }) => {
     const { store, actions } = useContext(Context)
     const token = localStorage.getItem("token")
     const name = localStorage.getItem("name")
-    const role = localStorage.getItem("role")
     // console.log(item)
     const [rankings, setRankings] = useState({})
 
@@ -121,7 +120,7 @@ export const NewCardPost = ({ item, index }) => {
             {/* Boton comentar y calificar */}
             <div className="card-body px-4 p-2">
                 <div className="row text-end">
-                    {/* {role === 'user'?
+                    {/* {token?
                         <div className="col-12 col-md-6">
                             <button type="button" className="btn btn-light">
                                 <div className="row">
@@ -150,7 +149,7 @@ export const NewCardPost = ({ item, index }) => {
                         </div>
                     } */}
                     {/* calificar */}
-                    {store.role.user === 'client' ?
+                    {token?
                         <div className="col-12 col-md-12 pt-2"> Calificar
                             {
                                 [... new Array(5)].map((_, indx) => {
@@ -199,7 +198,7 @@ export const NewCardPost = ({ item, index }) => {
             }
             <hr className="m-0"></hr>
             {/* Box para agregar comentarios */}
-            {store.role.user === 'client' &&
+            {token &&
                 <form className="card-body row px-4 pt-2 pb-3" onSubmit={handleSubmit} >
                     {/* <div className="col-md-2">
                     <img src={item.post.profile_img} alt="" className="profile-image-client rounded-circle" />
