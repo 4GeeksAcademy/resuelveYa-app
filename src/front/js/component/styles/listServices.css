@@ -10,3 +10,67 @@
     padding: 20px; 
     max-width: 1200px;
 }
+
+.list-card-div {
+    height: 550px;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.list-card-div img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.list-card {
+    position: relative;
+    width: 100%;
+}
+
+.list-card-h2 {
+    text-align: center;
+    color: white;
+    max-width: 300px;
+    background-color: rgba(0, 0, 0, 0.438);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.list-card-1 {
+    background-image: url('https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-card-2 {
+    background-image: url('https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-card-3 {
+    background-image: url('https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-card-4 {
+    background-image: url('https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

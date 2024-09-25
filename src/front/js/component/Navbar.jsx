@@ -42,6 +42,13 @@ export const Navbar = () => {
 	// 	setPosts(dataPosts)
 	// 	console.log(dataPosts)
 	// }
+	// Verificar si el rol es admin, cliente o proveedor para redirigir a la página correcta
+	const getProfileLink = () => {
+		if (store.role === 'admin') {
+			return '/adminprofile';
+		}
+		return '/userprofile';
+	};
 
 	useEffect(() => {
 		if (store.username) {
@@ -52,18 +59,6 @@ export const Navbar = () => {
 
 	}, [store.username])
 
-	// Verificar si el rol es admin, cliente o proveedor para redirigir a la página correcta
-	const getProfileLink = () => {
-		if (store.role === 'admin') {
-			return '/adminprofile';
-		}
-		return '/userprofile';
-	};
-
-	// useEffect(() => {
-	// 	actions.setListServices(filterByCategory)
-
-	// }, [valueInput, category])
 
 	useEffect(() => {
 		// dataPosts()
