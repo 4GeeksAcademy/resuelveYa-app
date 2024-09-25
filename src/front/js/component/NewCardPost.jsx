@@ -53,8 +53,8 @@ export const NewCardPost = ({ item, index }) => {
         <div key={index} className="card mt-3">
             <div className="card-header">
                 <div className="row">
-                    <div className="col-12 col-md-2 py-3 text-center">
-                        <img src={item.post.post_img} alt="" className="photo rounded-circle" />
+                    <div className="col-6 col-md-2 py-3 pe-0 text-center">
+                        <img src={item.post.post_img} alt="" className="photo rounded-circle w-100" />
                     </div>
                     <div className="col-12 col-md-10 d-flex flex-column justify-content-center ps-3">
                         <div className="row">
@@ -63,11 +63,11 @@ export const NewCardPost = ({ item, index }) => {
                             </div>
                             {token ?
                                 <div className="col-12 col-md-3 ps-0 text-center">
-                                    <i className='bx bxs-phone text-end text-primary fa-lg pt-'></i>{item.post.user_phone}
+                                    <i className='bx bxs-phone text-end text-danger fa-lg pt-'></i>{item.post.user_phone}
                                 </div> :
                                 <div className="col-12 col-md-3 ps-0 text-center">
                                     <Link to="/login" className="text-black mb-2">
-                                        <i className='bx bxs-phone text-end text-primary fa-lg pt-'></i> Contacto
+                                        <i className='bx bxs-phone text-end text-danger fa-lg pt-'></i> Contacto
                                     </Link>
                                 </div>
                             }
@@ -97,7 +97,7 @@ export const NewCardPost = ({ item, index }) => {
                         </div>
                         <div className="row">
                             <div className="col-12 col-md-3">
-                                <p className="m-0 text-capitalize fw-semibold">{item.post.service_type}</p>
+                                <p className="m-0 text-capitalize fw-semibold text-info-emphasis">{item.post.service_type}</p>
                             </div>
                             <div className="col-12 col-md-3">
                                 <i className="fa-solid fa-location-dot text-center"></i>{item.post.location}
@@ -108,20 +108,20 @@ export const NewCardPost = ({ item, index }) => {
             </div>
             {/* Descripcion y imagen del post */}
             <div className="card-body p-3">
-                <div className="row">
-                    <div className="col-12 col-md-9">
+                {/* <div className="row"> */}
+                    <div className="col-12 col-md-12">
                         <p className="card-text p-2">{item.post.description}</p>
                     </div>
-                    <div className="col-12 col-md-3 text-center">
+                    {/* <div className="col-12 col-md-3 text-center">
                         <img src={item.post.post_img} alt="" className="photo border-2" />
-                    </div>
-                </div>
+                    </div> */}
+                {/* </div> */}
             </div>
             <hr className="m-0"></hr>
             {/* Boton comentar y calificar */}
             <div className="card-body px-4 p-2">
-                <div className="row text-center">
-                    {role == "user" ?
+                <div className="row text-end">
+                    {/* {role === 'user'?
                         <div className="col-12 col-md-6">
                             <button type="button" className="btn btn-light">
                                 <div className="row">
@@ -148,15 +148,15 @@ export const NewCardPost = ({ item, index }) => {
                                 </button>
                             </Link>
                         </div>
-                    }
+                    } */}
                     {/* calificar */}
-                    {role == "user" ?
-                        <div className="col-12 col-md-6 pt-2"> Calificar
+                    {role === 'user' ?
+                        <div className="col-12 col-md-12 pt-2"> Calificar
                             {
                                 [... new Array(5)].map((_, indx) => {
                                     const isRated = rankings[item.post.id] > indx; //verificar si la estrella esta calificada
                                     return isRated ?
-                                        <i className='bx bxs-star text-primary fa-lg'
+                                        <i className='bx bxs-star text-info-emphasis fa-lg'
                                             key={indx}
                                             onClick={() => handlerRating(indx, item.post.id)}>
                                         </i> :
@@ -192,29 +192,31 @@ export const NewCardPost = ({ item, index }) => {
                                         </div> */}
                             <div className="col-md-12 form-floating mb-2 border rounded">
                                 <textarea value={comment.comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
-                                <label htmlFor="floatingPlaintextInput">{comment.user_name} {comment.last_name}</label>
+                                <label className="fw-semibold text-info-emphasis" htmlFor="floatingPlaintextInput">{comment.user_name} {comment.last_name}</label>
                             </div>
                         </div>
                     ))
             }
             <hr className="m-0"></hr>
             {/* Box para agregar comentarios */}
-            <form className="card-body row px-4" onSubmit={handleSubmit} >
-                {/* <div className="col-md-2">
+            {role === 'user' &&
+                <form className="card-body row px-4 pt-2 pb-3" onSubmit={handleSubmit} >
+                    {/* <div className="col-md-2">
                     <img src={item.post.profile_img} alt="" className="profile-image-client rounded-circle" />
-                </div> */}
-                <div className="col-md-10 form-floating mb-1 border rounded-2 pt-4">
-                    <textarea type="text"
-                        className="form-control-plaintext py-1"
-                        id="comment"
-                        name="comment"
-                    />
-                    <label htmlFor="floatingPlaintextInput">{name}</label>
-                    <div className="text-end">
-                        <button className="btn" type="submit" id="comments">Enviar</button>
+                    </div> */}
+                    <div className="col-md-12 form-floating pb-1 border rounded-2 pt-4">
+                        <textarea type="text"
+                            className="form-control-plaintext pt-2 pb-0"
+                            id="comment"
+                            name="comment"
+                        />
+                        <label className="fw-semibold text-info-emphasis" htmlFor="floatingPlaintextInput">{name}, escribe un comentario aqui...</label>
+                        <div className="text-end">
+                            <button className="btn btn-light text-info-emphasis" type="submit" id="comments">Enviar</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            }
         </div>
     );
 };
