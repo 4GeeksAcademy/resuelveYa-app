@@ -23,7 +23,7 @@ CORS(api)
 
 ## VARIABLES DE ENTORNO PARA CLAVES DE APIS
 ####################################################################################################################
-stripe.api_key = os.getenv("STRIPE_API_KEY")
+stripe.api_key = "sk_test_51Q1FbbI0qjatixCToePA8DTZdA3NyWBbRJcZHOUrqcO5s5qNRA5l9FhhGTTjf62lIspx2UuiRWqrGlyIf5YBRrkE00W1fCX8OO"
 resend.api_key = os.getenv("RESEND_API_KEY")
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
