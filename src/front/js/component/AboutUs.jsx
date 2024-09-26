@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './styles/aboutUs.css'
+import { Context } from '../store/appContext'
 
 const AboutUs = () => {
+    const {store} = useContext(Context)
+    
     return (
         <div className='aboutUs py-3 w-100 mx-auto'>
             <div className='about-div-h2 shadow-and-bg shadow'>
