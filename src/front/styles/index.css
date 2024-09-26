@@ -1,3 +1,12 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+:root {
+    --azul: #8698C4;
+    --azul-oscuro-hover: #414d6d;
+    --celeste: #E1E5F0;
+    --gris: #F5F5F5;
+    --plomo: #88898D;
+    --negro: #393C3F;
+    --blanco: #F5F5F5;
+}
