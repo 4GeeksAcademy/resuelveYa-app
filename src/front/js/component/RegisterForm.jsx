@@ -3,7 +3,9 @@ import { Context } from "../store/appContext.js";
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import "./styles/registerForm.css";
 import TermsConditionsRegister from './TermsConditionsRegister.jsx'; // Importamos el nuevo componente
+
 
 function RegisterForm() {
     const { actions } = useContext(Context);
@@ -94,7 +96,7 @@ function RegisterForm() {
     };
 
     return (
-        <div className='border rounded-3 text-black bg-white p-5' style={{ maxWidth: "900px" }}>
+        <div className='register-form-container text-black p-5'>
             {showAlert && (
                 <div className="alert alert-success" role="alert">
                     Usuario creado exitosamente
@@ -105,7 +107,7 @@ function RegisterForm() {
 
             <form onSubmit={formik.handleSubmit} className='row g-4'>
                 {/* Select a rol */}
-                <div className="col-5 mb-3">
+                <div className="col-6 col-md-5 mb-3">
                     <label htmlFor="role" className="form-label">Regístrate como</label>
                     <select
                         name="role"
@@ -123,7 +125,7 @@ function RegisterForm() {
                     ) : null}
                 </div>
 
-                <div className="col-7 mb-3">
+                <div className="col-6 col-md-7 mb-3">
                     <label htmlFor="first_name" className="form-label">Nombres</label>
                     <input
                         id="first_name"
@@ -140,7 +142,7 @@ function RegisterForm() {
                     ) : null}
                 </div>
 
-                <div className="col-4 mb-3">
+                <div className="col-6 col-md-4 mb-3">
                     <label htmlFor="last_name" className="form-label">Apellidos</label>
                     <input
                         id="last_name"
@@ -157,7 +159,7 @@ function RegisterForm() {
                     ) : null}
                 </div>
 
-                <div className="col-4 mb-3">
+                <div className="col-6 col-md-4 mb-3">
                     <label htmlFor="identity_document" className="form-label">DNI</label>
                     <input
                         id="identity_document"
@@ -174,7 +176,7 @@ function RegisterForm() {
                     ) : null}
                 </div>
 
-                <div className="col-4 mb-3">
+                <div className="col-6 col-md-4 mb-3">
                     <label htmlFor="phone" className="form-label">Teléfono</label>
                     <input
                         id="phone"
@@ -279,7 +281,7 @@ function RegisterForm() {
                 <div className='d-flex justify-content-center'>
                     <button
                         type="submit"
-                        className="w-100 btn btn-dark text-uppercase rounded-pill mt-2"
+                        className="btn-register w-100 btn btn-dark text-uppercase rounded-pill mt-2"
                     >
                         Registrarme
                     </button>

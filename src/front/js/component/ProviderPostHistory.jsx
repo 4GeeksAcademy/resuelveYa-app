@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import "./styles/providerPostHistory.css";
 
 export const ProviderPostHistory = () => {
         const { store, actions } = useContext(Context)
@@ -10,7 +11,7 @@ export const ProviderPostHistory = () => {
                 actions.getProviderInformation()
         }, [])
         return (
-                <div className="my-5 p-4 rounded-3" style={{ backgroundColor: `${store.colors.celeste}`, width: "100%", maxWidth: "900px" }}>
+                <div className="posthistory-form-container my-5 p-4">
                         <div className="row m-0">
                                 <h3 className="col-md-8 fs-4 ps-0 fw-bold">Mis publicaciones:</h3>
                                 <Link to="/providernewpost" className="col-md-4 text-center mb-3">
@@ -22,14 +23,13 @@ export const ProviderPostHistory = () => {
                                         Aún no tienes publicaciones
                                 </div>
                                 : store.providerInfo?.service_posts.map((item, index) => (
-                                        <div key={index} className="border p-3 bg-white w-100 rounded">
-                                                <p><span className='fw-semibold'>Fecha de publicación:</span> {item.created_at}</p>
-                                                <hr className="m-0 pb-2"></hr>
+                                        <div key={index} className="card-posthistory p-3 bg-white w-100 m-0 mb-3">
+                                                {/* <p><span className='fw-semibold'>Fecha de publicación:</span> {item.created_at}</p> */}
                                                 <div className="row card-header pb-2" >
-                                                        <div className="col-12 col-md-2 pe-0 text-center">
-                                                                <img src={item.post_img} alt="" className="photo rounded-circle w-100 h-100" />
+                                                        <div className="col-4 col-md-2 pe-0 text-center mb-3">
+                                                                <img src={item.post_img} alt="" className="photo rounded-circle w-100" />
                                                         </div>
-                                                        <div className="col-12 col-md-10 d-flex flex-column justify-content-center ps-3">
+                                                        <div className="col-8 col-md-10 d-flex flex-column justify-content-center ps-3">
                                                                 <div className="row">
                                                                         <div className="col-12 col-md-9">
                                                                                 <h4 className="m-0 text-capitalize fw-bold">{item.title}</h4>
@@ -65,7 +65,7 @@ export const ProviderPostHistory = () => {
                                                                 </div>
                                                         </div>
                                                 </div>
-                                                <hr className="m-0 pb-2"></hr>
+                                                <hr className="m-0"></hr>
                                                 {/* Descripcion y imagen del post */}
                                                 < div className="card-body p-3" >
                                                         {/* <div className="row"> */}
@@ -77,11 +77,11 @@ export const ProviderPostHistory = () => {
                                                                 </div> */}
                                                         {/* </div>*/}
                                                 </div >
-                                                <hr className="m-0 pb-3"></hr>
+                                                <hr className="m-0 pb-2"></hr>
                                                 {/* Comentarios del post */}
                                                 {
                                                         item.reviews.length === 0 ?
-                                                                <div className="ps-3">
+                                                                <div className="card-body ps-3">
                                                                         Aún no tienes comentarios
                                                                 </div> :
                                                                 item.reviews.map((comment, index) => (
