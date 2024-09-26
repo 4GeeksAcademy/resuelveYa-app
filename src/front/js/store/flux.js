@@ -176,6 +176,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			deleteUser: async (userId) => {
+				if (!userId) {
+					console.error("User ID is missing.");
+					return { success: false, message: "User ID is required." };
+				}
+
+				const token = localStorage.getItem('token');
+				if (!token) {
+					console.error("Authorization token is missing.");
+					return { success: false, message: "Authorization token is required." };
+				}
+
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
 						method: "DELETE",
@@ -363,8 +374,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getAllMessages: async () => {
 				let token = localStorage.getItem('token')
+				const userId = localStorage.getItem('user_id');
+				if (!userId) {
+					console.error("User ID is missing");
+					return { success: false, message: "User ID is missing" };
+				}
+
 				try {
-					const response = await fetch(process.env.BACKEND_URL + "/api/messages", {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/messages?user_id=${userId}`, {
 						method: "GET",
 						headers: {
 							'Authorization': `Bearer ${token}`,

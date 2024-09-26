@@ -83,6 +83,7 @@ export const ChatOpenia = () => {
                                                     {msg.role === "user" ? (
                                                         parsedContent.text || parsedContent
                                                     ) : (
+                                                        
                                                         <>
                                                             {parsedContent.text || parsedContent}
                                                             {parsedContent.contacts && (
@@ -91,7 +92,7 @@ export const ChatOpenia = () => {
                                                                         <div key={idx} className="bg-light p-2 rounded">
                                                                             <a className="d-flex gap-2" href="#">
                                                                                 <span role="img" aria-label="phone">📞</span>
-                                                                                {contact.name} - {contact.phone}
+                                                                                {contact.name} ({contact.service}) - {contact.phone}
                                                                             </a>
                                                                         </div>
                                                                     ))}

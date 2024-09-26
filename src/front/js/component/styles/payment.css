@@ -7,6 +7,14 @@
     max-width: 400px; /* Ancho máximo del formulario */
 }
 
+.pay-history {
+    background-color: var(--celeste);
+}
+
+.post-history {
+    border-radius: 10px;
+}
+
 .card-preview {
     width: 100%;
     max-width: 400px; /* Ancho máximo de la tarjeta */
