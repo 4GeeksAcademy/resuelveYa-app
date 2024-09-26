@@ -5,113 +5,56 @@ import { Context } from "../store/appContext";
 export const ListServices = () => {
     const { actions, store } = useContext(Context)
     const [users, setUsers] = useState([])
-    const demoList = [
-        {
-            name: 'Pedrito',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Lunes a vieres',
-            service: 'Albañil'
-        },
-        {
-            name: 'Pedrito',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Martes y miercoles',
-            service: 'Plomero'
-        },
-        {
-            name: 'Me',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Miercoles',
-            service: 'Electricista'
-        },
-        {
-            name: 'Electrocutaste',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Lunes a vieres',
-            service: 'Pintor'
-        },
-        {
-            name: 'Pedrito',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Lunes a vieres',
-            service: 'Gasfitero'
-        },
-        {
-            name: 'Pedrito',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Martes y miercoles',
-            service: 'Plomero'
-        },
-        {
-            name: 'Me',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Miercoles',
-            service: 'Electricista'
-        },
-        {
-            name: 'Electrocutaste',
-            description: 'Soy un hombre que resuelve',
-            timeDisp: 'Lunes a vieres',
-            service: 'Pintor'
-        },
-    ]
 
-    // const getUsers = async () => {
-    //     const data = await actions.getUsers()
-    //     setUsers(data)
-    //     console.log(data)
-    // }
-
-    // useEffect(() => {
-    //     getUsers()
-    // }, [])
 
     return (
-        <div className='mt-4 w-100 mx-auto'>
+        <div className='mt-4 w-100 list-services mx-auto py-5 w-md-75'>
             <h1>Servicios más populares</h1>
-            {/* <div className='grid-container w-100 mx-auto'>
-                {
-                    store.reviews.map((user, index) => (
-                        <CardService user={user} key={index} />
-                    ))
-                }
-            </div> */}
 
-            <div className='w-75 w-lg-50 mx-auto my-4' style={{maxWidth: '1000px'}}>
 
-                <div id="carouselExampleFade" className="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active w-100">
-                            <div className='list-card-div list-card-1'>
-                                {/* <img src={store.reviews[0]?.post.post_img} alt="" /> */}
-                                <h2 className='list-card-h2'>{store.reviews[0]?.post.title}</h2>
-                            </div>
-                        </div>
-                        <div className="carousel-item">
-                            <div className='list-card-div list-card-2'>
-                                <h2 className='list-card-h2'>{store.reviews[1]?.post.title}</h2>
-                            </div>
-                        </div>
-                        <div className="carousel-item">
-                            <div className='list-card-div list-card-3'>
-                                <h2 className='list-card-h2'>{store.reviews[2]?.post.title}</h2>
-                            </div>
-                        </div>
-                        <div className="carousel-item">
-                            <div className='list-card-div list-card-4'>
-                                <h2 className='list-card-h2'>{store.reviews[3]?.post.title}</h2>
-                            </div>
-                        </div>
+            <div className="gallery js-flickity"
+                data-flickity-options='{ "wrapAround": true }'>
+                <div className="gallery-cell list-card-div list-card-1">
+                    <div className="container-img-def">
+                        <img src={store.reviews[0]?.post.post_img} alt="" />
                     </div>
-                    {/* <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button> */}
+                    <h4 className="def-h4 m-0">
+                        {store.reviews[0]?.post.title}
+                    </h4>
                 </div>
+                <div className="gallery-cell list-card-div list-card-1">
+                    <div className="container-img-def">
+                        <img src={store.reviews[1]?.post.post_img} alt="" />
+                    </div>
+                    <h4 className="def-h4 m-0">
+                        {store.reviews[1]?.post.title}
+                    </h4>
+                </div>
+                <div className="gallery-cell list-card-div list-card-1">
+                    <div className="container-img-def">
+                        <img src={store.reviews[2]?.post.post_img} alt="" />
+                    </div>
+                    <h4 className="def-h4 m-0">
+                        {store.reviews[2]?.post.title}
+                    </h4>
+                </div>
+                <div className="gallery-cell list-card-div list-card-1">
+                    <div className="container-img-def">
+                        <img src={store.reviews[3]?.post.post_img} alt="" />
+                    </div>
+                    <h4 className="def-h4 m-0">
+                        {store.reviews[3]?.post.title}
+                    </h4>
+                </div>
+                <div className="gallery-cell list-card-div list-card-1">
+                    <div className="container-img-def">
+                        <img src="https://img.freepik.com/free-photo/man-engaged-household-task_23-2151741266.jpg?t=st=1727368854~exp=1727372454~hmac=34ffaddc707b2a38186d6147318d594aab4ee5329ac6f4cea6b0af2bf8d8cb12&w=740" alt="" />
+                    </div>
+                    <h4 className="def-h4 m-0">
+                        {store.reviews[4]?.post.title}
+                    </h4>
+                </div>
+
             </div>
         </div>
     )

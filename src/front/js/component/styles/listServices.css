@@ -2,13 +2,37 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  */
-    /* justify-content: center;  */
-    /* justify-items: center;  */
+
     justify-content: center;
     align-items: center;
     padding: 20px; 
     max-width: 1200px;
+}
+
+.list-services {
+    max-width: 1000px;
+
+}
+
+.container-img-def {
+    height: 75%;
+    width: 100%;
+}
+
+.container-img-def img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.def-h4 {
+    /* background-color: var(--celeste); */
+    background: white;
+    padding: 10px;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .list-card-div {
@@ -25,52 +49,38 @@
     object-fit: cover;
 }
 
-.list-card {
-    position: relative;
-    width: 100%;
-}
-
 .list-card-h2 {
     text-align: center;
     color: white;
     max-width: 300px;
-    background-color: rgba(0, 0, 0, 0.438);
-    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.336);
+    padding: 5px;
     border-radius: 10px;
 }
 
-.list-card-1 {
-    background-image: url('https://www.tecsaqro.com.mx/wp-content/uploads/2022/09/electricista_como_profesion.jpg');
-    background-position: center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.list-card-2 {
-    background-image: url('https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg');
-    background-position: center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.list-card-3 {
-    background-image: url('https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg');
-    background-position: center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.list-card-4 {
-    background-image: url('https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg');
-    background-position: center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  .gallery {
+    background: #EEE;
+  }
+  
+  .gallery-cell {
+    width: 50%;
+    height: 300px;
+    max-width: 300px;
+    margin-right: 30px;
+    counter-increment: gallery-cell;
+    border-radius: 10px;
+  }
+  
+  .gallery-cell:before {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 200px;
+    font-size: 80px;
+    color: white;
+  }
