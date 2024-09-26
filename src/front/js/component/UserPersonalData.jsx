@@ -9,13 +9,17 @@ export const UserPersonalData = () => {
     const [isChanged, setIsChanged] = useState(false);
     const [personalDataAlert, setPersonalDataAlert] = useState({ visible: false, message: "", type: "" });
     const [passwordAlert, setPasswordAlert] = useState({ visible: false, message: "", type: "" });
+    const [imgProfile, setImgProfile] = useState('')
+
+    const cloud_name = 'dkpc68gvv'
+    const preset_name = 'resuelve-ya'
 
     const formik = useFormik({
         initialValues: {
             first_name: "",
             last_name: "",
             phone: "",
-            dni: ""
+            dni: "",
         },
         validationSchema: Yup.object({
             first_name: Yup.string()
@@ -90,6 +94,45 @@ export const UserPersonalData = () => {
         setIsChanged(true);
     };
 
+    const handleChangeImg = async (item) => {
+        const file = item;
+        const formData = new FormData();
+        formData.append('file', file[0]);
+        formData.append('upload_preset', preset_name);
+    
+        // setLoading(true);
+    
+        try {
+            // Subir la imagen a Cloudinary
+            const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const cloudinaryData = await cloudinaryResponse.json();
+    
+            if (cloudinaryData.url) {
+                setImgProfile(cloudinaryData.url);
+                // setIsDisabled(false);
+                console.log({ 'datos enviados': cloudinaryData.url });
+    
+                // Actualizar la información del usuario con la nueva imagen
+                const editUserData = await actions.editUserPersonalData({
+                    "profile_image": cloudinaryData.url
+                });
+    
+                // Ya no es necesario llamar a .json() aquí
+                console.log({ 'datos recibidos': editUserData });
+            } else {
+                console.log('No se pudo obtener la URL de la imagen subida.');
+            }
+    
+        } catch (err) {
+            console.error('Error subiendo imagen o actualizando usuario:', err);
+        } finally {
+            // setLoading(false);
+        }
+    }
+
     useEffect(() => {
         const getUserData = async () => {
             const user_id = localStorage.getItem('user_id');
@@ -101,12 +144,14 @@ export const UserPersonalData = () => {
             const response = await actions.getUserInfoById(user_id);
             if (response.success) {
                 const user = response.data;
+                setImgProfile(user.profile_image)
                 formik.setValues({
                     first_name: user.username || "",
                     last_name: user.lastname || "",
                     phone: user.phone || "",
                     dni: user.dni || "",
-                    email: user.email || ""
+                    email: user.email || "",
+                    profile_image: user.profile_image || ""
                 });
             }
         };
@@ -138,7 +183,7 @@ export const UserPersonalData = () => {
                 <div className="d-flex align-items-center">
                     <div className="position-relative">
                         <img
-                            src={image || "https://via.placeholder.com/150"}
+                            src={imgProfile || "https://via.placeholder.com/150"}
                             alt="User"
                             className="rounded-circle img-thumbnail"
                             style={{ width: "150px", height: "150px", objectFit: "cover" }}
@@ -150,7 +195,7 @@ export const UserPersonalData = () => {
                             type="file"
                             id="file-input"
                             className="d-none"
-                            onChange={handleImageChange}
+                            onChange={(e) => handleChangeImg(e.target.files)}
                         />
                     </div>
                 </div>

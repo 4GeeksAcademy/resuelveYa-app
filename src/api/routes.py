@@ -66,7 +66,8 @@ def process_payment(provider_id, service_post_id, amount, payment_method):
     return {
         "service_history_id": service_history.id,
         "payment_id": payment.id,
-        "message": "Pago procesado con éxito"
+        "message": "Pago procesado con éxito",
+        "id_transaction": payment.payment_id
     }
 
 ####################################################################################################################
@@ -703,6 +704,7 @@ def edit_profile_user():
         new_last_name = body.get('last_name')
         new_phone_number = body.get('phone')
         new_password = body.get('new_password')  
+        profile_image = body.get('profile_image')
 
         data_user = User.query.filter_by(id=current_user["id"]).first()
 
@@ -721,6 +723,8 @@ def edit_profile_user():
             data_user.lastname = new_last_name
         if new_phone_number:
             data_user.phone = new_phone_number
+        if profile_image:
+            data_user.profile_image = profile_image
 
         print("Datos antes del commit:", data_user.serialize())
 
@@ -772,7 +776,14 @@ def add_payment():
 
         new_payment = process_payment(user.id, new_post.id, amount, 'pm_card_visa')
 
-        return jsonify(new_payment), 200
+        if new_payment.get('id_transaction'):  # O puedes usar 'id_transaction'
+            return jsonify(new_payment), 200
+        else:
+            db.session.delete(new_post)
+            db.session.commit()
+            return jsonify({'error': 'No se pudo completar el pago'}), 404
+        
+
 
     except Exception as e:
         return jsonify({"message": "Ocurrió un error en el servidor", "error": str(e)}), 500  

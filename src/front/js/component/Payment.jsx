@@ -42,18 +42,19 @@ export const Payments = () => {
                     "name": values.name,
                     "expiry_date": values.expiry_date,
                     "cvv": values.cvv,
-                    "amount": values.amount,
+                    "amount": Number(values.amount),
                     "new_post_data": store.dataNewPost
                 };
                 console.log({ 'datos enviados': paymentData })
                 const result = await actions.processPayment(paymentData);
 
                 console.log(result)
-
-                setPayComplete(true)
-                setPayDetails(paymentData)
-                formikActions.setSubmitting(false);
-                formikActions.resetForm();
+                if(result.id_transaction) {
+                    setPayComplete(true)
+                    setPayDetails(paymentData)
+                    formikActions.setSubmitting(false);
+                    formikActions.resetForm();
+                }
             } catch (error) {
                 console.error('Error en el procesamiento del pago:', error);
                 formikActions.setSubmitting(false);
@@ -192,19 +193,23 @@ export const Payments = () => {
                                     <div className="invalid-feedback">{formik.errors.cvv}</div>
                                 ) : null}
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="amount">Monto</label>
+                            <div className="form-group mt-1">
+                                <label htmlFor="amount">Tiempo de publicación y costo</label>
                                 <div className="input-group">
-                                    <input
-                                        type="number"
+                                    <select
                                         className={`form-control ${formik.touched.amount && formik.errors.amount ? 'is-invalid' : ''}`}
                                         id="amount"
                                         name="amount"
                                         value={formik.values.amount}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        placeholder="Monto en soles"
-                                    />
+                                    >
+                                        <option value="" label="Selecciona el periodo" />
+                                        <option value="30" label="1 mes - 30 soles" />
+                                        <option value="50" label="2 meses - 50 soles" />
+                                        <option value="70" label="3 meses - 70 soles" />
+                                        {/* Agrega más opciones si es necesario */}
+                                    </select>
                                     <div className="input-group-append">
                                         <span className="input-group-text">S/</span>
                                     </div>

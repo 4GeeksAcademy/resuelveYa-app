@@ -250,6 +250,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					if (response.ok) {
 						setStore({ dataUserLogin: data.new_data });
+						console.log(data.new_data)
 						return { success: true, message: data.msg };
 					} else {
 						return { success: false, message: data.msg };
