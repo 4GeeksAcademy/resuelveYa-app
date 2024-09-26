@@ -1,15 +1,26 @@
-.sendcode-form-container {
-    max-width: 450px;
+.posthistory-form-container {
+    max-width: 900px;
+    width: 100%;
     background-color: var(--celeste);
-    flex-grow: 1;
     border-radius: 10px 10px 10px 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     box-shadow: 0 4px 8px rgba(50, 58, 115, 0.1);
 }
+.card-posthistory{
+    max-width: 800px;
+    width: 100%;
+    background-color: var(--celeste);
+    border-radius: 10px 10px 10px 10px;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(50, 58, 115, 0.1);
+    overflow: hidden;
+    height: auto;
+    word-wrap: break-word;
+}
 
-.btn-sendcode {
+.btn-posthistory {
     background-color: var(--azul);
     color: white;
     padding: 8px;
@@ -21,12 +32,12 @@
     transition: background-color 0.3s ease;
 }
 
-.btn-sendcode:hover {
+.btn-posthistory:hover {
     background-color: var(--azul-oscuro-hover);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.btn-sendcode:hover {
+.btn-posthistory:hover {
     color: var(--blanco);
     /* Cambia el color del texto a un tono celeste */
 }
