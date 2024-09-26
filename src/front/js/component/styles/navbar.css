@@ -7,7 +7,7 @@ nav {
 }
 
 .blur {
-  background-color: #F5F5F5;
+  background-color: var(--azul);
   backdrop-filter: blur(10px);
   height: 60px;
 }
@@ -49,6 +49,7 @@ input {
     opacity: 1;
     transform: translateY(0) rotate(0);
     transition: all 0.3s;
+    background-color: var(--blanco);
   }
 
   #lanzador:checked~label .btnNav-linea {
@@ -66,13 +67,16 @@ input {
   }
 }
 
+.text-list {
+  color: var(--blanco);
+}
 
 .menu {
   position: absolute;
   top: 50px;
   right: 0;
   height: 30vh;
-  background-color: rgba(0, 0, 0, 0.527);
+  background-color: var(--azul);
   width: 100%;
   display: grid;
   place-content: center;
