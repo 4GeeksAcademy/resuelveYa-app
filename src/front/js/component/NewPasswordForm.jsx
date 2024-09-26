@@ -53,8 +53,8 @@ export const NewPasswordForm = () => {
     });
 
     return (
-        <div className="password text-center bg-white rounded-3 p-4 border border-dark-subtle">
-            <h3 className="mb-3"><i className="fa-solid fa-unlock-keyhole"></i> Restablecer contraseña</h3>
+        <div className="password-form-container text-center p-4">
+            <h3 className="mb-3"><i className="fa-solid fa-unlock-keyhole text-black"></i> Restablecer contraseña</h3>
             <p className="m-0"><small>El código verificador fue enviado a:</small></p>
             <p className="mb-3"><strong>{store.resetEmail}</strong></p>
 
@@ -70,6 +70,7 @@ export const NewPasswordForm = () => {
                         <div className="text-danger">{formik.errors.code}</div>
                     ) : null}
                 </div>
+
                 <div className="col-md-12">
                     <label htmlFor="password" className="form-label fw-semibold">Nueva contraseña</label>
                     <input name="password" type="password" className="form-control" id="password" placeholder="Ingresa una nueva contraseña" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.password} />
@@ -78,7 +79,7 @@ export const NewPasswordForm = () => {
                     ) : null}
                 </div>
                 <div className="col-md-12">
-                    <button className="btn btn-light w-100 mt-2 fw-semibold border border-black fw-bold" type="submit">Crear</button>
+                    <button className="btn btn-password mt-2 text-uppercase rounded-pill" type="submit">Crear</button>
                 </div>
             </form>
             <div className="mt-4 p-0">

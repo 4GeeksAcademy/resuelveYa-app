@@ -1,5 +1,5 @@
-.sendcode-form-container {
-    max-width: 450px;
+.register-form-container {
+    max-width: 900px;
     background-color: var(--celeste);
     flex-grow: 1;
     border-radius: 10px 10px 10px 10px;
@@ -9,7 +9,7 @@
     box-shadow: 0 4px 8px rgba(50, 58, 115, 0.1);
 }
 
-.btn-sendcode {
+.btn-register {
     background-color: var(--azul);
     color: white;
     padding: 8px;
@@ -21,12 +21,12 @@
     transition: background-color 0.3s ease;
 }
 
-.btn-sendcode:hover {
+.btn-register:hover {
     background-color: var(--azul-oscuro-hover);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.btn-sendcode:hover {
+.btn-register:hover {
     color: var(--blanco);
     /* Cambia el color del texto a un tono celeste */
 }
