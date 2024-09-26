@@ -390,13 +390,14 @@ def delete_user(user_id):
         if current_user['role'] != 'admin':
             return jsonify({"message": "No tienes permiso para realizar esta acción"}), 403
 
-        # Eliminar el usuario
         db.session.delete(user)
         db.session.commit()
 
         return jsonify({"message": f"Usuario {user.username} eliminado exitosamente"}), 200
 
     except Exception as e:
+        print(f"Error al eliminar el usuario: {str(e)}")  
+        db.session.rollback()
         return jsonify({"message": "Ocurrió un error al eliminar el usuario", "error": str(e)}), 500
 
 @api.route('/user/<int:user_id>', methods=['GET'])
@@ -621,8 +622,15 @@ def provider_information():
         post_data = [post.serialize() for post in service_posts]
 
         post_data = []
+
+
         for post in service_posts:
-            reviews = Review.query.filter_by(post_id=post.id).all() 
+            
+            reviews = Review.query.filter(
+               Review.post_id == post.id,
+               Review.comment.isnot(None),
+               Review.comment != '' 
+            ).all() 
             
             reviews_data = [review.serialize() for review in reviews]
 
