@@ -11,8 +11,9 @@ export const Navbar = () => {
 	const [viewChange, setViewChange] = useState(false)
 	const navigate = useNavigate()
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
+	const handleClick = () => {
+		navigate("/")
+		window.location.reload
 	}
 
 	const handleChangeCategory = (e) => {
@@ -50,10 +51,10 @@ export const Navbar = () => {
 		<nav className=''>
 			<div className="d-flex blur justify-content-between w-100 align-items-center p-2 nav-sec-1 ">
 				<div>
-					<Link to='/' className="d-flex justify-content-center align-items-center">
+					<a onClick={() => handleClick()} className="d-flex justify-content-center align-items-center">
 						<img src={logoNavbar} style={{ width: "70px", height: "70px" }}></img>
 						<h2 className='mb-0' style={{ color: "var(--blanco)" }}>Resuelve<span>Ya!</span></h2>
-					</Link>
+					</a>
 				</div>
 				{/* Btn hamburguesa */}
 				<div className="btnNav transition-transform d-md-none">

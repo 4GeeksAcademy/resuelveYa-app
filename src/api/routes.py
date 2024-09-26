@@ -378,10 +378,11 @@ def delete_user(user_id):
     try:
         # Obtener la identidad del usuario autenticado
         current_user = get_jwt_identity()
+        print(f"Current user: {current_user}")
 
         # Buscar el usuario por ID
         user = User.query.get(user_id)
-        print("user", user)
+        print("User to delete:", user)
 
         if not user:
             return jsonify({"message": "Usuario no encontrado"}), 404
@@ -944,7 +945,14 @@ def get_reviews_post():
 system_role_1 = """
 Eres un especialista en servicios del hogar, reconocido a nivel mundial por tus consejos y recomendaciones.
 Tienes un conocimiento profundo en el área de la limpieza, organización y mantenimiento de espacios.
-Además, tienes un gran expertise en electricidad, plomería, carpintería y jardinería y pintores. 
+Además, tienes un gran expertise en:
+ - electricidad
+ - plomería
+ - carpintería
+ - jardinería
+ - pintores
+ - gasfiteria
+ - cocina
 """
 
 system_role_2 = """
@@ -965,10 +973,12 @@ La respuesta debe ser en formato JSON,
         }
     ]
 }
+Donde, name es el nombre del proveedor, y phone es el telefono del proveedor, ambos de la base de datos.
 Si no hubiesen proveedores que recomendar, proporciona una respuesta general sobre el servicio, y el formato de respuesta debería ser el siguiente:
 {
     "text": "mensaje del modelo",
 }
+Si te piden la lista completa de servicios, limítate a proporcionarle solo 3 proveedores.
 """
 
 system_role_4 = """
@@ -994,45 +1004,76 @@ def create_one_message():
 
     if not user_id or not user_message:
         return jsonify({"message": "User ID and message are required"}), 400
-
-    new_message = Message(user_id=user_id, role='user', content=json.dumps({"text": user_message}))
-    db.session.add(new_message)
-
+    
     try:
-        db.session.commit()
-
-        # Obtener los proveedores de la base de datos
-        providers = User.query.filter_by(role='provider').all()
-        provider_list = [
-            {"id": provider.id, "name": provider.username, "service": provider.service_type, "phone": provider.phone}
-            for provider in providers
-        ]
-
-        # Generar la lista de proveedores para incluir en el mensaje
-        system_role_with_providers = f"{system_role_2} {json.dumps(provider_list)}"
-
-        # Llamar a la API de ChatGPT
-        response = client.chat.completions.create(
+      validacion_response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": system_role_1},
-                {"role": "system", "content": system_role_with_providers},
-                {"role": "system", "content": system_role_3},
-                {"role": "system", "content": system_role_4},
-                {"role": "user", "content": user_message},
+                {"role": "system", "content": f"Determina si el siguiente mensaje está relacionado con problemas domésticos (como electricidad, plomería, limpieza, cocina, cerrajería, etc.). Responde con 'Sí' o 'No'.\n\nMensaje: \"{user_message}\""},
             ],
-            max_tokens=400,
-            temperature=0.6
-        )
+          max_tokens=3,
+          temperature=0
+      )
+      validacion = validacion_response.choices[0].message.content.strip().lower()
+    except Exception as e:
+        return jsonify({
+            "content":{
+            'text': 'Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente más tarde.',
+            'contacts': [],
+            'type': "error"
+        }}), 500
 
-        message = response.choices[0].message.content
+    if validacion == 'sí' or validacion == 'si':
 
-        # Guardar la respuesta del sistema en la base de datos
-        system_message = Message(user_id=user_id, role='system', content=message)
-        db.session.add(system_message)
-        db.session.commit()
+        new_message = Message(user_id=user_id, role='user', content=json.dumps({"text": user_message}))
+        db.session.add(new_message)
 
-        return jsonify(system_message.serialize()), 200
+        try:
+            db.session.commit()
 
-    except Exception as oe:
-        return jsonify({"error": "Error inesperado: " + str(oe)}), 500
+            # Obtener los proveedores de la base de datos
+            providers = User.query.filter_by(role='provider').all()
+            provider_list = [
+                {"id": provider.id, "name": provider.username, "service": provider.service_type, "phone": provider.phone}
+                for provider in providers
+            ]
+
+            # Generar la lista de proveedores para incluir en el mensaje
+            system_role_content_1 = f"Eres un especialista en servicios del hogar, proporciona una respuesta amable y útil para alguien que necesita ayuda con el siguiente problema doméstico: \"{user_message}\". Recuerda que siempre tienes que darle un consejo, y en su consulta tenemos el proveedor que necesita, recomiendale a uno de nuestros contactos."
+            system_role_content_2 = f"{system_role_3}, aquí tienes la lista de proveedores: {json.dumps(provider_list)}"
+            system_role_content_3 = f"{system_role_content_1} {system_role_content_2}" 
+
+            # Llamar a la API de ChatGPT
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    # {"role": "system", "content": system_role_1},
+                    # {"role": "system", "content": system_role_with_providers},
+                    # {"role": "system", "content": system_role_3},
+                    # {"role": "system", "content": system_role_4},
+                    # {"role": "user", "content": user_message},
+                    {"role": "system", "content": system_role_content_3}
+                ],
+                max_tokens=300,
+                temperature=0.7
+            )
+
+            message = response.choices[0].message.content
+
+            # Guardar la respuesta del sistema en la base de datos
+            system_message = Message(user_id=user_id, role='system', content=message)
+            db.session.add(system_message)
+            db.session.commit()
+
+            return jsonify(system_message.serialize()), 200
+
+        except Exception as oe:
+            return jsonify({"error": "Error inesperado: " + str(oe)}), 500
+        
+    else:
+        mensaje_generico = "¡Hola! Estoy aquí para ayudarte con problemas domésticos como electricidad, plomería, limpieza, cocina y más. ¿En qué puedo asistirte hoy?"
+        return jsonify({
+            'content':{
+            'text': mensaje_generico,
+            'contacts': []
+        }})
