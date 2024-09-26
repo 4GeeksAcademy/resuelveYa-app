@@ -10,6 +10,7 @@ export const NewCardPost = ({ item, index }) => {
     const { store, actions } = useContext(Context)
     const token = localStorage.getItem("token")
     const name = localStorage.getItem("name")
+    const [commentData, setCommentData] = useState("")
     // console.log(item)
     const [rankings, setRankings] = useState({})
 
@@ -23,15 +24,14 @@ export const NewCardPost = ({ item, index }) => {
         }
         await actions.newReview(data)
         console.log(data)
-
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(e.target.comment.value)
+        // console.log(e.target.comment.value)
         const newComment = {
             "post_id": item.post.id,
-            "comment": e.target.comment.value
+            "comment": commentData
         }
 
         console.log({ 'datos enviados': newComment })
@@ -40,7 +40,7 @@ export const NewCardPost = ({ item, index }) => {
             const response = await actions.newReview(newComment)
 
             const data = await response.json()
-            e.target.comment.value = "";
+            setCommentData("")
             // console.log({"datos Recibidos": data})
 
         } catch (err) {
@@ -208,6 +208,8 @@ export const NewCardPost = ({ item, index }) => {
                             className="form-control-plaintext pt-2 pb-0"
                             id="comment"
                             name="comment"
+                            value={commentData}
+                            onChange={(e)=> setCommentData(e.target.value)}
                         />
                         <label className="fw-semibold text-info-emphasis" htmlFor="floatingPlaintextInput">{name}, escribe un comentario aqui...</label>
                         <div className="text-end">
