@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './styles/navbar.css'
 import { Context } from "../store/appContext";
+import logoNavbar from "../../img/logo-navbar.png"
 
 export const Navbar = () => {
 	const { actions, store } = useContext(Context)
@@ -49,17 +50,18 @@ export const Navbar = () => {
 		<nav className=''>
 			<div className="d-flex blur justify-content-between w-100 align-items-center p-2 nav-sec-1 ">
 				<div>
-					<Link to='/' className="">
-						<h2 className='mb-0' style={{ color: "#393C3F" }}>Resuelve<span>Ya!</span></h2>
+					<Link to='/' className="d-flex justify-content-center align-items-center">
+						<img src={logoNavbar} style={{ width: "70px", height: "70px" }}></img>
+						<h2 className='mb-0' style={{ color: "var(--blanco)" }}>Resuelve<span>Ya!</span></h2>
 					</Link>
 				</div>
 				{/* Btn hamburguesa */}
 				<div className="btnNav transition-transform d-md-none">
 					<input type="checkbox" id="lanzador" />
 					<label htmlFor="lanzador" onClick={handleNav}>
-						<span className="btnNav-linea" style={{ background: "#393C3F" }}></span>
-						<span className="btnNav-linea" style={{ background: "#393C3F" }}></span>
-						<span className="btnNav-linea" style={{ background: "#393C3F" }}></span>
+						<span className="btnNav-linea"></span>
+						<span className="btnNav-linea"></span>
+						<span className="btnNav-linea"></span>
 					</label>
 				</div>
 				<div className="d-none d-md-block">
@@ -67,20 +69,21 @@ export const Navbar = () => {
 						visible ? (
 							<div className="d-flex gap-2 justify-content-center align-items-center">
 								<Link to={getProfileLink()}>
-									<h2 className="fs-4 p-0 m-0 fw-semibold text-white">{store.username && store.username}</h2>
+									<h2 className="fs-4 p-0 m-0 text-white">{store?.username && `Hola ${store.username}`}
+									</h2>
 								</Link>
-								<button onClick={() => { actions.logout(), navigate('/') }} className="btn p-0 bg-transparent text-white fw-semibold fs-4">Cerrar Sesión</button>
+								<button onClick={() => { actions.logout(), navigate('/') }} className="btn p-0 bg-transparent text-white fs-4">Cerrar Sesión</button>
 							</div>
 						) : (
 							<ul className='d-flex gap-3 my-auto fs-5'>
 								<Link to='/login'>
-									<li className='list-group-item' style={{ color: "#393C3F" }}>Iniciar sesión</li>
+									<li className='list-group-item text-list'>Iniciar sesión</li>
 								</Link>
 								<Link to='/register'>
-									<li className='list-group-item' style={{ color: "#393C3F" }}>Regístrate</li>
+									<li className='list-group-item text-list'>Regístrate</li>
 								</Link>
 								<Link to='/'>
-									<li className='list-group-item' style={{ color: "#393C3F" }}>Contáctanos</li>
+									<li className='list-group-item text-list'>Contáctanos</li>
 								</Link>
 							</ul>
 						)
