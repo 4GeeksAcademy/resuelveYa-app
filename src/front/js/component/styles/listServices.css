@@ -1,95 +1,47 @@
-.grid-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-    padding: 20px; 
-    max-width: 1200px;
+.services-population {
+    color: var(--negro);
+    background-color: var(--celeste);
+    border-radius: 40px;
+    font-weight: bold;
+    padding: 10px 0px;
+    margin-bottom: 30px;
 }
 
 .list-services {
-    max-width: 1000px;
-
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.container-img-def {
-    height: 70%;
-    width: 100%;
+.slick-slide {
+    padding: 0 15px;
 }
 
-.container-img-def img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
-.div-desc{
-    /* padding: 10px; */
-    height: 30%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: white;
-}
-
-.def-h4 {
-    /* background-color: var(--celeste); */
-    /* background: white; */
-    /* padding: 10px 10px 10px 10px; */
-    /* height: 25%; */
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
+.slick-list {
+    margin: 0 -15px;
 }
 
 .list-card-div {
-    height: 550px;
-    width: 100%;
-    object-fit: cover;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 10px;
     overflow: hidden;
-    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.list-card-div img {
-    height: 100%;
-    width: 100%;
+.container-img-def img {
+    border-radius: 10px;
+    height: 200px;
     object-fit: cover;
 }
 
-.list-card-h2 {
-    text-align: center;
-    color: white;
-    max-width: 300px;
-    background-color: rgba(0, 0, 0, 0.336);
-    padding: 5px;
-    border-radius: 10px;
+.slick-prev:before,
+.slick-next:before {
+    content: "<";
+    color: var(--negro) important !;
+    font-weight: 700
 }
 
-* {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-  
-  .gallery {
-    background: #EEE;
-  }
-  
-  .gallery-cell {
-    width: 50%;
-    height: 300px;
-    max-width: 300px;
-    margin-right: 30px;
-    counter-increment: gallery-cell;
-    border-radius: 10px;
-  }
-  
-  .gallery-cell:before {
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-    line-height: 200px;
-    font-size: 80px;
-    color: white;
-  }
+.div-desc {
+    padding: 10px;
+}
