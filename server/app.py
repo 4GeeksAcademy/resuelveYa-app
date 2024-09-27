@@ -64,5 +64,4 @@ def serve_any_other_file(path):
     return response
 
 if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
