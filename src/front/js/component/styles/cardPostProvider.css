@@ -2,8 +2,7 @@
     max-width: 600px;
 }
 .photo{
-    width: 95px;
-    height: 95px;
+    width: 100px;
     object-fit: cover;
 }
 .profile-image-client{
@@ -11,19 +10,38 @@
     height: 60px;
     object-fit: cover;
 }
+.text-postcard{
+    color: var(--azul);
+}
 #comment {
     border: none;
-    /* border-radius: 10px; */
-    /* padding: 10px; */
     resize: none;
     width: 100%;
     outline: none;
 }
 #floatingPlaintextInput {
     border: none;
-    /* border-radius: 10px; */
-    /* padding: 10px; */
     resize: none;
     width: 100%;
     outline: none;
+}
+.btn-posthistory {
+    background-color: var(--azul);
+    color: white;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+.btn-posthistory:hover {
+    background-color: var(--azul-oscuro-hover);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-posthistory:hover {
+    color: var(--blanco);
+    /* Cambia el color del texto a un tono celeste */
 }
