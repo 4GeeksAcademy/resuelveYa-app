@@ -63,9 +63,7 @@ Thumbs.db
 node_modules/
 
 # webpack output
-dist/*
-!public/
-!public/*
+dist
 
 # ignore the dist directory were our bundle files are going to be
 !.gitkeep
@@ -115,3 +113,7 @@ yarn-debug.log*
 yarn-error.log*
 
 node_modules
+
+postgres
+
+public

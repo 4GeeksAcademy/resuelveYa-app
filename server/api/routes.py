@@ -1049,7 +1049,7 @@ def create_one_message():
 
             # Llamar a la API de ChatGPT
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4-turbo",
                 messages=[
                     # {"role": "system", "content": system_role_1},
                     # {"role": "system", "content": system_role_with_providers},
