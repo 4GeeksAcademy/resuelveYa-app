@@ -55,7 +55,7 @@ export const Footer = () => {
 
 	return (
 		<footer className="footer py-5 text-center">
-			<div className='container-bento w-100'>
+			<div className='container-bento w-75'>
 
 				{/* <div className="div-footer div-direction div1">
 					<h3>Dirección</h3>

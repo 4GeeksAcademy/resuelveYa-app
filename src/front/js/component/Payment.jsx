@@ -8,7 +8,7 @@ import './styles/payment.css';
 export const Payments = () => {
     const { actions, store } = useContext(Context);
     const navigate = useNavigate();
-    const [payComplete, setPayComplete] = useState(true)
+    const [payComplete, setPayComplete] = useState(false)
     const [payDetails, setPayDetails] = useState({})
 
     const formik = useFormik({
@@ -17,7 +17,7 @@ export const Payments = () => {
             name: '',
             expiry_date: '',
             cvv: '',
-            amount: 100,
+            amount: '',
         },
         validationSchema: Yup.object({
             card_number: Yup.string()
@@ -119,7 +119,7 @@ export const Payments = () => {
                         <h2 className="text-center mb-4 text-black">Realizar Pago</h2>
 
                         <div className={`card-preview ${cardType} position-relative`} >
-                            {cardType === 'visa' && <i className='bx bxl-visa text-light' style={{ fontSize: "100px", position: "absolute", right: "85px", top: "0" }}></i>}
+                            {cardType === 'visa' && <i className='bx bxl-visa text-light' style={{ fontSize: "100px", position: "absolute", right: "20px", top: "0px" }}></i>}
                             {cardType === 'mastercard' && <i className='bx bxl-mastercard text-light' style={{ fontSize: "100px", position: "absolute", right: "85px", top: "0" }} ></i>}
                             <div className="card-number">{formik.values.card_number || '• • • • • • • • • • • • • • • •'}</div>
                             <div className="card-details">
