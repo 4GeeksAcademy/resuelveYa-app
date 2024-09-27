@@ -33,7 +33,6 @@ export const NewCardPost = ({ item, index }) => {
 
         try {
             const response = await actions.newReview(newComment)
-
             const data = await response.json()
             setCommentData("")
 
