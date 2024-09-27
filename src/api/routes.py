@@ -15,6 +15,9 @@ import random
 import stripe
 from openai import OpenAI
 import json
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+from pprint import pprint
 
 
 api = Blueprint('api', __name__)
@@ -1077,3 +1080,54 @@ def create_one_message():
             'text': mensaje_generico,
             'contacts': []
         }})
+
+@api.route('/send-email', methods=['POST'])
+def send_email():
+    data = request.get_json()
+
+    if 'email' not in data or 'message' not in data:
+        return jsonify({"error": "Email y mensaje son requeridos"}), 400
+
+    user_email = data.get('email')  
+    message = data.get('message') 
+
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", user_email):
+        return jsonify({"error": "Formato de correo electrónico no válido"}), 400
+
+    try:
+ 
+        configuration = sib_api_v3_sdk.Configuration()
+        configuration.api_key['api-key'] = os.getenv('SENDINBLUE_API_KEY') 
+
+        api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
+
+        send_confirmation_email = sib_api_v3_sdk.SendSmtpEmail(
+            to=[{"email": user_email}],  
+            sender={"name": "ResuelveYa", "email": "austin.pr96@gmail.com"}, 
+            subject="Confirmación de envío de mensaje",
+            html_content=f"<p>¡Hola!</p>"
+                         f"<p>Gracias por ponerte en contacto con nosotros. Hemos recibido tu mensaje:</p>"
+                         f"<p><strong>Mensaje:</strong> {message}</p>"
+                         "<p>Nos pondremos en contacto contigo lo antes posible.</p>"
+                         "<br><p>Saludos,</p><p>El equipo de ResuelveYa</p>"
+        )
+
+        # Enviar el correo de confirmación al usuario
+        api_instance.send_transac_email(send_confirmation_email)
+
+        send_admin_email = sib_api_v3_sdk.SendSmtpEmail(
+            to=[{"email": "austin.pr96@gmail.com"}],  
+            sender={"name": "ResuelveYa", "email": "austin.pr96@gmail.com"},  
+            subject="Nosotros si resolvemos",
+            html_content=f"<p>Has recibido un nuevo mensaje de contacto:</p>"
+                         f"<p><strong>Correo del usuario:</strong> {user_email}</p>"
+                         f"<p><strong>Mensaje:</strong> {message}</p>"
+        )
+
+        api_instance.send_transac_email(send_admin_email)
+
+        return jsonify({"message": "Tu mensaje ha sido enviado correctamente"}), 200
+
+    except ApiException as e:
+        print(f"Error al enviar el correo: {e}")
+        return jsonify({"error": "Error al enviar el correo", "details": str(e)}), 500
