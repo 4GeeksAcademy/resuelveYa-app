@@ -29,20 +29,18 @@ export const NewCardPost = ({ item, index }) => {
             "post_id": item.post.id,
             "comment": commentData
         }
-        // console.log({ 'datos enviados': newComment })
 
         try {
-            const response = await actions.newReview(newComment)
-            const data = await response.json()
+            const data = await actions.newReview(newComment)
             setCommentData("")
 
         } catch (err) {
-            console.log(err)
+            console.error("error", err)
         }
     }
 
     return (
-        <div key={index} className="card mt-3 w-100">
+        <div className="card mt-3 w-100">
             <div className="card-header py-3 w-100">
                 <div className="row">
                     {/* imagen de perfil del proveedor */}
@@ -86,7 +84,7 @@ export const NewCardPost = ({ item, index }) => {
                                     }
                                     <small>{item.average_rating} ({item.total_rating} calificaciones)</small>
                                 </p>
-                                
+
                             </div>
                             {/* <div className="col-12 col-md-3 ps-2 p-0 pt-1">
                                 
@@ -114,7 +112,7 @@ export const NewCardPost = ({ item, index }) => {
             <div className="card-body px-4 p-2">
                 <div className="row text-end">
                     {/* calificar */}
-                    {token?
+                    {token ?
                         <div className="col-12 col-md-12 pt-2"> Calificar
                             {
                                 [... new Array(5)].map((_, indx) => {
@@ -150,16 +148,16 @@ export const NewCardPost = ({ item, index }) => {
             {/* Comentarios del post */}
             {
                 item.comments.map((comment, index) => (
-                        <div className="card-body row px-4 py-0" key={index}>
-                            <div className="col-3 col-md-2">
-                                <img src={comment.profile_img || "https://via.placeholder.com/150"} alt="" className="profile-image-client rounded-circle" />
-                            </div>
-                            <div className="col-9 col-md-10 form-floating mb-2 border rounded">
-                                <textarea value={comment.comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
-                                <label className="text-primary-emphasis" htmlFor="floatingPlaintextInput">{comment.user_name} {comment.last_name}</label>
-                            </div>
+                    <div className="card-body row px-4 py-0" key={index}>
+                        <div className="col-3 col-md-2">
+                            <img src={comment.profile_img || "https://via.placeholder.com/150"} alt="" className="profile-image-client rounded-circle" />
                         </div>
-                    ))
+                        <div className="col-9 col-md-10 form-floating mb-2 border rounded">
+                            <textarea value={comment.comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
+                            <label className="text-primary-emphasis" htmlFor="floatingPlaintextInput">{comment.user_name} {comment.last_name}</label>
+                        </div>
+                    </div>
+                ))
             }
             <hr className="m-0"></hr>
             {/* Box para agregar comentarios */}
@@ -171,7 +169,7 @@ export const NewCardPost = ({ item, index }) => {
                             id="comment"
                             name="comment"
                             value={commentData}
-                            onChange={(e)=> setCommentData(e.target.value)}
+                            onChange={(e) => setCommentData(e.target.value)}
                         />
                         <label className="text-primary-emphasis" htmlFor="floatingPlaintextInput">{name}, escribe un comentario aqui...</label>
                         <div className="text-end">
