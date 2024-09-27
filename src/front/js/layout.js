@@ -18,7 +18,6 @@ import { ProviderNewPost } from "./pages/providerNewPost.js";
 import { PaymentPage } from "./pages/payment.js";
 import { CardPostsList } from "./pages/cardPostsList.js";
 
-
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -42,6 +41,7 @@ const Layout = () => {
                     <Route element={<ProviderNewPost />} path="/providernewpost" />
                     <Route element={<PaymentPage />} path="/payment" />
                     <Route element={<CardPostsList />} path="/cardPostsList" />
+                    <Route element={<Footer/>} path = "/footer"/>
 
                 </Routes>
                 {/* <Footer /> */}

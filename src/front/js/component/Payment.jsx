@@ -115,7 +115,7 @@ export const Payments = () => {
                         <p className='text-center'>Gracias por tu compra. ¡Tu pago ha sido procesado exitosamente!</p>
                     </div> :
                     <div className="container d-flex flex-column align-items-center" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
-                        <h2 className="text-center mb-4 text-white">Realizar Pago</h2>
+                        <h2 className="text-center mb-4 text-black">Realizar Pago</h2>
 
                         <div className={`card-preview ${cardType} position-relative`} >
                             {cardType === 'visa' && <i className='bx bxl-visa text-light' style={{ fontSize: "100px", position: "absolute", right: "85px", top: "0" }}></i>}

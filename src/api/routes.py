@@ -155,7 +155,7 @@ def create_default_posts():
                 'location': 'Cuzco'
             },
             {
-                'title': 'Reparación de filtraciones',
+                'title': 'Reparación de filtraciones y tuberías',
                 'description': 'Detección y reparación de filtraciones en baños y cocinas.',
                 'service_type': 'gasfitero',
                 'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg',
