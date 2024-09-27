@@ -15,7 +15,7 @@ export const ProviderPostHistory = () => {
                         <div className="row m-0">
                                 <h3 className="col-md-8 fs-4 ps-0 fw-bold">Mis publicaciones:</h3>
                                 <Link to="/providernewpost" className="col-md-4 text-center mb-3">
-                                        <button className="btn text-white rounded-pill text-uppercase shadow" type="submit" style={{background: `${store.colors.azul}`}}>Nueva publicación</button>
+                                        <button className="btn btn-posthistory rounded-pill text-uppercase shadow" type="submit">Nueva publicación</button>
                                 </Link>
                         </div>
                         {store.providerInfo?.service_posts.length === 0 ?
@@ -24,10 +24,10 @@ export const ProviderPostHistory = () => {
                                 </div>
                                 : store.providerInfo?.service_posts.map((item, index) => (
                                         <div key={index} className="card-posthistory p-3 bg-white w-100 m-0 mb-3">
-                                                {/* <p><span className='fw-semibold'>Fecha de publicación:</span> {item.created_at}</p> */}
+                                                <p><span className='fw-semibold'>Fecha de publicación:</span> {item.created_at}</p>
                                                 <div className="row card-header pb-2" >
                                                         <div className="col-4 col-md-2 pe-0 text-center mb-3">
-                                                                <img src={item.post_img} alt="" className="photo rounded-circle w-100" />
+                                                                <img src={item.user_profile || "https://via.placeholder.com/150"} alt="" className="photo rounded-circle w-100" />
                                                         </div>
                                                         <div className="col-8 col-md-10 d-flex flex-column justify-content-center ps-3">
                                                                 <div className="row">
@@ -58,7 +58,7 @@ export const ProviderPostHistory = () => {
                                                                         </p>
                                                                 </div>
                                                                 <div className="pt-2">
-                                                                        <p className="m-0" style={{color: `${store.colors.azul}`}}>
+                                                                        <p className="m-0 text-posthistory" >
                                                                                 <span className="text-capitalize fw-semibold pe-3">{item.service_type}</span>
                                                                                 <span className="text-black"><i className="fa-solid fa-location-dot text-center text-danger"></i>{item.location}</span>
                                                                         </p>
@@ -68,14 +68,14 @@ export const ProviderPostHistory = () => {
                                                 <hr className="m-0"></hr>
                                                 {/* Descripcion y imagen del post */}
                                                 < div className="card-body p-3" >
-                                                        {/* <div className="row"> */}
-                                                        < div className="col-12 col-md-12" >
-                                                                <p className="card-text p-2">{item.description}</p>
+                                                        <div className="row">
+                                                                < div className="col-12 col-md-9" >
+                                                                        <p className="card-text p-2">{item.description}</p>
+                                                                </div>
+                                                                <div className="col-12 col-md-3 text-center">
+                                                                        <img src={item.post_img} alt="" className="photo border-2" />
+                                                                </div>
                                                         </div>
-                                                        {/* <div className="col-12 col-md-3 text-center">
-                                                                <img src={item.post.post_img} alt="" className="photo border-2" />
-                                                                </div> */}
-                                                        {/* </div>*/}
                                                 </div >
                                                 <hr className="m-0 pb-2"></hr>
                                                 {/* Comentarios del post */}

@@ -2,24 +2,26 @@
     max-width: 900px;
     width: 100%;
     background-color: var(--celeste);
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     box-shadow: 0 4px 8px rgba(50, 58, 115, 0.1);
 }
 .card-posthistory{
-    max-width: 800px;
+    max-width: 850px;
     width: 100%;
     background-color: var(--celeste);
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 10px;
     justify-content: center;
     box-shadow: 0 4px 8px rgba(50, 58, 115, 0.1);
     overflow: hidden;
     height: auto;
     word-wrap: break-word;
 }
-
+.text-posthistory{
+    color: var(--azul);
+}
 .btn-posthistory {
     background-color: var(--azul);
     color: white;
@@ -31,12 +33,10 @@
     text-align: center;
     transition: background-color 0.3s ease;
 }
-
 .btn-posthistory:hover {
     background-color: var(--azul-oscuro-hover);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
-
 .btn-posthistory:hover {
     color: var(--blanco);
     /* Cambia el color del texto a un tono celeste */
