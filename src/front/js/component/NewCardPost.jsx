@@ -8,7 +8,6 @@ export const NewCardPost = ({ item, index }) => {
     const token = localStorage.getItem("token")
     const name = localStorage.getItem("name")
     const [commentData, setCommentData] = useState("")
-    console.log(store.reviews)
     const [rankings, setRankings] = useState({})
 
     const handlerRating = async (index) => {

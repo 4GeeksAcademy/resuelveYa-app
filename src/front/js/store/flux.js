@@ -22,7 +22,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				blanco: "#F5F5F5"
 			},
 			inputSearch: '',
-			inputLocation: ''
+			inputLocation: '',
+			searchTitleOrName: '',  // Nuevo campo
+			locationProv: '',
 		},
 		actions: {
 			register: async (values) => {
@@ -465,7 +467,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setReviews: (newList) => {
 				setStore({ reviews: newList })
 			},
-			sendContactMessage: async ({email, message}) => {
+			sendContactMessage: async ({ email, message }) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/send-email", {
 						method: "POST",
@@ -492,7 +494,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ inputSearch: newValue });
 			},
 			setInputLocation: (newValue) => {
-				setStore({inputLocation: newValue})
+				setStore({ inputLocation: newValue })
 			}
 		}
 	};

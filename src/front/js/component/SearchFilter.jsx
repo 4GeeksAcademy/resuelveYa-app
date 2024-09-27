@@ -5,7 +5,7 @@ import { Context } from '../store/appContext'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 
-export const SearchFilter = ({ title, subTitle, value }) => {
+export const SearchFilter = ({ title, subTitle, posts }) => {
     const { actions, store } = useContext(Context)
     const navigate = useNavigate()
     const [postsData, setPostData] = useState([])
@@ -13,12 +13,9 @@ export const SearchFilter = ({ title, subTitle, value }) => {
     const [locationProv, setLocation] = useState('')
     const location = useLocation()
 
-    
-
     const getPosts = async () => {
         const posts = await actions.getReviews()
         setPostData(posts)
-
     }
 
     const handleSubmit = (e) => {
@@ -34,12 +31,9 @@ export const SearchFilter = ({ title, subTitle, value }) => {
     const filterByTitleAndName = postsData.filter((postProvider) => {
         const title = postProvider.post.title ? postProvider.post.title.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
         const username = postProvider.post.user_name ? postProvider.post.user_name.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
-        
-        const serviceType = postProvider.post.service_type ? postProvider.post.service_type.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
-    
         const searchQuery = searchTitleOrName.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-    
-        return title.includes(searchQuery) || username.includes(searchQuery) || serviceType.includes(searchQuery);
+
+        return title.includes(searchQuery) || username.includes(searchQuery);
     });
 
     const filterByLocation = filterByTitleAndName.filter((postProvider => postProvider.post.location.toLowerCase().includes(locationProv.toLowerCase())))
@@ -49,9 +43,8 @@ export const SearchFilter = ({ title, subTitle, value }) => {
     }, [searchTitleOrName, locationProv])
 
     useEffect(() => {
-        // Si la ruta actual es '/ruta-especifica'
         getPosts()
-      }, []);
+    }, [])
 
     return (
         <form onSubmit={handleSubmit} className='w-75 mx-auto p-3 py-5 mb-5' style={{ maxWidth: '700px' }}>
