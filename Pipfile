@@ -25,6 +25,7 @@ resend = "*"
 stripe = "*"
 tzdata = "*"
 openai = "*"
+sib-api-v3-sdk = "*"
 
 [requires]
 python_version = "3.10"

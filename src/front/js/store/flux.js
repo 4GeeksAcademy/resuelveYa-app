@@ -461,6 +461,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			setReviews: (newList) => {
 				setStore({ reviews: newList })
+			},
+			sendContactMessage: async ({email, message}) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/send-email", {
+						method: "POST",
+						body: JSON.stringify({ email, message }),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+
+					const data = await response.json();
+					if (response.ok) {
+						console.log(data.message);
+						return { success: true, message: data.message };
+					} else {
+						console.error("Error al enviar el mensaje:", data.message);
+						return { success: false, message: data.message };
+					}
+				} catch (e) {
+					console.error("Error en sendContactMessage:", e);
+					return { success: false, message: "Error al enviar el mensaje." };
+				}
 			}
 
 		}
