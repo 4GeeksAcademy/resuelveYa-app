@@ -6,7 +6,7 @@ import os
 from flask import request, jsonify, Blueprint
 from api.models import db, User, ServicePost, ServiceHistory, Admin, Payment, Review, Message
 from api.utils import APIException
-from flask_cors import CORS
+
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import create_access_token, decode_token, JWTManager, get_jwt_identity, jwt_required
 import re
@@ -21,7 +21,7 @@ from pprint import pprint
 
 
 api = Blueprint('api', __name__)
-CORS(api)
+
 
 
 ## VARIABLES DE ENTORNO PARA CLAVES DE APIS
