@@ -60,7 +60,7 @@ export const ProviderPostHistory = () => {
                                                                 <div className="pt-2">
                                                                         <p className="m-0 text-posthistory" >
                                                                                 <span className="text-capitalize fw-semibold pe-3">{item.service_type}</span>
-                                                                                <span className="text-black"><i className="fa-solid fa-location-dot text-center text-danger"></i>{item.location}</span>
+                                                                                <span className="text-black"><i className="fa-solid fa-location-dot text-center text-danger"></i> {item.location}</span>
                                                                         </p>
                                                                 </div>
                                                         </div>
@@ -73,7 +73,7 @@ export const ProviderPostHistory = () => {
                                                                         <p className="card-text p-2">{item.description}</p>
                                                                 </div>
                                                                 <div className="col-12 col-md-3 text-center">
-                                                                        <img src={item.post_img} alt="" className="photo border-2" />
+                                                                        <img src={item.post_img} alt="" className="photo w-100 border-2" />
                                                                 </div>
                                                         </div>
                                                 </div >
