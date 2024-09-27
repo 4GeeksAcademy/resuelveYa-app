@@ -26,7 +26,7 @@ export const UserProfile = () => {
                 <UserPersonalData />
                 {store.user?.role === "provider" && <ProviderPostHistory />}
                 {store.user?.role === 'provider' && <PayHistorys />}
-                <button className="btn btn-dark fw-bold text-white mx-auto d-block my-5 " type="submit" onClick={handleOut}>Cerrar sesión</button>
+                <button className="btn btn-userprofile-view mx-auto d-block my-5 text-uppercase rounded-pill" type="submit" onClick={handleOut}>Cerrar sesión</button>
             </div>
         </div>
     );

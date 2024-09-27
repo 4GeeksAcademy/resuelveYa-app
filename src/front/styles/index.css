@@ -11,5 +11,24 @@
     --blanco: #F5F5F5;
 }
 
+.btn-userprofile-view {
+    background-color: var(--azul);
+    color: white;
+    width: 250px;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+.btn-userprofile-view:hover {
+    background-color: var(--azul-oscuro-hover);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+.btn-userprofile-view:hover {
+    color: var(--blanco);
+    /* Cambia el color del texto a un tono celeste */
+}
 
 

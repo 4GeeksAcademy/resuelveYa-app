@@ -14,7 +14,6 @@ export const NewPost = () => {
         const cloud_name = 'dkpc68gvv'
         const preset_name = 'resuelve-ya'
         
-
         const handleSubmit = (e) => {
                 e.preventDefault()
                 const newPost = {
@@ -26,8 +25,6 @@ export const NewPost = () => {
                         // 'service_timetable': e.target.serviceTable.value,
                         'post_img': imgUrl,
                         'location': e.target.location.value,
-
-
                 }
                 console.log(newPost)
                 // actions.newPostProvider(newPost)
@@ -59,7 +56,6 @@ export const NewPost = () => {
                 }
         }
         
-
         const dataProvider = async () => {
                 const data = await actions.getProviderInformation()
                 console.log(data)
@@ -71,45 +67,36 @@ export const NewPost = () => {
         }, [])
 
         return (
-                <div className="d-flex gap-3 flex-column justify-content-center p-5 bg-light h-100vh">
-                        <form className="d-flex flex-column gap-4 border rounded bg-white p-3" onSubmit={handleSubmit}>
-                                <h1 className="text-center">Nueva Publicación</h1>
+                <div className="d-flex gap-3 flex-column justify-content-center p-5">
+                        <form className="newpost-form-container d-flex flex-column gap-4 p-3" onSubmit={handleSubmit}>
+                                <h3 className="text-center">Nueva Publicación</h3>
                                 <div className="d-flex justify-content-between align-items-center gap-1">
-                                        <label htmlFor="title">Título: </label>
+                                        <label className="fw-semibold" htmlFor="title">Título: </label>
                                         <input className="inputs-new-post border rounded" type="text" id="title" required />
                                 </div>
                                 <div className="d-flex justify-content-between gap-1">
-                                        <label htmlFor="description">Descripción: </label>
+                                        <label className="fw-semibold" htmlFor="description">Descripción: </label>
                                         <textarea className="textarea-new-post border rounded" name="description" id="description" required></textarea>
                                 </div>
-                                {/* <div className="d-flex justify-content-between align-items-center gap-1">
-                                        <label htmlFor="serviceTime">Horarios: </label>
-                                        <input className="inputs-new-post border rounded" type="text" id="serviceTime" required />
-                                </div> */}
                                 <div className="d-flex justify-content-between align-items-center gap-1">
-                                        <label htmlFor="serviceTable">Ubicación: </label>
+                                        <label className="fw-semibold" htmlFor="serviceTable">Ubicación: </label>
                                         <input className="inputs-new-post border rounded" type="text" id="location" name="location" required />
                                 </div>
                                 <div className="d-flex gap-2 justify-content-center align-items-center">
-                                        <label htmlFor="category">Categoria:</label>
-                                        <p className="p-1 border rounded text-secondary m-0" style={{ textTransform: 'capitalize' }}>{info.provider_info?.service_type}</p>
-                                        <label htmlFor="phone_number" style={{maxWidth: '100px'}}>Número de contacto:</label>
-                                        <p className="p-1 border rounded text-secondary m-0" style={{ textTransform: 'capitalize' }}>{info.provider_info?.phone}</p>
+                                        <label className="fw-semibold" htmlFor="category">Categoria:</label>
+                                        <p className="p-1 border rounded text-secondary m-0 text-capitalize">{info.provider_info?.service_type}</p>
+                                        <label className="fw-semibold" htmlFor="phone_number" style={{maxWidth: '100px'}}>Número de contacto:</label>
+                                        <p className="p-1 border rounded text-secondary m-0 text-capitalize">{info.provider_info?.phone}</p>
                                 </div>
                                 <div className="d-flex gap-2 justify-content-start">
-                                        <div>Imagen de publicación: </div>
-                                        <label className={loading ? 'btn btn-success' : 'btn btn-secondary'} htmlFor="img_url">{loading ? 'Imagen cargada' : 'Cargar imagen'}</label>
+                                        <div className="fw-semibold">Imagen de publicación: </div>
+                                        <label className={loading ? 'btn btn-dark rounded-pill' : 'btn btn-secondary rounded-pill'} htmlFor="img_url">{loading ? 'Imagen cargada' : 'Cargar imagen'}</label>
                                         <input className="file-input" onChange={(e) => handleChangeImg(e.target.files)} type="file" name="img_url" id="img_url" accept=".jpg, .png, .jpeg" />
                                 </div>
                                 <div className="d-flex justify-content-center align-items-center p-2">
-                                        <button className='btn btn-danger' disabled={isDisabled}>Continuar</button>
+                                        <button className="btn-newpost-form text-uppercase rounded-pill" disabled={isDisabled}>Continuar</button>
                                 </div>
                         </form>
-
-                        {/* <div>
-                                <h1 className="text-center">Vista demo de publicacion</h1>
-
-                        </div> */}
                 </div>
         );
 };
