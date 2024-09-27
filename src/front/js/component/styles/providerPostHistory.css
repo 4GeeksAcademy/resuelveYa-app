@@ -1,3 +1,8 @@
+.photo{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
 .posthistory-form-container {
     max-width: 900px;
     width: 100%;
