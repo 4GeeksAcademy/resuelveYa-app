@@ -72,7 +72,7 @@ class ServicePost(db.Model):
     description = db.Column(db.String(500), nullable=False)
     service_type = db.Column(db.String(100), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     post_img = db.Column(db.String(400), nullable=True)
@@ -101,7 +101,7 @@ class ServiceHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
 
-    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id', ondelete='SET NULL'), nullable=False)
+    service_post_id = db.Column(db.Integer, db.ForeignKey('service_posts.id', ondelete='SET NULL'), nullable=True)
 
     payment_method = db.Column(db.String(255), nullable=True)  
     payment_id = db.Column(db.String(100), nullable=True)  
@@ -177,7 +177,7 @@ class Review(db.Model):
 class Message(db.Model):
     __tablename__ = 'messages'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=True)
     role = db.Column(db.String(50), nullable=False)  
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

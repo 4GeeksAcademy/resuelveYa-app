@@ -1,39 +1,41 @@
 import React, { useState } from 'react';
 import "./styles/jumbotron.css"
-import bgImage from '../../../../public/bg.jpg'
+// import bgImage from '../../../../public/bg.jpg'
 import { SearchFilter } from './SearchFilter.jsx';
+import jardinero from '../../img/jardinero.jpg'
+import gasfitero1 from '../../img/gasfitero1.jpg'
+import limpieza from '../../img/limpieza2.jpg'
+import manicurista from '../../img/manicurista.jpg'
+import pintor from '../../img/pintor.jpg'
+import electricista from '../../img/electricista.jpg'
 
 export const Jumbotron = () => {
     const [searchInp1, setSearchInp1] = useState('')
     const [searchLocation, setSearchLocation] = useState('')
 
     return (
-        <header className="header text-white d-flex flex-column justify-content-center align-items-center">
-            {/* <form className=''>
-                <div className='d-flex'>
-                    <div className='bg-white w-100 mx-auto p-5 rounded container-form'>
-                        <input className='border rounded p-2' type='text' placeholder='Que estas buscando...?' />
-                        <input className='border rounded p-2' style={{maxHeight: '150px'}} type="text" placeholder='Donde...?' />
-                    </div>
-                </div>
-                <button className='btn btn-danger p-2 mt-1'>Buscar</button>
-            </form> */}
-            {/* <form className='w-75 p-4'>
-                <h1>Bienvenido a ResuelveYa!</h1>
-                <h2>Aqui encontraras la solucion</h2>
-                <div className='container-jumbotron'>
-                    <div className='input-1 input'>
-                        <i className="fa-solid fs-3 fa-magnifying-glass d-flex justify-content-center align-items-center"></i>
-                        <input className='' type="text" placeholder='¿Qué estás buscando...?' />
-                    </div>
-                    <div className='inpu-2 input'>
-                        <i className="fa-solid fs-3 fa-location-dot"></i>
-                        <input className='' style={{maxWidth: '5px'}} type='text' placeholder='¿Dónde...?' />
-                    </div>
-                </div>
-
-            </form> */}
+        <div className="header text-white d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: "100px" }}>
             <SearchFilter title={'Bienvenido a ResuelveYa'} subTitle={'¡Encuentra tu solución aquí!'} />
-        </header>
+            <div>
+                <div>
+                    <img src={jardinero} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "80px", height: "80px" }} />
+                </div>
+                <div>
+                    <img src={gasfitero1} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "150px", height: "150px" }} />
+                </div>
+                <div>
+                    <img src={limpieza} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "250px", height: "250px" }} />
+                </div>
+                <div>
+                    <img src={manicurista} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "100px", height: "10px" }} />
+                </div>
+                <div>
+                    <img src={pintor} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "80px", height: "80px" }} />
+                </div>
+                <div>
+                    <img src={electricista} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "60px", height: "60px" }} />
+                </div>
+            </div>
+        </div>
     )
 }

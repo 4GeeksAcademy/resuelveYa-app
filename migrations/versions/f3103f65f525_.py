@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 2bfa33b0e41b
+Revision ID: f3103f65f525
 Revises: 
-Create Date: 2024-09-26 20:51:09.012666
+Create Date: 2024-09-27 01:34:12.626360
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2bfa33b0e41b'
+revision = 'f3103f65f525'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -47,7 +47,7 @@ def upgrade():
     )
     op.create_table('messages',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('role', sa.String(length=50), nullable=False),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
@@ -59,7 +59,7 @@ def upgrade():
     sa.Column('title', sa.String(length=150), nullable=False),
     sa.Column('description', sa.String(length=500), nullable=False),
     sa.Column('service_type', sa.String(length=100), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('post_img', sa.String(length=400), nullable=True),
     sa.Column('location', sa.String(length=100), nullable=True),
@@ -80,7 +80,7 @@ def upgrade():
     op.create_table('service_history',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('provider_id', sa.Integer(), nullable=True),
-    sa.Column('service_post_id', sa.Integer(), nullable=False),
+    sa.Column('service_post_id', sa.Integer(), nullable=True),
     sa.Column('payment_method', sa.String(length=255), nullable=True),
     sa.Column('payment_id', sa.String(length=100), nullable=True),
     sa.Column('amount_paid', sa.Float(), nullable=True),
