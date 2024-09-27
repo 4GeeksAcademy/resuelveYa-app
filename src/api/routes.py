@@ -84,11 +84,11 @@ def create_test_users():
 
             # Lista de imágenes de perfil de Google
             profile_images = [
-                'https://i.imgur.com/1.jpg',
-                'https://i.imgur.com/2.jpg',
-                'https://i.imgur.com/3.jpg',
-                'https://i.imgur.com/4.jpg',
-                'https://i.imgur.com/5.jpg'
+                'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                'https://images.pexels.com/photos/96938/pexels-photo-96938.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
             ]
 
             # Crear usuarios con imágenes de perfil
@@ -193,7 +193,8 @@ def create_default_posts():
                 service_type=post_data['service_type'],
                 post_img=post_data['post_img'],
                 user_id=provider.id,
-                location=post_data['location']
+                location=post_data['location'],
+                rating = 5
             )
             db.session.add(post)
 

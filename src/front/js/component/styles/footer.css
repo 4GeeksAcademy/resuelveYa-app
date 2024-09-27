@@ -1,24 +1,31 @@
+
+:root {
+    --azul: #8698C4;
+    --azul-oscuro-hover: #414d6d;
+    --celeste: #E1E5F0;
+    --gris: #F5F5F5;
+    --plomo: #EEEEEE;
+    --plomo-oscuro: #88898D;
+    --negro: #393C3F;
+    --blanco: #F5F5F5;
+}
+
 .footer {
-    color: white;
+    color: var(--negro); 
     display: grid;
     grid-template-areas:
         "direction"
         "contact"
         "new-team"
         "team";
-    /* max-width: 1200px; */
     margin: 0 auto;
-    /* background-image: url('../../../img/bg-footer.png'); */
     background-position: center;
     background-size: cover;
-    /* background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(29,92,190,1) 0%, rgba(59,26,78,1) 47%, rgba(8,19,98,1) 100%); */
-    /* background-image: linear-gradient( 111.4deg,  rgba(7,7,9,1) 6.5%, rgba(27,24,113,1) 93.2% ); */
-    /* background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(38,51,97,1) 0%, rgba(65,143,222,1) 79% ); */
-    background-color: rgb(17, 17, 17);
+    background-color: var(--azul-oscuro-hover); 
 }
 
 .container-bento {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     display: grid;
     grid-template-areas:
@@ -32,15 +39,14 @@
 .div-footer {
     height: 350px;
     border-radius: 20px;
-    /* padding: 10px; */
-    background-color: rgb(26, 26, 26);
-    border: rgb(22, 22, 22) 3px solid;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    background-color: var(--blanco); 
+    border: var(--negro) 3px solid; 
+    box-shadow: var(--negro);
 }
 
 .div-img {
     overflow: hidden;
-    height: 200px; /* Puedes ajustar esta altura según tus necesidades */
+    height: 200px; 
     border-radius: 10px;
 }
 
@@ -52,11 +58,6 @@
 
 .div-direction {
     grid-area: direction;
-    /* background-color: #3bb7ff60; */
-    /* background-color: rgb(37, 37, 37); */
-    /* background-image: radial-gradient( circle 975px at 2.6% 48.3%,  rgba(0,8,120,1) 0%, rgba(95,184,224,1) 99.7% ); */
-    /* background-color: rgba(0, 0, 0, 0.384); */
-    /* background-color: rgba(247, 243, 243, 0.521); */
     backdrop-filter: blur(10px);
     padding: 20px;
     overflow: hidden;
@@ -64,7 +65,7 @@
 }
 
 .footer-input {
-    background: rgba(255, 255, 255, 0.137);
+    background: var(--celeste);
     transition: 0.5s ease-out;
     border: none;
 }
@@ -73,7 +74,7 @@
     flex-direction: column;
 }
 
-#footer-textarea {
+#message {
     border: none;
     border-radius: 10px;
     padding: 10px;
@@ -87,21 +88,16 @@
     grid-area: contact;
     backdrop-filter: blur(10px);
     padding: 20px;
-    /* background-image: linear-gradient( 109.6deg,  rgb(121, 28, 28) 11.2%, rgb(214, 56, 20) 100.6% ); */
 }
 
 .div-new-team {
     grid-area: new-team;
-    /* background-color: rgb(39, 39, 39); */
     backdrop-filter: blur(10px);
     padding: 20px;
-    /* overflow-y: scroll; */
 }
 
 .div-team {
     grid-area: team;
-    /* background-color: #7c3ab3; */
-    /* background-image: linear-gradient( 85.2deg,  rgba(33,3,40,1) 7.5%, rgba(65,5,72,1) 88.7% ); */
     backdrop-filter: blur(10px);
     background-color: rgb(39, 39, 39);
     overflow: hidden;
@@ -166,18 +162,35 @@
 
 @media (min-width: 1024px) {
     .container-bento {
+        display: grid;
         grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(4, 1fr) 0fr;
-        grid-column-gap: 10px;
-        grid-row-gap: 10px;
+        grid-template-rows: repeat(4, 1fr) 0;
+        grid-column-gap: 20px; /* Aumenta el espacio horizontal entre columnas */
+        grid-row-gap: 20px;    /* Aumenta el espacio vertical entre filas */
     }
 
-    .div1 { grid-area: 1 / 1 / 3 / 3; }
-    .div2 { grid-area: 1 / 3 / 3 / 6; }
-    .div3 { grid-area: 3 / 1 / 5 / 4; }
-    .div4 { grid-area: 3 / 4 / 5 / 6; }
+    .div1 { 
+        grid-area: 1 / 1 / 3 / 6; /* Ocupa toda la fila superior (2 filas y 5 columnas) */
+        padding: 10px;
+        height: 420px;
+        
+    }
+
+    .div2 { 
+        grid-area: 3 / 1 / 5 / 4; /* Ocupa las 3 primeras columnas en la segunda mitad */
+        background-color: var(--celeste);
+        color: var(--negro);
+        margin-top: 20px
+    }
+
+    .div3 { 
+        grid-area: 3 / 4 / 5 / 6; /* Ocupa las 2 últimas columnas en la segunda mitad */
+        color: var(--blanco);
+        margin-top: 20px
+    }
 
     .div-new-team {
         text-align: left;
     }
+
 }

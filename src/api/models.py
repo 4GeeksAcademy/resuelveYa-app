@@ -77,6 +77,7 @@ class ServicePost(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     post_img = db.Column(db.String(400), nullable=True)
     location = db.Column(db.String(100), nullable=True)
+    rating = db.Column(db.Integer, default=0)
 
     user = db.relationship('User', back_populates='service_posts', lazy=True)
 
@@ -91,6 +92,7 @@ class ServicePost(db.Model):
             "user_lastname": self.user.lastname,
             "user_phone": self.user.phone,
             "user_profile":self.user.profile_image,
+            "post_rating":self.rating,
             "created_at": self.created_at.strftime('%d/%m/%Y %H:%M'),
             "post_img": self.post_img, 
             "location": self.location 
