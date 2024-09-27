@@ -20,7 +20,7 @@
     word-wrap: break-word;
 }
 .text-posthistory{
-    color: var(--azul);
+    color: var(--azul-oscuro-hover);
 }
 .btn-posthistory {
     background-color: var(--azul);

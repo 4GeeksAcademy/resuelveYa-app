@@ -1,6 +1,41 @@
+.newpost-form-container {
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--celeste);
+    flex-grow: 1;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(50, 58, 115, 0.1);
+}
+
+.btn-newpost-form {
+    background-color: var(--azul);
+    color: white;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-newpost-form:hover {
+    background-color: var(--azul-oscuro-hover);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-newpost-form:hover {
+    color: var(--blanco);
+    /* Cambia el color del texto a un tono celeste */
+}
+
 .inputs-new-post, .textarea-new-post {
     width: 280px;
     padding: 10px;
+    background-color: white;
     /* border: none; */
 }
 

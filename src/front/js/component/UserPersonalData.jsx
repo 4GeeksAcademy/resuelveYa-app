@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Context } from "../store/appContext";
+import "./styles/userDetails.css";
 
 export const UserPersonalData = () => {
     const { store, actions } = useContext(Context);
@@ -99,9 +100,9 @@ export const UserPersonalData = () => {
         const formData = new FormData();
         formData.append('file', file[0]);
         formData.append('upload_preset', preset_name);
-    
+
         // setLoading(true);
-    
+
         try {
             // Subir la imagen a Cloudinary
             const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
@@ -109,23 +110,23 @@ export const UserPersonalData = () => {
                 body: formData
             });
             const cloudinaryData = await cloudinaryResponse.json();
-    
+
             if (cloudinaryData.url) {
                 setImgProfile(cloudinaryData.url);
                 // setIsDisabled(false);
                 console.log({ 'datos enviados': cloudinaryData.url });
-    
+
                 // Actualizar la información del usuario con la nueva imagen
                 const editUserData = await actions.editUserPersonalData({
                     "profile_image": cloudinaryData.url
                 });
-    
+
                 // Ya no es necesario llamar a .json() aquí
                 console.log({ 'datos recibidos': editUserData });
             } else {
                 console.log('No se pudo obtener la URL de la imagen subida.');
             }
-    
+
         } catch (err) {
             console.error('Error subiendo imagen o actualizando usuario:', err);
         } finally {
@@ -178,15 +179,14 @@ export const UserPersonalData = () => {
     };
 
     return (
-        <div className="" style={{ width: "100%", maxWidth: "900px" }}>
+        <div className="userdetails-container">
             <div className="d-flex justify-content-center">
                 <div className="d-flex align-items-center">
                     <div className="position-relative">
                         <img
                             src={imgProfile || "https://via.placeholder.com/150"}
                             alt="User"
-                            className="rounded-circle img-thumbnail"
-                            style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                            className="userdetails-image rounded-circle img-thumbnail"
                         />
                         <label className="edit-image-label position-absolute bottom-0 end-0" htmlFor="file-input">
                             <i className="fa fa-edit" />
@@ -203,12 +203,11 @@ export const UserPersonalData = () => {
                     <h1>Hola <strong>{store.username}</strong></h1>
                 </div>
             </div>
-
             {/* Bootstrap Tabs */}
             <ul className="nav nav-tabs mt-5 custom-tabs" style={{ borderBottom: 'none' }}>
                 <li className="nav-item col-6">
                     <a
-                        className="nav-link active text-center text-black"
+                        className="nav-link active text-center text-black fw-bold"
                         id="datos-personales-tab"
                         data-bs-toggle="tab"
                         href="#datos-personales"
@@ -221,7 +220,7 @@ export const UserPersonalData = () => {
                 </li>
                 <li className="nav-item col-6">
                     <a
-                        className="nav-link text-center text-black"
+                        className="nav-link text-center text-black fw-bold"
                         id="cambiar-contrasena-tab"
                         data-bs-toggle="tab"
                         href="#cambiar-contrasena"
@@ -233,7 +232,6 @@ export const UserPersonalData = () => {
                     </a>
                 </li>
             </ul>
-
             <div className="tab-content mt-3">
                 {/* Tab 1: Datos Personales */}
                 <div
@@ -248,8 +246,7 @@ export const UserPersonalData = () => {
                             {personalDataAlert.message}
                         </div>
                     )}
-
-                    <form onSubmit={formik.handleSubmit} className="p-4" style={{ backgroundColor: '#fff', borderRadius: '10px' }}>
+                    <form onSubmit={formik.handleSubmit} className="userdetails-form-container p-4">
                         {/* Formulario de Datos Personales */}
                         <div className="row">
                             <div className="col-md-6 mb-3">
@@ -281,7 +278,6 @@ export const UserPersonalData = () => {
                                 ) : null}
                             </div>
                         </div>
-
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="fw-bold">DNI</label>
@@ -308,7 +304,6 @@ export const UserPersonalData = () => {
                                 ) : null}
                             </div>
                         </div>
-
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="fw-bold">Correo Electrónico</label>
@@ -321,11 +316,10 @@ export const UserPersonalData = () => {
                                 />
                             </div>
                         </div>
-
                         <div className="mt-3">
                             <button
                                 type="submit"
-                                className="btn btn-dark fw-bold text-white"
+                                className="btn btn-dark fw-bold text-white text-uppercase rounded-pill"
                                 // Deshabilitar el botón hasta que se detecte un cambio
                                 disabled={!isChanged}
                             >
@@ -348,7 +342,7 @@ export const UserPersonalData = () => {
                         </div>
                     )}
 
-                    <form onSubmit={passwordFormik.handleSubmit} className="p-4 rounded-3" style={{ backgroundColor: '#fff' }} >
+                    <form onSubmit={passwordFormik.handleSubmit} className="p-4 rounded-3 userdetails-form-container">
                         {/* Formulario para Cambiar Contraseña */}
                         < div className="form-group mb-3">
                             <label className="fw-bold">Contraseña Actual</label>
@@ -395,7 +389,7 @@ export const UserPersonalData = () => {
                             ) : null}
                         </div>
 
-                        <button type="submit" className="btn btn-dark fw-bold text-white">Guardar Contraseña</button>
+                        <button type="submit" className="btn btn-dark fw-bold btn-form-password text-uppercase rounded-pill">Guardar Contraseña</button>
                     </form>
                 </div>
             </div >

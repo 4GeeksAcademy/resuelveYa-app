@@ -1,0 +1,22 @@
+.userdetails-container {
+    max-width: 900px;
+    width: 100%;
+}
+.userdetails-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover
+}
+.btn-form-password{
+    width: 220px;
+}
+.userdetails-form-container {
+    max-width: 900px;
+    background-color: var(--celeste);
+    flex-grow: 1;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(50, 58, 115, 0.1);
+}
