@@ -1,25 +1,28 @@
-.container {
-    background-color: rgba(0, 0, 0, 0.363);
+.container-jumbotron {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 700px;
+    margin: 0 auto;
+    justify-content: center;
 }
 
-input {
+.input-1,
+.input-2 {
+    flex: 1;
+}
+
+.input-1 input,
+.input-2 input {
+    width: 100%;
     background: transparent;
     border: none;
+    outline: none;
 }
 
-.text-color {
-    color: var(--negro)
-}
-
-.container-form {
-    /* background-color: #3498db; */
-    height: 100%;
-    width: 100%;
-    clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+.input-1,
+.input-2 {
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: white;
 }
 
 .button-search-filters {
@@ -28,6 +31,7 @@ input {
     background: var(--azul);
     color: white;
     border-radius: 30px;
+    padding: 10px 20px;
 }
 
 .button-search-filters:hover {
@@ -35,27 +39,49 @@ input {
     background-color: var(--azul-oscuro-hover);
 }
 
-.input-1 {
-    flex: 1;
-}
-
-.input-2 {
-    flex: 0.8;
-}
-
-.input-2 input {
-    overflow: hidden;
-}
-
 .container-jumbotron {
-    flex-wrap: wrap;
-    max-width: 600px;
-    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#location::placeholder,
-#titleOrName::placeholder {
-    color: rgb(208, 201, 201);
-    opacity: 1;
-    font-weight: 400;
+.header {
+    padding-bottom: 100px;
+    padding-top: 140px;
+}
+
+/* Media query for mobile */
+@media (max-width: 768px) {
+    .container-jumbotron {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .input-1,
+    .input-2 {
+        flex: 1;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .button-search-filters {
+        width: 100%;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    .header {
+        padding-bottom: 40px;
+        padding-top: 100px;
+    }
+
+    .first-img, .second-img {
+        width: 100%;
+        height: 250px; /* Ajusta el tamaño según tus necesidades */
+        object-fit: cover;
+    }
 }
