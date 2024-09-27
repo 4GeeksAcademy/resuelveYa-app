@@ -14,26 +14,26 @@ export const Jumbotron = () => {
     const [searchLocation, setSearchLocation] = useState('')
 
     return (
-        <div className="header text-white d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: "100px" }}>
+        <div className="header text-white d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: "100px", marginBottom: "120px" }}>
             <SearchFilter title={'Bienvenido a ResuelveYa'} subTitle={'¡Encuentra tu solución aquí!'} />
-            <div>
-                <div>
-                    <img src={jardinero} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "80px", height: "80px" }} />
+            <div className='d-flex position-relative gap-5'>
+                <div style={{ paddingTop: "180px" }}>
+                    <img src={jardinero} alt="" className='img-fluid object-fit-cover border rounded-4 shadow' style={{ width: "100px", height: "100px" }} />
+                </div>
+                <div style={{ paddingTop: "40px" }}>
+                    <img src={gasfitero1} alt="" className='img-fluid object-fit-cover border rounded-4 shadow' style={{ width: "140px", height: "140px" }} />
                 </div>
                 <div>
-                    <img src={gasfitero1} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "150px", height: "150px" }} />
+                    <img src={limpieza} alt="" className='img-fluid object-fit-cover border rounded-4 shadow' style={{ width: "280px", height: "280px" }} />
                 </div>
-                <div>
-                    <img src={limpieza} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "250px", height: "250px" }} />
+                <div style={{ paddingTop: "10px" }}>
+                    <img src={manicurista} alt="" className='img-fluid object-fit-cover border rounded-4 shadow' style={{ width: "120px", height: "120px" }} />
                 </div>
-                <div>
-                    <img src={manicurista} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "100px", height: "10px" }} />
+                <div style={{ paddingTop: "160px", right: "5%" }} className='position-absolute bottom-0'>
+                    <img src={pintor} alt="" className='img-fluid object-fit-cover border rounded-4 shadow' style={{ width: "130px", height: "130px" }} />
                 </div>
-                <div>
-                    <img src={pintor} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "80px", height: "80px" }} />
-                </div>
-                <div>
-                    <img src={electricista} alt="" className='img-fluid object-fit-cover border rounded' style={{ width: "60px", height: "60px" }} />
+                <div style={{ paddingTop: "25px" }} >
+                    <img src={electricista} alt="" className='img-fluid object-fit-cover border rounded-4 shadow' style={{ width: "80px", height: "80px" }} />
                 </div>
             </div>
         </div>

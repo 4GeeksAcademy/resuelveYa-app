@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { Context } from "../store/appContext";
 import './styles/footer.css'
 import bg from "../../img/bg-footer.png"
 import ubi from "../../img/ubi.png"
@@ -6,19 +7,52 @@ import milton from "../../img/perfil-milton.jpg"
 import kevin from "../../img/kevin_img.jpg"
 import ericka from "../../img/perfil-ericka.jpg"
 import magui from "../../img/maguisr.jpg"
-// import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
-
-
-// import { FaInstagramSquare, FaFacebookSquare, FaGithubSquare, FaLinkedin } from "react-icons/fa";
-
-
-// import foto1 from "../../img/electra.jpg";
-// import foto2 from "../../img/gasfitero.jpg";
-// import foto3 from "../../img/enfermera.jpg";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 // import '../../styles/footer.css';
 
 export const Footer = () => {
+	const { actions } = useContext(Context);
+	const [showAlert, setShowAlert] = useState({ visible: false, message: "", type: "" });
+
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			message: '',
+		},
+		validationSchema: Yup.object({
+			email: Yup.string()
+				.email('Correo electrónico inválido')
+				.required('El correo electrónico es requerido'),
+			message: Yup.string()
+				.min(10, "El mensaje debe tener al menos 10 caracteres")
+				.required("Déjanos un mensaje por favor"),
+		}),
+		onSubmit: async (values, { resetForm }) => {
+			try {
+				const data = await actions.sendContactMessage(values)
+				resetForm();
+				setShowAlert({
+					visible: true,
+					message: "Mensaje enviado exitosamente",
+					type: "success"
+				});
+				setTimeout(() => {
+					setShowAlert({
+						visible: false,
+					});
+				}, 2000);
+
+
+			} catch (e) {
+				console.error(e);
+			}
+		},
+	});
+
+
+
 	return (
 		// <footer className="footer py-5 text-center" style={{backgroundImage: `url(${bg})`}}>
 		<footer className="footer py-5 text-center">
@@ -34,16 +68,33 @@ export const Footer = () => {
 				<div className="div-footer div-contact div2">
 					<h3 className='m-0'>Contáctanos</h3>
 					<p className='fs-5 m-0'>Teléfono: (01) 234-5678</p>
-					<form >
+					{showAlert.visible && (
+						<div className={`alert alert-${showAlert.type} p-2`} role="alert">
+							{showAlert.message}
+						</div>
+					)}
+					<form onSubmit={formik.handleSubmit}>
 						<div className='d-flex align-items-start gap-2 footer-inputs'>
 							<label htmlFor="" className='fs-5 '>Tu correo:</label>
-							<input className='form-control footer-input' type="text" />
+							<input className='form-control footer-input' type="email" id="email"
+								name="email" onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.email} />
+							{formik.touched.email && formik.errors.email ? (
+								<div className="text-danger">{formik.errors.email}</div>
+							) : null}
 						</div>
 						<div className='d-flex align-items-start gap-2 footer-inputs'>
-							<label htmlFor="" className='fs-5'>Dejanos tu mensaje:</label>
-							<textarea className='fs-5 footer-input form-control' name="footer-textarea" id="footer-textarea"></textarea>
+							<label htmlFor="" className='fs-5'>Déjanos tu mensaje:</label>
+							<textarea className='fs-5 footer-input form-control' id="message"
+								name="message" onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.message}></textarea>
+							{formik.touched.message && formik.errors.message ? (
+								<div className="text-danger">{formik.errors.message}</div>
+							) : null}
 						</div>
-						<button className='btn btn-danger mt-2'>Enviar</button>
+						<button className='btn btn-danger mt-2' type="submit">Enviar</button>
 					</form>
 				</div>
 				<div className="div-footer div-new-team div3 overflow-y-auto">
