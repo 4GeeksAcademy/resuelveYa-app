@@ -44,7 +44,7 @@ export const ListServices = () => {
                         <div className='div-desc gap-2'>
                             <div className='d-flex justify-content-center align-items-center pb-1'>
                                 {[...Array(5)].map((_, indx) => {
-                                    const isRated = review?.average_rating > indx;
+                                    const isRated = 5 > indx;
                                     return isRated ?
                                         <i className='bx bxs-star text-warning fa-lg d-flex justify-content-center align-items-center' key={indx}></i> :
                                         <i className='bx bx-star fa-lg d-flex justify-content-center align-items-center' key={indx}></i>

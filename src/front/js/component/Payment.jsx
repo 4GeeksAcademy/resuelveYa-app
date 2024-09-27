@@ -8,7 +8,7 @@ import './styles/payment.css';
 export const Payments = () => {
     const { actions, store } = useContext(Context);
     const navigate = useNavigate();
-    const [payComplete, setPayComplete] = useState(false)
+    const [payComplete, setPayComplete] = useState(true)
     const [payDetails, setPayDetails] = useState({})
 
     const formik = useFormik({
@@ -100,9 +100,9 @@ export const Payments = () => {
 
             {
                 payComplete ?
-                    <div style={{ paddingTop: '100px' }}>
+                    <div className='' style={{ paddingTop: '150px' }}>
                         <h2 className='text-center'>¡Pago Realizado con Éxito!</h2>
-                        <div className='w-75 mx-auto bg-light p-3 rounded' style={{ maxWidth: '400px' }}>
+                        <div className='w-75 mx-auto p-3 rounded payment-complete shadow' style={{ maxWidth: '400px' }}>
                             <p>Número de Tarjeta: <strong>**** **** **** ****</strong></p>
                             <p>Nombre del Titular: <strong>{payDetails.name}</strong></p>
                             <p>CVV: <strong>***</strong></p> {/* No muestres el CVV por razones de seguridad */}
@@ -110,7 +110,7 @@ export const Payments = () => {
                         </div>
                         <div className='d-flex justify-content-center align-items-center p-3'>
                             <Link to='/userprofile'>
-                                <button className='btn btn-secondary'>Volver a mis publicaciones</button>
+                                <button className='btn-payment-complete'>Volver a mis publicaciones</button>
                             </Link>
                         </div>
                         <p className='text-center'>Gracias por tu compra. ¡Tu pago ha sido procesado exitosamente!</p>

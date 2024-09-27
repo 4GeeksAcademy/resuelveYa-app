@@ -51,10 +51,10 @@ export const Navbar = () => {
 		<nav className=''>
 			<div className="d-flex blur justify-content-between w-100 align-items-center p-2 nav-sec-1 ">
 				<div>
-					<a onClick={() => handleClick()} className="d-flex justify-content-center align-items-center">
+					<Link to={'/'} className="d-flex justify-content-center align-items-center">
 						<img src={logoNavbar} style={{ width: "70px", height: "70px" }}></img>
 						<h2 className='mb-0' style={{ color: "var(--blanco)" }}>Resuelve<span>Ya!</span></h2>
-					</a>
+					</Link>
 				</div>
 				{/* Btn hamburguesa */}
 				<div className="btnNav transition-transform d-md-none">

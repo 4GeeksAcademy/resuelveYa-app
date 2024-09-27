@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import { Jumbotron } from "../component/Jumbotron.jsx";
@@ -12,14 +12,20 @@ import { useLocation } from "react-router-dom";
 
 
 export const Home = () => {
+	const { store, actions } = useContext(Context)
+    const [dataPosts, setDataPosts] = useState([])
 
-
-	// useEffect(() => {
-	// 	if(location.pathname === '/'){
-
-	// 		actions.getReviews()
-	// 	}
-	// }, [])
+    const getPost = async () => {
+        const dataPost = await actions.getReviews()
+        console.log(dataPost)
+        actions.setDataReviews(dataPost)
+        console.log(store.dataReviews)
+    }
+    
+    useEffect(() => {
+        // console.log(store.reviews)
+        getPost()
+    }, [])
 	
 	return (
 		<div className="text-center" style={{backgroundColor: '#EEEEEE'}}>

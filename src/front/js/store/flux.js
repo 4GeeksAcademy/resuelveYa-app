@@ -11,6 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: null,
 			dataNewPost: {},
 			reviews: [],
+			dataReviews: [],
 			messages: [],
 			colors: {
 				azul: "#8698C4",
@@ -490,11 +491,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, message: "Error al enviar el mensaje." };
 				}
 			},
-			setInputSearch: (newValue) => {
-				setStore({ inputSearch: newValue });
+			setDataReviews: (newData) => {
+				setStore({dataReviews: newData})
+			},
+			setInputSearch: (newValue)=> {
+				setStore({inputSearch: newValue})
 			},
 			setInputLocation: (newValue) => {
-				setStore({ inputLocation: newValue })
+				setStore({inputLocation: newValue})
 			}
 		}
 	};
