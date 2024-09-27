@@ -20,7 +20,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				negro: "#88898D",
 				negro2: "#393C3F",
 				blanco: "#F5F5F5"
-			}
+			},
+			inputSearch: '',
+			inputLocation: '',
+			searchTitleOrName: '',  // Nuevo campo
+			locationProv: '',
 		},
 		actions: {
 			register: async (values) => {
@@ -463,7 +467,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setReviews: (newList) => {
 				setStore({ reviews: newList })
 			},
-			sendContactMessage: async ({email, message}) => {
+			sendContactMessage: async ({ email, message }) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/send-email", {
 						method: "POST",
@@ -485,8 +489,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en sendContactMessage:", e);
 					return { success: false, message: "Error al enviar el mensaje." };
 				}
+			},
+			setInputSearch: (newValue) => {
+				setStore({ inputSearch: newValue });
+			},
+			setInputLocation: (newValue) => {
+				setStore({ inputLocation: newValue })
 			}
-
 		}
 	};
 };
