@@ -5,7 +5,7 @@ import { Context } from '../store/appContext'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 
-export const SearchFilter = ({ title, subTitle, value }) => {
+export const Search2 = ({ title, subTitle, value }) => {
     const { actions, store } = useContext(Context)
     const navigate = useNavigate()
     const [postsData, setPostData] = useState([])
@@ -13,14 +13,12 @@ export const SearchFilter = ({ title, subTitle, value }) => {
     const [locationProv, setLocation] = useState('')
     const location = useLocation()
 
-    
-
+    console.log(store.reviews)
     const getPosts = async () => {
-        const posts = await actions.getReviews()
-        setPostData(posts)
-
+            setPostData(store.reviews)
     }
 
+    
     const handleSubmit = (e) => {
         e.preventDefault()
         navigate('/cardPostsList')
@@ -34,6 +32,7 @@ export const SearchFilter = ({ title, subTitle, value }) => {
     const filterByTitleAndName = postsData.filter((postProvider) => {
         const title = postProvider.post.title ? postProvider.post.title.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
         const username = postProvider.post.user_name ? postProvider.post.user_name.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
+        
         
         const serviceType = postProvider.post.service_type ? postProvider.post.service_type.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
     
@@ -50,8 +49,12 @@ export const SearchFilter = ({ title, subTitle, value }) => {
 
     useEffect(() => {
         // Si la ruta actual es '/ruta-especifica'
-        getPosts()
-      }, []);
+        if(store.reviews.length !== 0) {
+            setPostData(store.reviews)
+        }
+    }, [store.reviews]);
+
+
 
     return (
         <form onSubmit={handleSubmit} className='w-75 mx-auto p-3 py-5 mb-5' style={{ maxWidth: '700px' }}>

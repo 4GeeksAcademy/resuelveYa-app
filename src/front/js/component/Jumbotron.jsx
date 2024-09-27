@@ -15,7 +15,7 @@ export const Jumbotron = () => {
 
     return (
         <div className="header text-white d-flex flex-column justify-content-center align-items-center" style={{ paddingTop: "100px", marginBottom: "120px" }}>
-            <SearchFilter title={'Bienvenido a ResuelveYa'} subTitle={'¡Encuentra tu solución aquí!'} />
+            <SearchFilter title={'Bienvenido a ResuelveYa'} subTitle={'¡Encuentra tu solución aquí!'} value={'a'} />
             <div className='d-flex position-relative gap-5'>
                 <div style={{ paddingTop: "180px" }}>
                     <img src={jardinero} alt="" className='img-fluid object-fit-cover border rounded-4 shadow' style={{ width: "100px", height: "100px" }} />
