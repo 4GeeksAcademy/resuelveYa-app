@@ -96,13 +96,12 @@ export const Payments = () => {
     const cardType = getCardType(formik.values.card_number.replace(/\s/g, ''));
 
     return (
-        <div className='payment' style={{height: '100vh'}}>
-
+        <div>
             {
                 payComplete ?
-                    <div className='' style={{ paddingTop: '150px' }}>
+                    <div style={{ paddingTop: '100px' }}>
                         <h2 className='text-center'>¡Pago Realizado con Éxito!</h2>
-                        <div className='w-75 mx-auto p-3 rounded payment-complete shadow' style={{ maxWidth: '400px' }}>
+                        <div className='w-75 mx-auto bg-light p-3 rounded' style={{ maxWidth: '400px' }}>
                             <p>Número de Tarjeta: <strong>**** **** **** ****</strong></p>
                             <p>Nombre del Titular: <strong>{payDetails.name}</strong></p>
                             <p>CVV: <strong>***</strong></p> {/* No muestres el CVV por razones de seguridad */}
@@ -110,16 +109,16 @@ export const Payments = () => {
                         </div>
                         <div className='d-flex justify-content-center align-items-center p-3'>
                             <Link to='/userprofile'>
-                                <button className='btn-payment-complete'>Volver a mis publicaciones</button>
+                                <button className='btn btn-secondary'>Volver a mis publicaciones</button>
                             </Link>
                         </div>
                         <p className='text-center'>Gracias por tu compra. ¡Tu pago ha sido procesado exitosamente!</p>
                     </div> :
-                    <div className="container-payment d-flex flex-column align-items-center" style={{ paddingTop: '150px'}}>
-                        <h2 className="text-center mb-4 text-black">Realizar Pago</h2>
+                    <div className="container d-flex flex-column align-items-center" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+                        <h2 className="text-center mb-4 text-white">Realizar Pago</h2>
 
                         <div className={`card-preview ${cardType} position-relative`} >
-                            {cardType === 'visa' && <i className='bx bxl-visa text-light' style={{ fontSize: "100px", position: "absolute", right: "20px", top: "0px" }}></i>}
+                            {cardType === 'visa' && <i className='bx bxl-visa text-light' style={{ fontSize: "100px", position: "absolute", right: "85px", top: "0" }}></i>}
                             {cardType === 'mastercard' && <i className='bx bxl-mastercard text-light' style={{ fontSize: "100px", position: "absolute", right: "85px", top: "0" }} ></i>}
                             <div className="card-number">{formik.values.card_number || '• • • • • • • • • • • • • • • •'}</div>
                             <div className="card-details">
