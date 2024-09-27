@@ -28,22 +28,34 @@ export const SearchFilter = ({ title, subTitle, posts }) => {
         console.log(e.target.value)
     }
 
-    const filterByTitleAndName = postsData.filter((postProvider) => {
+    const filterByTitleAndName = store.dataReviews.filter((postProvider) => {
+        const completeName = `${postProvider.post.user_name || ''} ${postProvider.post.user_lastname || ''}`;
         const title = postProvider.post.title ? postProvider.post.title.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
-        const username = postProvider.post.user_name ? postProvider.post.user_name.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
-        const searchQuery = searchTitleOrName.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        const username = completeName ? completeName.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
+        const searchQuery = searchTitleOrName ? searchTitleOrName.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
 
-        return title.includes(searchQuery) || username.includes(searchQuery);
+        // Obtener la categoría desde el input
+        const category = postProvider.post.service_type ? postProvider.post.service_type.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
+
+        // Filtrar por título, nombre de usuario y categoría
+        return (title.includes(searchQuery) || username.includes(searchQuery) || category.includes(searchQuery));
     });
 
     const filterByLocation = filterByTitleAndName.filter((postProvider => postProvider.post.location.toLowerCase().includes(locationProv.toLowerCase())))
 
     useEffect(() => {
+        if (store.inputSearch !== "") {
+            setSearchTitleOrName(store.inputSearch)
+        }
+        if (store.inputLocation !== '') {
+            setLocation(store.inputLocation)
+        }
+        console.log(filterByLocation)
         actions.setReviews(filterByLocation)
-    }, [searchTitleOrName, locationProv])
+    }, [searchTitleOrName, locationProv, store.inputSearch])
 
     useEffect(() => {
-        getPosts()
+        // getPosts()
     }, [])
 
     return (
@@ -53,11 +65,11 @@ export const SearchFilter = ({ title, subTitle, posts }) => {
             <div className='container-jumbotron bg-white rounded-5 p-2 container d-flex gap-2'>
                 <div className='d-flex align-items-center input-1'>
                     <i className="fa-solid fs-4 fa-magnifying-glass pe-2" style={{ color: "rgb(208 201 201)" }}></i>
-                    <input className='' id='titleOrName' type="text" placeholder='¿Qué estás buscando?' onChange={handleChangeTitleAndName} autoComplete='off' />
+                    <input className='' value={store.inputSearch} id='titleOrName' type="text" placeholder='¿Qué estás buscando?' onChange={(e) => { handleChangeTitleAndName(e), actions.setInputSearch(e.target.value) }} autoComplete='off' />
                 </div>
                 <div className='d-flex align-items-center input-2'>
                     <i className="fa-solid fs-4 fa-location-dot bg-white pe-2" style={{ color: "rgb(208 201 201)" }} ></i>
-                    <input type="text" id='location' placeholder='¿Dónde?' onChange={(e) => setLocation(e.target.value)} maxLength={20} autoComplete='off' />
+                    <input type="text" value={store.inputLocation} id='location' placeholder='¿Dónde?' onChange={(e) => { setLocation(e.target.value), actions.setInputLocation(e.target.value) }} maxLength={20} autoComplete='off' />
                 </div>
                 <button className='button-search-filters px-3 py-1 pb-2'>Buscar</button>
             </div>

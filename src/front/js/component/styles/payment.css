@@ -36,6 +36,25 @@
     margin-bottom: 20px;
 }
 
+.payment-complete {
+    background-color: var(--celeste); 
+    border-radius: 10px;
+   
+}
+
+.btn-payment-complete {
+    background-color: var(--azul);
+    transition: 0.5s ease-in-out;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    color: white;
+}
+
+.btn-payment-complete:hover {
+    background-color: var(--azul-oscuro-hover);
+}
+
 .card-preview.visa {
     background: rgb(2,0,36);
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(29,92,190,1) 0%, rgba(109,9,215,1) 100%);
