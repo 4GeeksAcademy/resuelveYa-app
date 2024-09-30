@@ -288,7 +288,7 @@ def login():
                 "username": user.username,
                 "user_id": user.id,
                 "role": "user",
-                "user_rol": user.role,
+                "user_role": user.role,
                 "message": "Inicio de sesión exitoso"
             }), 200
 

@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			listServices: [],
 			username: localStorage.getItem('name'),
 			role: localStorage.getItem('role'),
+			user_role: localStorage.getItem('user_role'),
 			resetEmail: "",
 			clientInfo: null,
 			providerInfo: null,
@@ -51,7 +52,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						localStorage.setItem('name', data.username);
 						localStorage.setItem('role', data.role);
 						localStorage.setItem('user_id', data.user_id);
-						setStore({ username: data.username, role: data.role });
+						localStorage.setItem('user_role', data.user_role)
+						setStore({ username: data.username, role: data.role, user_role: data.user_role });
 					} else {
 						console.log("Something went wrong");
 					}
@@ -66,12 +68,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem('name');
 				localStorage.removeItem('user_id');
 				localStorage.removeItem('role');
+				localStorage.removeItem('user_role');
 				setStore({
 					username: "",
 					user: null,
 					clientInfo: null,
 					providerInfo: null,
-					messages: []
+					messages: [],
+					user_role: null
 				});
 				console.log("Logged out successfully!");
 			},
