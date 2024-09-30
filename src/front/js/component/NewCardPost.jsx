@@ -43,21 +43,21 @@ export const NewCardPost = ({ item, index }) => {
             <div className="card-header py-3 w-100">
                 <div className="row">
                     {/* imagen de perfil del proveedor */}
-                    <div className="col-3 col-md-2 ps-2 p-0 mb-3 text-center">
-                        <img src={item.post.user_profile || "https://via.placeholder.com/150"} alt="" className="photo rounded-circle w-100" />
+                    <div className="col-12 col-md-2 ps-2 p-0 mb-3 text-center">
+                        <img src={item.post.user_profile || "https://via.placeholder.com/150"} alt="" className="photo rounded-circle" />
                     </div>
-                    <div className="col-9 col-md-10 d-flex flex-column justify-content-center ps-3">
+                    <div className="col-12 col-md-10 d-flex flex-column justify-content-center ps-3">
                         <div className="row">
                             <div className="col-12 col-md-9 pb-2">
                                 <h4 className="m-0 text-capitalize">{item.post.title}</h4>
                             </div>
                             {token ?
-                                <div className="col-12 col-md-3 ps-0 pe-0">
-                                    <i className='bx bxs-phone text-end text-danger fa-lg pt-'></i>{item.post.user_phone}
+                                <div className="col-12 col-md-3 ps-2 pe-0">
+                                    <i className='bx bxs-phone text-end text-danger fa-lg pt-1'></i>{item.post.user_phone}
                                 </div> :
-                                <div className="col-12 col-md-3 ps-0 pe-0">
+                                <div className="col-12 col-md-3 ps-2 pe-0">
                                     <Link to="/login" className="text-black mb-2">
-                                        <i className='bx bxs-phone text-end text-danger fa-lg pt-'></i> Contacto
+                                        <i className='bx bxs-phone text-end text-danger fa-lg pt-1'></i> Contacto
                                     </Link>
                                 </div>
                             }
@@ -81,17 +81,14 @@ export const NewCardPost = ({ item, index }) => {
                                                 </i>
                                         })
                                     }
-                                    <small>{item.average_rating} ({item.total_rating} calificaciones)</small>
+                                    <small> {item.average_rating} ({item.total_rating} calificaciones)</small>
                                 </p>
 
                             </div>
-                            {/* <div className="col-12 col-md-3 ps-2 p-0 pt-1">
-                                
-                            </div> */}
                         </div>
                         <p className="m-0 text-capitalize text-poscard text-postcard">
                             <span className="fw-bold pe-3">{item.post.service_type}</span>
-                            <span className="text-black"><i className="fa-solid fa-location-dot text-danger text-center"></i>{item.post.location}</span>
+                            <span className="text-black"><i className="fa-solid fa-location-dot text-danger text-center"></i> {item.post.location}</span>
                         </p>
                     </div>
                 </div>

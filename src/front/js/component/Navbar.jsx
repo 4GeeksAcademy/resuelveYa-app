@@ -83,7 +83,7 @@ export const Navbar = () => {
 								<Link to='/register'>
 									<li className='list-group-item text-list'>Regístrate</li>
 								</Link>
-								<Link to='/'>
+								<Link to='/footer'>
 									<li className='list-group-item text-list'>Contáctanos</li>
 								</Link>
 							</ul>
@@ -112,7 +112,7 @@ export const Navbar = () => {
 							<Link to='/register' className="text-white">
 								<li className='list-group-item fs-2 text-center li-ham'>Registrate</li>
 							</Link>
-							<Link to='/' className='text-white'>
+							<Link to='/footer' className='text-white'>
 								<li className='list-group-item fs-2 text-center li-ham'>Contáctanos</li>
 							</Link>
 						</ul>

@@ -59,9 +59,9 @@ export const SearchFilter = ({ title, subTitle, posts }) => {
     }, [])
 
     return (
-        <form onSubmit={handleSubmit} className='w-75 mx-auto p-3 py-5 mb-5' style={{ maxWidth: '700px' }}>
-            <h2 className='text-center text-color fw-bold'>{title}</h2>
-            <h4 className='text-center text-color'>{subTitle}</h4>
+        <form onSubmit={handleSubmit} className='w-75 mx-auto px-3 mb-2 mb-md-5' style={{ maxWidth: '700px' }}>
+            <h2 className='text-center text-color fw-bold pb-2' style={{ color: "var(--negro" }}>{title}</h2>
+            <h4 className='text-center text-color pb-2' style={{ color: "var(--negro" }}>{subTitle}</h4>
             <div className='container-jumbotron bg-white rounded-5 p-2 container d-flex gap-2'>
                 <div className='d-flex align-items-center input-1'>
                     <i className="fa-solid fs-4 fa-magnifying-glass pe-2" style={{ color: "rgb(208 201 201)" }}></i>

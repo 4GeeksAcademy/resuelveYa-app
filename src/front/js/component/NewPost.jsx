@@ -20,14 +20,10 @@ export const NewPost = () => {
                         'title': e.target.title.value,
                         'description': e.target.description.value,
                         'service_type': info.provider_info.service_type,
-                        // 'phone_number': e.target.phone_number.value,
-                        // 'service_time': e.target.serviceTime.value,
-                        // 'service_timetable': e.target.serviceTable.value,
                         'post_img': imgUrl,
                         'location': e.target.location.value,
                 }
                 console.log(newPost)
-                // actions.newPostProvider(newPost)
                 actions.setDataNewPost(newPost)
                 navigate('/payment')
         }
@@ -67,29 +63,32 @@ export const NewPost = () => {
         }, [])
 
         return (
-                <div className="d-flex gap-3 flex-column justify-content-center p-5">
-                        <form className="newpost-form-container d-flex flex-column gap-4 p-3" onSubmit={handleSubmit}>
+                <div className="d-flex flex-column justify-content-center p-5">
+                        <form className="form-control newpost-form-container d-flex flex-column p-3" onSubmit={handleSubmit}>
                                 <h3 className="text-center">Nueva Publicación</h3>
-                                <div className="d-flex justify-content-between align-items-center gap-1">
-                                        <label className="fw-semibold" htmlFor="title">Título: </label>
-                                        <input className="inputs-new-post border rounded" type="text" id="title" required />
+                                <div className="col-12">
+                                        <label className="form-label fw-semibold" htmlFor="title">Título </label>
+                                        <input className="form-control inputs-new-post border w-100" placeholder="Escribe un título" type="text" id="title" required />
                                 </div>
-                                <div className="d-flex justify-content-between gap-1">
-                                        <label className="fw-semibold" htmlFor="description">Descripción: </label>
-                                        <textarea className="textarea-new-post border rounded" name="description" id="description" required></textarea>
+                                <div className="col-12">
+                                        <label className="form-label fw-semibold" htmlFor="description">Descripción </label>
+                                        <textarea className="form-control textarea-new-post border w-100" placeholder="Escribe una descripcion de tu servicio" name="description" id="description" required></textarea>
                                 </div>
-                                <div className="d-flex justify-content-between align-items-center gap-1">
-                                        <label className="fw-semibold" htmlFor="serviceTable">Ubicación: </label>
-                                        <input className="inputs-new-post border rounded" type="text" id="location" name="location" required />
+                                <div className="col-12">
+                                        <label className="form-label fw-semibold" htmlFor="serviceTable">Ubicación </label>
+                                        <input className="form-control inputs-new-post border w-100" placeholder="¿Donde te encuentras?" type="text" id="location" name="location" required />
                                 </div>
-                                <div className="d-flex gap-2 justify-content-center align-items-center">
-                                        <label className="fw-semibold" htmlFor="category">Categoria:</label>
-                                        <p className="p-1 border rounded text-secondary m-0 text-capitalize">{info.provider_info?.service_type}</p>
-                                        <label className="fw-semibold" htmlFor="phone_number" style={{maxWidth: '100px'}}>Número de contacto:</label>
-                                        <p className="p-1 border rounded text-secondary m-0 text-capitalize">{info.provider_info?.phone}</p>
+                                <div className="row pb-2">
+                                        <div className="col-6">
+                                                <label className="form-label fw-semibold" htmlFor="category">Categoria</label>
+                                                <input className="form-control text-capitalize" type="text" value={info.provider_info?.service_type} disabled readonly/>
+                                        </div>
+                                        <div className="col-6">
+                                                <label className="form-label fw-semibold" htmlFor="phone_number">Número de contacto</label>
+                                                <input className="form-control text-capitalize" type="text" value={info.provider_info?.phone} disabled readonly/>
+                                        </div>
                                 </div>
-                                <div className="d-flex gap-2 justify-content-start">
-                                        <div className="fw-semibold">Imagen de publicación: </div>
+                                <div className="col-12 pb-2 text-center">
                                         <label className={loading ? 'btn btn-dark rounded-pill' : 'btn btn-secondary rounded-pill'} htmlFor="img_url">{loading ? 'Imagen cargada' : 'Cargar imagen'}</label>
                                         <input className="file-input" onChange={(e) => handleChangeImg(e.target.files)} type="file" name="img_url" id="img_url" accept=".jpg, .png, .jpeg" />
                                 </div>

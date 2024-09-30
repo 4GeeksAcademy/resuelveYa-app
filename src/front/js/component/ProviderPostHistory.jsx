@@ -26,10 +26,10 @@ export const ProviderPostHistory = () => {
                                         <div key={index} className="card-posthistory p-3 bg-white w-100 m-0 mb-3">
                                                 <p><span className='fw-semibold'>Fecha de publicación:</span> {item.created_at}</p>
                                                 <div className="row card-header pb-2" >
-                                                        <div className="col-4 col-md-2 pe-0 text-center mb-3">
-                                                                <img src={item.user_profile || "https://via.placeholder.com/150"} alt="" className="photo rounded-circle w-100" />
+                                                        <div className="col-12 col-md-2 pe-0 text-center mb-3">
+                                                                <img src={item.user_profile || "https://via.placeholder.com/150"} alt="" className="photo rounded-circle" />
                                                         </div>
-                                                        <div className="col-8 col-md-10 d-flex flex-column justify-content-center ps-3">
+                                                        <div className="col-12 col-md-10 d-flex flex-column justify-content-center ps-3">
                                                                 <div className="row">
                                                                         <div className="col-12 col-md-9">
                                                                                 <h4 className="m-0 text-capitalize fw-bold">{item.title}</h4>

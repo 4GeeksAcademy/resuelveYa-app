@@ -19,7 +19,6 @@ import { PaymentPage } from "./pages/payment.js";
 import { CardPostsList } from "./pages/cardPostsList.js";
 import { NotFound } from "./pages/notFound.js";
 
-
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
