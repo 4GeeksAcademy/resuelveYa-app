@@ -105,7 +105,7 @@ export const Footer = () => {
 					<p className='fs-5'>Si eres un proveedor de servicios, regístrate y comienza a ofrecer tu experiencia a nuestra comunidad. Publica tus horarios disponibles y conecta con clientes que buscan profesionales como tú.</p>
 					<p className='fs-5'>Ya sea que busques un servicio o quieras ofrecer uno, ResuelveYa! es la plataforma que te ayuda a hacer la conexión perfecta.</p>
 				</div>
-				<div className="div-footer div-team div3">
+				<div className="div-footer div-team div3 text-white">
 					<div id="carouselExampleAutoplaying" className="carousel slide div-caro shadow position-relative" data-bs-ride="carousel">
 						<h3 className='mt-2 title-team'>Equipo</h3>
 

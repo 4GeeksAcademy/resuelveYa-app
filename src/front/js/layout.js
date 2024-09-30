@@ -17,6 +17,7 @@ import { AdminProfile } from "./pages/adminProfile.js";
 import { ProviderNewPost } from "./pages/providerNewPost.js";
 import { PaymentPage } from "./pages/payment.js";
 import { CardPostsList } from "./pages/cardPostsList.js";
+import { NotFound } from "./pages/notFound.js";
 
 //create your first component
 const Layout = () => {
@@ -29,7 +30,7 @@ const Layout = () => {
     return (
         <div>
             <BrowserRouter basename={basename}>
-                <Navbar/>
+                <Navbar />
                 <Routes>
                     <Route element={<Home />} path="/" />
                     <Route element={<Login />} path="/login" />
@@ -41,8 +42,8 @@ const Layout = () => {
                     <Route element={<ProviderNewPost />} path="/providernewpost" />
                     <Route element={<PaymentPage />} path="/payment" />
                     <Route element={<CardPostsList />} path="/cardPostsList" />
-                    <Route element={<Footer/>} path = "/footer"/>
-
+                    <Route element={<Footer />} path="/footer" />
+                    <Route element={<NotFound />} path="*" />
                 </Routes>
                 {/* <Footer /> */}
             </BrowserRouter>
