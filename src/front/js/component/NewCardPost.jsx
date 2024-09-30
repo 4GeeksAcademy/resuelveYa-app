@@ -53,7 +53,7 @@ export const NewCardPost = ({ item, index }) => {
     }
 
     return (
-        <div className="card mt-3 w-100">
+        <div className="card mt-3 w-100 shadow">
             {showAlert.visible && (
                 <div className={`alert alert-${showAlert.type} text-center m-0 p-1 mx-3 mt-2`} role="alert">
                     <small>{showAlert.message}</small>
@@ -124,46 +124,49 @@ export const NewCardPost = ({ item, index }) => {
                 </div>
             </div>
             <hr className="m-0"></hr>
-            <div className="card-body px-4 p-2">
-                <div className="row text-end">
-                    {/* calificar */}
-                    {token ?
-                        <div className="col-12 col-md-12 pt-2"> Calificar
-                            {
-                                [... new Array(5)].map((_, indx) => {
-                                    const isRated = rankings[item.post.id] > indx; //verificar si la estrella esta calificada
-                                    return isRated ?
-                                        <i className='bx bxs-star text-postcard fa-lg'
-                                            key={indx}
-                                            onClick={() => handlerRating(indx, item.post.id)}>
-                                        </i> :
-                                        <i className='bx bx-star fa-lg'
-                                            key={indx}
-                                            onClick={() => handlerRating(indx, item.post.id)}>
-                                        </i>
-                                })
-                            }
-                        </div> :
-                        <div className="col-12 col-md-12 pt-2">
-                            <Link to="/login" className="text-black mb-2">
-                                <div>
-                                    <i className='bx bx-star fa-lg'></i>
-                                    <i className='bx bx-star fa-lg'></i>
-                                    <i className='bx bx-star fa-lg'></i>
-                                    <i className='bx bx-star fa-lg'></i>
-                                    <i className='bx bx-star fa-lg'></i>
-                                    Calificar
-                                </div>
-                            </Link>
-                        </div>
-                    }
+            {
+                store.user_role === 'client' &&
+                <div className="card-body px-4 p-2">
+                    <div className="row text-end">
+                        {/* calificar */}
+                        {token ?
+                            <div className="col-12 col-md-12"> Calificar
+                                {
+                                    [... new Array(5)].map((_, indx) => {
+                                        const isRated = rankings[item.post.id] > indx; //verificar si la estrella esta calificada
+                                        return isRated ?
+                                            <i className='bx bxs-star text-postcard fa-lg'
+                                                key={indx}
+                                                onClick={() => handlerRating(indx, item.post.id)}>
+                                            </i> :
+                                            <i className='bx bx-star fa-lg'
+                                                key={indx}
+                                                onClick={() => handlerRating(indx, item.post.id)}>
+                                            </i>
+                                    })
+                                }
+                            </div> :
+                            <div className="col-12 col-md-12 pt-2">
+                                <Link to="/login" className="text-black mb-2">
+                                    <div>
+                                        <i className='bx bx-star fa-lg'></i>
+                                        <i className='bx bx-star fa-lg'></i>
+                                        <i className='bx bx-star fa-lg'></i>
+                                        <i className='bx bx-star fa-lg'></i>
+                                        <i className='bx bx-star fa-lg'></i>
+                                        Calificar
+                                    </div>
+                                </Link>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-            <hr className="m-0 pb-2"></hr>
+            }
+            <hr className="m-0"></hr>
             {/* Comentarios del post */}
             {
                 item.comments.map((comment, index) => (
-                    <div className="card-body row px-4 py-0" key={index}>
+                    <div className="card-body row px-4 py-3" key={index}>
                         <div className="col-3 col-md-2">
                             <img src={comment.profile_img || "https://via.placeholder.com/150"} alt="" className="profile-image-client rounded-circle" />
                         </div>
@@ -174,9 +177,9 @@ export const NewCardPost = ({ item, index }) => {
                     </div>
                 ))
             }
-            <hr className="m-0"></hr>
+            {/* <hr className="m-0"></hr> */}
             {/* Box para agregar comentarios */}
-            {token &&
+            {store.user_role === 'client' ?
                 <form className="card-body row px-4 pt-2 pb-3" onSubmit={handleSubmit} >
                     <div className="col-md-12 form-floating pb-1 border rounded-2 pt-4">
                         <textarea type="text"
@@ -192,6 +195,10 @@ export const NewCardPost = ({ item, index }) => {
                         </div>
                     </div>
                 </form>
+                :
+                <div className="p-3 px-4 fw-bold bg-light" style={{ color: 'var(--azul)' }}>
+                    Necesitas ser cliente para comentar y calificar.
+                </div>
             }
         </div>
     );
