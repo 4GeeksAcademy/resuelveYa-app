@@ -8,7 +8,6 @@ nav {
 
 .blur {
   background-color: var(--azul);
-  backdrop-filter: blur(10px);
   height: 60px;
 }
 
