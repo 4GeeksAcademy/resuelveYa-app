@@ -1,30 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import './styles/navbar.css'
 import { Context } from "../store/appContext";
+import { Link as ScrollLink } from 'react-scroll';
 import logoNavbar from "../../img/logo-navbar.png"
 
 export const Navbar = () => {
 	const { actions, store } = useContext(Context)
-	const [posts, setPosts] = useState([])
 	const [visible, setVisible] = useState(false)
 	const [viewChange, setViewChange] = useState(false)
 	const navigate = useNavigate()
-
-	const handleClick = () => {
-		navigate("/")
-		window.location.reload
-	}
-
-	const handleChangeCategory = (e) => {
-		console.log(e.target.value)
-		setCategory(e.target.value)
-	}
-
-	const handleChangeInput = (e) => {
-		const textInput = e.target.value
-		setValueInput(textInput)
-	}
+	const location = useLocation();
 
 	const handleNav = () => {
 		setViewChange(!viewChange)
@@ -46,13 +32,25 @@ export const Navbar = () => {
 
 	}, [store.username])
 
+	const scrollToFooter = () => {
+		const footer = document.getElementById("footer");
+		if (footer) {
+			footer.scrollIntoView({ behavior: "smooth" });
+		}
+	};
+
+	const handleContactUsClick = () => {
+		navigate('/');
+		setTimeout(scrollToFooter, 100);
+	};
+
 
 	return (
 		<nav className=''>
 			<div className="d-flex blur justify-content-between w-100 align-items-center p-2 nav-sec-1 ">
 				<div>
 					<Link to={'/'} className="d-flex justify-content-center align-items-center">
-						<img src={logoNavbar} style={{ width: "70px", height: "70px" }}></img>
+						<img src={logoNavbar} style={{ width: "70px", height: "70px" }} alt="logo"></img>
 						<h2 className='mb-0' style={{ color: "var(--blanco)" }}>Resuelve<span>Ya!</span></h2>
 					</Link>
 				</div>
@@ -83,9 +81,7 @@ export const Navbar = () => {
 								<Link to='/register'>
 									<li className='list-group-item text-list'>Regístrate</li>
 								</Link>
-								<Link to='/footer'>
-									<li className='list-group-item text-list'>Contáctanos</li>
-								</Link>
+								<li className='list-group-item text-list' onClick={handleContactUsClick}>Contáctanos</li>
 							</ul>
 						)
 					}

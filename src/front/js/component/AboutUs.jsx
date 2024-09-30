@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import './styles/aboutUs.css'
-import { Context } from '../store/appContext'
 import gasfitero from '../../img/gasfitero-nosotros.png'
 import gasfitero1 from '../../img/gasfitero-nosotros1.png'
 
 const AboutUs = () => {
-    const { store } = useContext(Context)
 
     return (
         <>
@@ -33,36 +31,13 @@ const AboutUs = () => {
                             <li>Fácil y rápido: Encuentra profesionales en minutos y reserva con solo unos clics.</li>
                             <li>Seguridad garantizada: Autenticación robusta y pasarela de pagos confiable.</li>
                             <li>Diversidad de servicios: Tenemos el profesional adecuado para ti.</li>
-                            <li>Transparencia: Revisa los perfiles de los proveedores, sus calificaciones y disponibilidad antes de tomar una decisión.</li>
+                            <li>Transparencia: Revisa las calificaciones y reseñas de los proveedores antes de tomar una decisión.</li>
                             <li>Soporte técnico: Siempre disponibles para ayudarte a través de nuestro chat integrado.</li>
                             <li>Sin necesidad de registro: Explora y busca servicios sin necesidad de crear una cuenta.</li>
                         </ol>
                     </div>
                 </div>
             </div>
-
-
-
-            {/* <div className='about-div-h2 shadow-and-bg shadow'>
-                
-
-            <div className='about-div-h2 shadow-and-bg shadow'>
-                <p className='text-start about-h2 fs-4 fw-normal'>
-                    Ofrecemos una plataforma fácil de usar para encontrar electricistas, pintores, fontaneros y muchos más, de forma rápida y segura.
-                </p>
-            </div>
-            <div className='about-div-img-2 my-5'>
-                <img className='about-img' src="https://pinturashipopotamo.es/wp-content/uploads/2020/01/como-elegir-un-buen-pintor.jpg" alt="electricista" />
-            </div>
-            
-            <div className='shadow-and-bg shadow'>
-                <h2>
-                    ¿Por qué elegirnos?
-                </h2>
-                <p className='text-start about-p fs-4 fw-normal'>En ResuelveYa, trabajamos para eliminar la incertidumbre que puede existir al contratar profesionales.</p>
-                <p className='text-start about-p fs-4 fw-normal'>Con nosotros, puedes estar seguro de que recibirás atención de calidad, de manos de expertos con amplia experiencia en sus respectivos campos.</p>
-
-            </div> */}
         </>
     )
 }

@@ -2,8 +2,9 @@
     General Styles used on every website (Don't Repeat Yourself)
 */
 :root {
-    --azul: #8698C4;
-    --azul-oscuro-hover: #414d6d;
+    --azul: #414d6d;
+    /* --azul: #8698C4; */
+    --azul-oscuro-hover: #8698C4;
     --celeste: #E1E5F0;
     --gris: #F5F5F5;
     --plomo: #88898D;
@@ -22,13 +23,13 @@
     text-align: center;
     transition: background-color 0.3s ease;
 }
+
 .btn-userprofile-view:hover {
     background-color: var(--azul-oscuro-hover);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
+
 .btn-userprofile-view:hover {
     color: var(--blanco);
     /* Cambia el color del texto a un tono celeste */
 }
-
-
