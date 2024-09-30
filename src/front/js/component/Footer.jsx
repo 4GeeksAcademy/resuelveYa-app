@@ -54,7 +54,7 @@ export const Footer = () => {
 
 
 	return (
-		<footer className="footer py-5 text-center">
+		<footer id="footer" className="footer py-5 text-center">
 			<div className='container-bento w-75'>
 
 				{/* <div className="div-footer div-direction div1">
@@ -64,7 +64,7 @@ export const Footer = () => {
 						<img src={ubi} alt="" />
 					</div>
 				</div> */}
-		
+
 				<div className="div-footer div-contact div1">
 					<h3 className='m-0'>Contáctanos</h3>
 					<p className='fs-5 m-0'>Teléfono: (01) 234-5678</p>
@@ -74,9 +74,9 @@ export const Footer = () => {
 						</div>
 					)}
 					<form onSubmit={formik.handleSubmit}>
-						<div className='d-flex align-items-start gap-2 footer-inputs'>
+						<div className='d-flex align-items-start gap-2 footer-inputs pb-2'>
 							<label htmlFor="" className='fs-5 '>Tu correo:</label>
-							<input className='form-control footer-input' type="email" id="email"
+							<input className='form-control footer-input email-footer' type="email" id="email"
 								name="email" onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 								value={formik.values.email} />
@@ -84,7 +84,7 @@ export const Footer = () => {
 								<div className="text-danger">{formik.errors.email}</div>
 							) : null}
 						</div>
-						<div className='d-flex align-items-start gap-2 footer-inputs'>
+						<div className='d-flex align-items-start gap-2 footer-inputs pb-2'>
 							<label htmlFor="" className='fs-5'>Déjanos tu mensaje:</label>
 							<textarea className='fs-5 footer-input form-control' id="message"
 								name="message" onChange={formik.handleChange}
@@ -95,15 +95,15 @@ export const Footer = () => {
 							) : null}
 						</div>
 						<div className="col-md-12">
-                        <button className="btn btn-login w-50 mt-2 text-uppercase rounded-pill" type="submit">Enviar</button>
-                    </div>
+							<button className="btn btn-login w-50 mt-2 text-uppercase rounded-pill" type="submit">Enviar</button>
+						</div>
 					</form>
 				</div>
-				
-				<div className="div-footer div-new-team div2 overflow-y-auto">
-					<h3 className='text-center'>Únete a nuestros colaboradores</h3>
-					<p className='fs-5'>Si eres un proveedor de servicios, regístrate y comienza a ofrecer tu experiencia a nuestra comunidad. Publica tus horarios disponibles y conecta con clientes que buscan profesionales como tú.</p>
-					<p className='fs-5'>Ya sea que busques un servicio o quieras ofrecer uno, ResuelveYa! es la plataforma que te ayuda a hacer la conexión perfecta.</p>
+
+				<div className="div-footer div-new-team div2 overflow-y-auto text-center">
+					<h3 className='text-center pb-4'>Únete a nuestros colaboradores</h3>
+					<p className='fs-5'>Si eres un proveedor de servicios, regístrate y comienza a ofrecer tu experiencia a nuestra comunidad. Publica tus servicios disponibles y conecta con clientes que buscan profesionales como tú.</p>
+					<p className='fs-5 m-0'>Ya sea que busques un servicio o quieras ofrecer uno, ResuelveYa es la plataforma que te ayuda a hacer la conexión perfecta.</p>
 				</div>
 				<div className="div-footer div-team div3 text-white">
 					<div id="carouselExampleAutoplaying" className="carousel slide div-caro shadow position-relative" data-bs-ride="carousel">
@@ -149,7 +149,7 @@ export const Footer = () => {
 									</div>
 								</div>
 							</div>
-				
+
 							<div className="carousel-item bg-profiles" style={{ backgroundImage: `url(${milton})` }}>
 								<div className='profile-details w-100'>
 									<h3 className='text-center fs-4 title-car m-0 mb-1'>Milton Omar Y.</h3>

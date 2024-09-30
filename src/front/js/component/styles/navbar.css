@@ -68,6 +68,13 @@ input {
 
 .text-list {
   color: var(--blanco);
+  cursor: pointer;
+}
+
+.text-list:hover {
+  background-color: var(--azul-oscuro-hover);
+  border-radius: 10px;
+  padding: 5px;
 }
 
 .menu {
