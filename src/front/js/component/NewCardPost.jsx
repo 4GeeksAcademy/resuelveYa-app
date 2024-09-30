@@ -9,6 +9,7 @@ export const NewCardPost = ({ item, index }) => {
     const name = localStorage.getItem("name")
     const [commentData, setCommentData] = useState("")
     const [rankings, setRankings] = useState({})
+    const [showAlert, setShowAlert] = useState({ visible: false, message: "", type: "" });
 
     const handlerRating = async (index) => {
         const newRanking = index + 1
@@ -18,8 +19,14 @@ export const NewCardPost = ({ item, index }) => {
             post_id: item.post.id,
             rating: newRanking,
         }
-        await actions.newReview(data)
-        console.log(data)
+        const result = await actions.newReview(data)
+        if (result.message === "Solo los clientes pueden hacer reseñas") {
+            setShowAlert({
+                visible: true,
+                message: "Solo los clientes pueden hacer reseñas",
+                type: "danger"
+            });
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -32,6 +39,13 @@ export const NewCardPost = ({ item, index }) => {
         try {
             const data = await actions.newReview(newComment)
             setCommentData("")
+            if (data.message === "Solo los clientes pueden hacer reseñas") {
+                setShowAlert({
+                    visible: true,
+                    message: "Solo los clientes pueden hacer reseñas",
+                    type: "danger"
+                });
+            }
 
         } catch (err) {
             console.error("error", err)
@@ -40,6 +54,11 @@ export const NewCardPost = ({ item, index }) => {
 
     return (
         <div className="card mt-3 w-100">
+            {showAlert.visible && (
+                <div className={`alert alert-${showAlert.type} text-center m-0 p-1 mx-3 mt-2`} role="alert">
+                    <small>{showAlert.message}</small>
+                </div>
+            )}
             <div className="card-header py-3 w-100">
                 <div className="row">
                     {/* imagen de perfil del proveedor */}
