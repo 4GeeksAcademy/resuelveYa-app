@@ -76,20 +76,10 @@
     justify-content: 0 auto; */
 }
 
-<<<<<<< HEAD
 #email{
     width: 70%;
     max-width: 300px;
 }
-=======
-/* .form-contacto {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100%;
-} */
->>>>>>> ad8b39286261ed8c33f4739d49a1a37e7a6e037c
 
 #message {
     border: none;
