@@ -176,7 +176,7 @@ export const NewCardPost = ({ item, index }) => {
             }
             <hr className="m-0"></hr>
             {/* Box para agregar comentarios */}
-            {token &&
+            {token || store.rol === 'user' ?
                 <form className="card-body row px-4 pt-2 pb-3" onSubmit={handleSubmit} >
                     <div className="col-md-12 form-floating pb-1 border rounded-2 pt-4">
                         <textarea type="text"
@@ -192,6 +192,10 @@ export const NewCardPost = ({ item, index }) => {
                         </div>
                     </div>
                 </form>
+                :
+                <div>
+                    Necesitas ser cliente para comentar y puntuar
+                </div>
             }
         </div>
     );

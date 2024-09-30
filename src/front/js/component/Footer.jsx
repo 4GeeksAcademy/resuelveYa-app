@@ -76,7 +76,7 @@ export const Footer = () => {
 					<form onSubmit={formik.handleSubmit}>
 						<div className='d-flex align-items-start gap-2 footer-inputs'>
 							<label htmlFor="" className='fs-5 '>Tu correo:</label>
-							<input className='form-control footer-input' type="email" id="email"
+							<input className='form-control footer-input' type="email" id="email-footer"
 								name="email" onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 								value={formik.values.email} />
