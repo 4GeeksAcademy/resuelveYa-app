@@ -50,7 +50,7 @@ export const ChatOpenia = () => {
             {store.username && (
                 <>
                     {!open && (
-                        <button onClick={() => setOpen(true)} className="btn btn-primary mb-2">
+                        <button onClick={() => setOpen(true)} className="btn btn-chat b-2">
                             ¿Cómo te puedo ayudar 😃?
                         </button>
                     )}
@@ -58,8 +58,8 @@ export const ChatOpenia = () => {
                         <div className="card chat-container">
                             <div className="card-header d-flex justify-content-between">
                                 <h5>Chat Asistente</h5>
-                                <button className="btn btn-danger" onClick={() => setOpen(false)}>
-                                    x
+                                <button className="btn btn-x" onClick={() => setOpen(false)}>
+                                    X
                                 </button>
                             </div>
                             <div
@@ -83,7 +83,7 @@ export const ChatOpenia = () => {
                                                     {msg.role === "user" ? (
                                                         parsedContent.text || parsedContent
                                                     ) : (
-                                                        
+
                                                         <>
                                                             {parsedContent.text || parsedContent}
                                                             {parsedContent.contacts && (
@@ -116,7 +116,7 @@ export const ChatOpenia = () => {
                                         onChange={(e) => setMessage(e.target.value)}
                                         placeholder="Escribe un mensaje"
                                     />
-                                    <button type="submit" className="btn btn-primary">
+                                    <button type="submit" className="btn btn-send">
                                         Enviar
                                     </button>
                                 </form>
