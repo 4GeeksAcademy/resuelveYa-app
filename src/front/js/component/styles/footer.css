@@ -72,7 +72,17 @@
 
 .footer-inputs {
     flex-direction: column;
+    /* max-width: 600px;
+    justify-content: 0 auto; */
 }
+
+/* .form-contacto {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+} */
 
 #message {
     border: none;
@@ -171,7 +181,7 @@
 
     .div1 { 
         grid-area: 1 / 1 / 3 / 6; /* Ocupa toda la fila superior (2 filas y 5 columnas) */
-        padding: 10px;
+        padding: 10 20px;
         height: 420px;
         
     }
