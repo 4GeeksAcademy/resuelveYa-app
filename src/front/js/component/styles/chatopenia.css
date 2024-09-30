@@ -1,4 +1,3 @@
-
 .assistant-button {
     position: fixed;
     right: 20px;
@@ -13,6 +12,39 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
+}
+
+.btn-chat {
+    background-color: var(--azul);
+    color: var(--blanco);
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.btn-chat:hover,
+.btn-x:hover,
+.btn-x:active {
+    background-color: var(--azul-oscuro-hover);
+    font-weight: bold;
+    color: var(--blanco);
+}
+
+.btn-x {
+    background-color: var(--azul);
+    color: var(--blanco);
+    border-radius: 50%;
+}
+
+.btn-send {
+    background-color: var(--azul-oscuro-hover);
+    font-weight: bold;
+    color: var(--blanco);
+}
+
+.btn-send:hover,
+.btn-send:active {
+    background-color: var(--azul);
+    color: var(--blanco);
 }
 
 @media (max-width: 768px) {
@@ -39,13 +71,13 @@
     }
 
     .card-body .p-2 {
-        font-size: 14px; 
+        font-size: 14px;
     }
 }
 
 @media (max-width: 576px) {
     .card.chat-container {
-        width: 85vw; 
+        width: 85vw;
         height: 45vh;
         bottom: 10px;
         right: 10px;
@@ -54,20 +86,20 @@
     .card-header h5 {
         font-size: 14px;
 
-    .btn {
-        font-size: 14px;
-    }
+        .btn {
+            font-size: 14px;
+        }
 
-    input.form-control {
-        font-size: 14px; 
-    }
+        input.form-control {
+            font-size: 14px;
+        }
 
-    .card-body .p-2 {
-        font-size: 14px; 
-    }
+        .card-body .p-2 {
+            font-size: 14px;
+        }
 
-    .d-flex.flex-column.gap-2 {
-        gap: 1rem; 
+        .d-flex.flex-column.gap-2 {
+            gap: 1rem;
+        }
     }
-}
 }
