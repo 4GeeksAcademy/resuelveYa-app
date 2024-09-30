@@ -13,18 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			reviews: [],
 			dataReviews: [],
 			messages: [],
-			colors: {
-				azul: "#8698C4",
-				celeste: "#E1E5F0",
-				gris: "#F5F5F5",
-				plomo: "#EEEEEE",
-				negro: "#88898D",
-				negro2: "#393C3F",
-				blanco: "#F5F5F5"
-			},
 			inputSearch: '',
 			inputLocation: '',
-			searchTitleOrName: '',  // Nuevo campo
+			searchTitleOrName: '',
 			locationProv: '',
 		},
 		actions: {
@@ -53,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: { "content-type": "application/json" }
 					});
 					let data = await response.json();
-					console.log(data);
+
 					if (data.token) {
 						console.log(`Welcome ${data.username}`);
 						localStorage.setItem('token', data.token);
@@ -492,13 +483,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			setDataReviews: (newData) => {
-				setStore({dataReviews: newData})
+				setStore({ dataReviews: newData })
 			},
-			setInputSearch: (newValue)=> {
-				setStore({inputSearch: newValue})
+			setInputSearch: (newValue) => {
+				setStore({ inputSearch: newValue })
 			},
 			setInputLocation: (newValue) => {
-				setStore({inputLocation: newValue})
+				setStore({ inputLocation: newValue })
 			}
 		}
 	};

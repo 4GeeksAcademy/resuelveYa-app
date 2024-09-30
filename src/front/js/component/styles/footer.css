@@ -1,17 +1,5 @@
-
-:root {
-    --azul: #8698C4;
-    --azul-oscuro-hover: #414d6d;
-    --celeste: #E1E5F0;
-    --gris: #F5F5F5;
-    --plomo: #EEEEEE;
-    --plomo-oscuro: #88898D;
-    --negro: #393C3F;
-    --blanco: #F5F5F5;
-}
-
 .footer {
-    color: var(--negro); 
+    color: var(--negro);
     display: grid;
     grid-template-areas:
         "direction"
@@ -21,7 +9,7 @@
     margin: 0 auto;
     background-position: center;
     background-size: cover;
-    background-color: var(--azul-oscuro-hover); 
+    background-color: var(--azul);
 }
 
 .container-bento {
@@ -39,21 +27,22 @@
 .div-footer {
     height: 350px;
     border-radius: 20px;
-    background-color: var(--blanco); 
-    border: var(--negro) 3px solid; 
+    background-color: var(--blanco);
     box-shadow: var(--negro);
 }
 
 .div-img {
     overflow: hidden;
-    height: 200px; 
+    height: 200px;
     border-radius: 10px;
 }
 
 .div-img img {
     width: 100%;
-    height: 100%; /* Establece la altura para forzar que la imagen se ajuste al contenedor */
-    object-fit: cover; /* Esto asegurará que la imagen se ajuste y recorte */
+    height: 100%;
+    /* Establece la altura para forzar que la imagen se ajuste al contenedor */
+    object-fit: cover;
+    /* Esto asegurará que la imagen se ajuste y recorte */
 }
 
 .div-direction {
@@ -61,7 +50,7 @@
     backdrop-filter: blur(10px);
     padding: 20px;
     overflow: hidden;
-    
+
 }
 
 .footer-input {
@@ -76,7 +65,7 @@
     justify-content: 0 auto; */
 }
 
-#email{
+.email-footer {
     width: 70%;
     max-width: 300px;
 }
@@ -160,9 +149,9 @@
 
 .profile-details {
     position: absolute;
-    bottom: 0; 
-    left: 50%; 
-    transform: translateX(-50%); 
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 5px;
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 0.363);
@@ -173,27 +162,32 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: repeat(4, 1fr) 0;
-        grid-column-gap: 20px; /* Aumenta el espacio horizontal entre columnas */
-        grid-row-gap: 20px;    /* Aumenta el espacio vertical entre filas */
+        grid-column-gap: 20px;
+        /* Aumenta el espacio horizontal entre columnas */
+        grid-row-gap: 20px;
+        /* Aumenta el espacio vertical entre filas */
         /* padding: 10px 30px; */
     }
 
-    .div1 { 
-        grid-area: 1 / 1 / 3 / 6; /* Ocupa toda la fila superior (2 filas y 5 columnas) */
+    .div1 {
+        grid-area: 1 / 1 / 3 / 6;
+        /* Ocupa toda la fila superior (2 filas y 5 columnas) */
         padding: 10px;
         height: auto;
         padding: 10px 70px;
     }
 
-    .div2 { 
-        grid-area: 3 / 1 / 5 / 4; /* Ocupa las 3 primeras columnas en la segunda mitad */
+    .div2 {
+        grid-area: 3 / 1 / 5 / 4;
+        /* Ocupa las 3 primeras columnas en la segunda mitad */
         background-color: var(--celeste);
         color: var(--negro);
         margin-top: 20px
     }
 
-    .div3 { 
-        grid-area: 3 / 4 / 5 / 6; /* Ocupa las 2 últimas columnas en la segunda mitad */
+    .div3 {
+        grid-area: 3 / 4 / 5 / 6;
+        /* Ocupa las 2 últimas columnas en la segunda mitad */
         color: var(--blanco);
         margin-top: 20px
     }
