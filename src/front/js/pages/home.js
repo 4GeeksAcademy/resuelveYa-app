@@ -9,18 +9,21 @@ import AboutUs from "../component/AboutUs.jsx";
 
 
 export const Home = () => {
-    const role = localStorage.getItem('role');
+    const user_role = localStorage.getItem('user_role');
     const { store, actions } = useContext(Context)
 
     const getPost = async () => {
         const dataPost = await actions.getReviews()
         actions.setDataReviews(dataPost)
-        // console.log(store.dataReviews)
+        console.log(store.dataReviews)
     }
 
     useEffect(() => {
-        // console.log(store.reviews)
+        console.log(store.reviews)
         getPost()
+        if (store.reviews.length === 0) {
+            actions.getReviews()
+        }
     }, [])
 
     return (
@@ -29,7 +32,7 @@ export const Home = () => {
             <AboutUs />
             <ListServices />
             {/* Mostrar ChatOpenia solo si el usuario tiene rol 'cliente' */}
-            {role === "client" && <ChatOpenia />}
+            {user_role === "client" && <ChatOpenia />}
             <Footer />
         </div>
     );
