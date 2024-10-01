@@ -141,30 +141,30 @@ def create_default_posts():
                 'location': 'Trujillo'
             },
             {
-                'title': 'Instalación de tuberías de agua',
-                'description': 'Colocación e instalación de tuberías de agua en edificaciones.',
-                'service_type': 'gasfitero',
+                'title': 'Mantenimiento de jardines',
+                'description': '¡Transforma y cuida tus espacios verdes con un toque profesional! Ofrezco servicios de jardinería para hogares, empresas, y áreas comunes, adaptados a tus necesidades y preferencias. Mi objetivo es crear y mantener jardines hermosos y saludables.',
+                'service_type': 'jardinero',
                 'post_img': 'https://hidrosaning.com/wp-content/uploads/2022/03/Servicio-de-gasfiteria-a-domicilio.jpg',
                 'location': 'Lima'
             },
             {
-                'title': 'Mantenimiento de sistemas eléctricos',
-                'description': 'Diagnóstico y mantenimiento preventivo de sistemas eléctricos.',
-                'service_type': 'electricista',
+                'title': 'Pintura de interiores y exteriores',
+                'description': '¿Quieres renovar tus espacios y darles un toque fresco y moderno? Soy un pintor profesional con experiencia en transformar interiores y exteriores. Ofrezco un servicio de calidad, adaptado a tus necesidades y gustos, garantizando acabados impecables.',
+                'service_type': 'pintor',
                 'post_img': 'https://www.mndelgolfo.com/blog/wp-content/uploads/2017/09/herramientas-para-electricista.jpg',
                 'location': 'Cuzco'
             },
             {
                 'title': 'Reparación de filtraciones y tuberías',
-                'description': 'Detección y reparación de filtraciones en baños y cocinas.',
+                'description': '¿Tienes problemas con tus tuberías? ¿Una fuga de gas que necesita atención inmediata? ¡No te preocupes! Soy un gasfitero profesional con años de experiencia en instalaciones, reparaciones y mantenimiento de sistemas de agua y gas.',
                 'service_type': 'gasfitero',
                 'post_img': 'https://dconfianzablobproduction.blob.core.windows.net/provider/i8WrHsziFom23CdQbUVG6VZDedGgiX8U.jpg',
                 'location': 'Tacna'
             },
             {
-                'title': 'Instalación de enchufes y lámparas',
-                'description': 'Instalación de enchufes, interruptores y lámparas en toda la casa.',
-                'service_type': 'electricista',
+                'title': 'Reparación de fugas y goteos',
+                'description': '¿Tienes problemas con las tuberías o necesitas una instalación nueva? Soy un plomero profesional con años de experiencia en ofrecer soluciones rápidas y efectivas para todo tipo de trabajos de plomería. Garantizo un servicio confiable y de alta calidad.',
+                'service_type': 'plomero',
                 'post_img' : 'https://cdn.www.gob.pe/uploads/document/file/3750846/standard_descarga.jpg.jpg',
                 'location': 'Arequipa'
             },
@@ -929,9 +929,9 @@ def get_reviews_post():
 
             valid_comments = [{
                 "comment": review.comment,
-                "user_name": review.user.username,
-                "last_name": review.user.lastname,
-                **({"profile_img": review.user.profile_image} if review.user.profile_image else {})
+                "user_name": review.user.username if review.user else "Usuario desconocido",
+                "last_name": review.user.lastname if review.user else "",
+                **({"profile_img": review.user.profile_image} if review.user and review.user.profile_image else {})
             } for review in reviews if review.comment is not None]
 
             obj = {

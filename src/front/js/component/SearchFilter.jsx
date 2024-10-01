@@ -28,7 +28,7 @@ export const SearchFilter = ({ title, subTitle, posts }) => {
         console.log(e.target.value)
     }
 
-    const filterByTitleAndName = store.dataReviews.filter((postProvider) => {
+    const filterByTitleAndName = store.dataReviews?.filter((postProvider) => {
         const completeName = `${postProvider.post.user_name || ''} ${postProvider.post.user_lastname || ''}`;
         const title = postProvider.post.title ? postProvider.post.title.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
         const username = completeName ? completeName.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
@@ -55,7 +55,9 @@ export const SearchFilter = ({ title, subTitle, posts }) => {
     }, [searchTitleOrName, locationProv, store.inputSearch])
 
     useEffect(() => {
-        // getPosts()
+        // if(store.reviews.length === 0) {
+        //     getPosts()
+        // }
     }, [])
 
     return (
