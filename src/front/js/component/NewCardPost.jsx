@@ -166,11 +166,11 @@ export const NewCardPost = ({ item, index }) => {
             {/* Comentarios del post */}
             {
                 item.comments.map((comment, index) => (
-                    <div className="card-body row px-4 py-3" key={index}>
-                        <div className="col-3 col-md-2">
+                    <div className="card-body row px-4 py-2" key={index}>
+                        <div className="col-3 col-md-2 d-flex justify-content-center align-items-center">
                             <img src={comment.profile_img || "https://via.placeholder.com/150"} alt="" className="profile-image-client rounded-circle" />
                         </div>
-                        <div className="col-9 col-md-10 form-floating mb-2 border rounded">
+                        <div className="col-9 col-md-10 form-floating border rounded">
                             <textarea value={comment.comment} type="text" className="form-control-plaintext" id="floatingPlaintextInput" readOnly />
                             <label className="text-primary-emphasis" htmlFor="floatingPlaintextInput">{comment.user_name} {comment.last_name}</label>
                         </div>
